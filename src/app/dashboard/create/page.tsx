@@ -21,6 +21,13 @@ import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Skeleton } from "~/components/ui/skeleton";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "~/components/ui/select";
 import { api } from "~/trpc/react";
 
 /* ─── constants ─── */
@@ -90,6 +97,7 @@ export default function CreatePostPage() {
     /* ─ local state ─ */
     const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
     const [content, setContent] = useState("");
+    const [platform, setPlatform] = useState("linkedin");
 
     const availableIdeas = useMemo(() => {
         if (!ideas) return [];
@@ -120,7 +128,7 @@ export default function CreatePostPage() {
         createDraft.mutate({
             ideaId: selectedIdeaId,
             content: content.trim(),
-            platform: "linkedin",
+            platform: platform,
             status: "writing",
         });
 
@@ -196,10 +204,34 @@ export default function CreatePostPage() {
                         {/* Bottom bar inside editor */}
                         <div className="flex items-center justify-between px-6 py-4 border-t border-border/20">
                             <div className="flex items-center gap-3">
+                                <Select value={platform} onValueChange={setPlatform}>
+                                    <SelectTrigger className="h-7 text-xs rounded-full border-border/40 bg-background/50 backdrop-blur-sm shadow-sm min-w-[100px]">
+                                        <SelectValue placeholder="Platform" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="linkedin">LinkedIn</SelectItem>
+                                        <SelectItem value="x">X (Twitter)</SelectItem>
+                                        <SelectItem value="threads">Threads</SelectItem>
+                                        <SelectItem value="instagram">Instagram</SelectItem>
+                                        <SelectItem value="youtube">YouTube</SelectItem>
+                                    </SelectContent>
+                                </Select>
+
                                 <motion.button
                                     whileTap={{ scale: 0.9 }}
                                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-violet-500 bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 transition-all cursor-pointer"
-                                    onClick={() => router.push("/dashboard/chat")}
+                                    onClick={() => {
+                                        if (!content.trim()) {
+                                            toast.error("Write a post or idea first to use AI!");
+                                            return;
+                                        }
+                                        const searchParams = new URLSearchParams({
+                                            prompt: content.trim(),
+                                            platform: platform,
+                                            ...(selectedIdeaId ? { ideaId: selectedIdeaId } : {})
+                                        });
+                                        router.push(`/dashboard/chat?${searchParams.toString()}`);
+                                    }}
                                 >
                                     <SparklesIcon className="h-3 w-3" />
                                     AI

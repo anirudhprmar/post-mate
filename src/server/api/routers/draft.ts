@@ -2,7 +2,7 @@ import { z } from "zod";
 import { eq, and, desc } from "drizzle-orm";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { draft } from "~/server/db/schema";
+import { draft, idea } from "~/server/db/schema";
 
 export const draftRouter = createTRPCRouter({
     getAll: protectedProcedure
@@ -31,7 +31,7 @@ export const draftRouter = createTRPCRouter({
     create: protectedProcedure
         .input(
             z.object({
-                ideaId: z.string(),
+                ideaId: z.string().optional(),
                 content: z.string().min(1),
                 platform: z.string().min(1),
                 status: z.enum(["writing", "review", "ready", "published"]),
@@ -39,11 +39,28 @@ export const draftRouter = createTRPCRouter({
             }),
         )
         .mutation(async ({ ctx, input }) => {
+            let actualIdeaId = input.ideaId;
+
+            // If ideaId is not provided or is our frontend placeholder, create a new idea automatically
+            if (!actualIdeaId || actualIdeaId === "dummy-idea") {
+                const [newIdea] = await ctx.db
+                    .insert(idea)
+                    .values({
+                        userId: ctx.session.user.id,
+                        content: input.content.length > 80 ? input.content.substring(0, 80) + "..." : input.content,
+                        status: "drafting",
+                    })
+                    .returning();
+
+                if (!newIdea) throw new Error("Failed to create parent idea");
+                actualIdeaId = newIdea.id;
+            }
+
             const [created] = await ctx.db
                 .insert(draft)
                 .values({
                     userId: ctx.session.user.id,
-                    ideaId: input.ideaId,
+                    ideaId: actualIdeaId,
                     content: input.content,
                     platform: input.platform,
                     status: input.status,

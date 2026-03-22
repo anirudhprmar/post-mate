@@ -17,10 +17,7 @@ export async function POST(req: Request) {
         const result = streamText({
             model: google("gemini-2.5-flash"),
             messages: await convertToModelMessages(messages),
-            system: `You are an expert AI assistant for 'PostSpark', a content creation, planner, and scheduling application for social media. 
-               You are brilliant, articulate, and creative. You provide insightful, detailed, and highly formatted responses using markdown. 
-               Never be basic or generic. If the user asks for ideas, hooks, or captions, provide multiple highly engaging and distinct options.
-               Keep the tone energetic and professional.`,
+            system: `You are an expert content creator for social media with great writing skills. You know what this platforms audience listens to and what they like. Help Crafting piece of content no explaination straight structured post with proper formatting and line breaks, ready to post. If the post is good reply its already good not need to optimize. Also make sure to support the user's writing style if it is already good, clean and easy to read. `,
         });
 
         return result.toUIMessageStreamResponse({
