@@ -22,12 +22,11 @@ import { useTheme } from "next-themes";
 export default function UserProfile({ mini, showName = false }: { mini?: boolean; showName?: boolean }) {
   const router = useRouter();
 
-  // Use tRPC query hook for automatic caching, loading, and error states
-  // const { data: userInfo, isLoading, error } = api.user.me.useQuery(undefined, {
-  //   retry: 1,
-  //   staleTime: 5000, // Consider data fresh for 5 seconds (matches session cache)
-  //   refetchOnWindowFocus: false, // Prevent unnecessary refetches
-  // });
+  const { data: userInfo, isLoading, error } = api.user.me.useQuery(undefined, {
+    retry: 1,
+    staleTime: 5000, // Consider data fresh for 5 seconds (matches session cache)
+    refetchOnWindowFocus: false, // Prevent unnecessary refetches
+  });
 
   const { setTheme, theme } = useTheme();
 
@@ -41,20 +40,20 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
     });
   };
 
-  // if (error) {
-  //   return (
-  //     <div
-  //       className={`flex gap-3 justify-start items-center w-full rounded overflow-hidden whitespace-nowrap ${mini ? "px-2 py-2" : "px-4 pt-2 pb-3"}`}
-  //     >
-  //       <div className="text-red-500 text-sm shrink-0">⚠️</div>
-  //       {!mini && (
-  //         <div className={`text-red-500 text-sm transition-opacity duration-300 ${showName ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-  //           {error.message || "Failed to load user profile"}
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
-  // }
+  if (error) {
+    return (
+      <div
+        className={`flex gap-3 justify-start items-center w-full rounded overflow-hidden whitespace-nowrap ${mini ? "px-2 py-2" : "px-4 pt-2 pb-3"}`}
+      >
+        <div className="text-red-500 text-sm shrink-0">⚠️</div>
+        {!mini && (
+          <div className={`text-red-500 text-sm transition-opacity duration-300 ${showName ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+            {error.message || "Failed to load user profile"}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <DropdownMenu>
@@ -63,7 +62,7 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
           className={`flex gap-3 justify-start items-center w-full rounded hover:cursor-pointer overflow-hidden whitespace-nowrap ${mini ? "px-2 py-2" : "px-3 py-2 pb-2"}`}
         >
           <Avatar className="shrink-0">
-            {/* {isLoading ? (
+            {isLoading ? (
               <div className="flex items-center justify-center w-full h-full">
                 <Loader2 className="h-4 w-4 animate-spin" />
               </div>
@@ -71,22 +70,22 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
               <>
                 {userInfo?.image ? (
                   <AvatarImage src={userInfo?.image} alt="User Avatar" />
-                ) : ( */}
-            <AvatarFallback>
-              {"U"}
-            </AvatarFallback>
-            {/* )} */}
-            {/* </> */}
-            {/* )} */}
+                ) : (
+                  <AvatarFallback>
+                    {"U"}
+                  </AvatarFallback>
+                )}
+              </>
+            )}
           </Avatar>
-          {/* {mini ? null : (
+          {mini ? null : (
             <div className={`flex items-center gap-2 transition-opacity duration-300 ${showName ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
               <p className="font-medium text-md">
                 {isLoading ? "Loading..." : userInfo?.name ?? "User"}
               </p>
               {isLoading && <Loader2 className="h-3 w-3 animate-spin" />}
             </div>
-          )} */}
+          )}
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

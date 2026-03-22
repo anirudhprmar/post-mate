@@ -7,6 +7,15 @@
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  
+  --animate-mesh: mesh 10s ease-in-out infinite alternate;
+  
+  @keyframes mesh {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 }
 
 :root {
@@ -129,5 +138,38 @@
   }
   html {
     @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  .bg-mesh {
+    background: radial-gradient(at 0% 0%, hsl(var(--primary)/0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsl(var(--primary)/0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsl(var(--primary)/0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsl(var(--primary)/0.05) 0px, transparent 50%);
+    background-size: 200% 200%;
+  }
+
+  /* IdeaNote: lined-paper texture for textarea */
+  .note-lined-bg {
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      #e5e5e7 27px,
+      #e5e5e7 28px
+    );
+    background-attachment: local;
+  }
+
+  /* Hide scrollbar cross-browser */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }

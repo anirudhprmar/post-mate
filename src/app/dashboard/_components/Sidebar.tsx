@@ -8,8 +8,14 @@ import {
   Settings,
   Calendar,
   Home,
+  Sparkles,
   RocketIcon,
-  Bell
+  Bell,
+  PenTool,
+  Users,
+  Sprout,
+  Waypoints,
+  FileText
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { api } from "~/lib/api";
@@ -22,19 +28,39 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: "Home",
+    label: "Ideas",
     href: "/dashboard",
     icon: Home,
   },
   {
-    label: "Inspiration",
-    href: "/dashboard/inspiration",
-    icon: RocketIcon,
+    label: "Create",
+    href: "/dashboard/create",
+    icon: FileText,
   },
   {
-    label: "Planner",
-    href: "/dashboard/schedule",
+    label: "Inspiration",
+    href: "/dashboard/inspiration",
+    icon: Sparkles,
+  },
+  {
+    label: "Calendar",
+    href: "/dashboard/calendar",
     icon: Calendar,
+  },
+  {
+    label: "References",
+    href: "/dashboard/references",
+    icon: Waypoints,
+  },
+  {
+    label: "Drafts",
+    href: "/dashboard/drafts",
+    icon: PenTool,
+  },
+  {
+    label: "Connections",
+    href: "/dashboard/connect",
+    icon: Users,
   },
 ];
 
@@ -85,8 +111,8 @@ export default function DashboardSideBar() {
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
                     )}
                   >
+                    <Bell className="h-5 w-5 shrink-0" />
                     {/* <div className="relative">
-                      <Bell className="h-5 w-5 shrink-0" />
                       {!!unreadCount && unreadCount > 0 && (
                         <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground group-hover:hidden">
                           {unreadCount}

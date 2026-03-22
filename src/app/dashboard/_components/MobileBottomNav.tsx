@@ -7,7 +7,8 @@ import {
   MoreHorizontal,
   Settings,
   Bell,
-  TreeDeciduousIcon,
+  PenTool,
+  Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -35,9 +36,14 @@ const navItems = [
     icon: ListTodo,
   },
   {
-    label: "Habits",
-    href: "/habits",
-    icon: TreeDeciduousIcon,
+    label: "Drafts",
+    href: "/dashboard/drafts",
+    icon: PenTool,
+  },
+  {
+    label: "Inspiration",
+    href: "/dashboard/inspiration",
+    icon: Sparkles,
   },
 ];
 

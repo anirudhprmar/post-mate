@@ -4,6 +4,5 @@ MVP :
 - platform targetting = linkedIN x threads instagram
 - schedule and publishing (x only)
 
-
 tech stack :
-t3 + better auth + polar + shadcn ui + tailwind + drizzle + resend + sentry + vercel analytics + upstash redis + neon db
+t3 + better auth + polar + shadcn      ui + tailwind + drizzle + resend + sentry + vercel analytics + upstash redis + neon db
