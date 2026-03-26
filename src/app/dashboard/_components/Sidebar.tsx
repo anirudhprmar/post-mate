@@ -15,7 +15,8 @@ import {
   Users,
   Sprout,
   Waypoints,
-  FileText
+  FileText,
+  Lightbulb
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { api } from "~/lib/api";
@@ -28,9 +29,14 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: "Ideas",
+    label: "Home",
     href: "/dashboard",
     icon: Home,
+  },
+  {
+    label: "Ideas",
+    href: "/dashboard/ideas",
+    icon: Lightbulb,
   },
   {
     label: "Create",

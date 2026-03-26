@@ -97,7 +97,7 @@ function EmptyDrafts() {
             <p className="text-muted-foreground text-sm max-w-xs">
                 Turn your ideas into drafts to start writing content.
             </p>
-            <Link href="/dashboard/create" className="mt-4">
+            <Link href="/dashboard/post/new" className="mt-4">
                 <Button variant="outline" size="sm" className="rounded-full">
                     Start a draft
                 </Button>
@@ -209,23 +209,24 @@ export default function Dashboard() {
                         ) : (
                             <div className="grid gap-3">
                                 {stats?.recentIdeas.map((idea) => (
-                                    <Card
-                                        key={idea.id}
-                                        className="p-4 flex items-center justify-between transition-all duration-300 cursor-pointer border-border/40 group bg-background/40 backdrop-blur-xl hover:bg-background/60 hover:shadow-lg hover:shadow-foreground/5 hover:-translate-y-0.5 rounded-2xl"
-                                    >
-                                        <div className="space-y-1.5 overflow-hidden pr-4 text-left flex-1">
-                                            <p className="font-semibold text-sm truncate group-hover:text-primary transition-colors">{idea.content}</p>
-                                            <div className="flex items-center gap-2 text-xs text-muted-foreground/80 font-medium">
-                                                <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {timeAgo(idea.createdAt)}</span>
-                                            </div>
-                                        </div>
-                                        <Badge
-                                            variant="outline"
-                                            className={`text-[10px] px-2.5 py-0.5 rounded-full font-semibold capitalize shrink-0 ${statusColor[idea.status] ?? ""}`}
+                                    <Link key={idea.id} href={`/dashboard/idea/${idea.id}`} className="block">
+                                        <Card
+                                            className="p-4 flex items-center justify-between transition-all duration-300 cursor-pointer border-border/40 group bg-background/40 backdrop-blur-xl hover:bg-background/60 hover:shadow-lg hover:shadow-foreground/5 hover:-translate-y-0.5 rounded-2xl"
                                         >
-                                            {idea.status}
-                                        </Badge>
-                                    </Card>
+                                            <div className="space-y-1.5 overflow-hidden pr-4 text-left flex-1">
+                                                <p className="font-semibold text-sm truncate group-hover:text-primary transition-colors">{idea.content}</p>
+                                                <div className="flex items-center gap-2 text-xs text-muted-foreground/80 font-medium">
+                                                    <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {timeAgo(idea.createdAt)}</span>
+                                                </div>
+                                            </div>
+                                            <Badge
+                                                variant="outline"
+                                                className={`text-[10px] px-2.5 py-0.5 rounded-full font-semibold capitalize shrink-0 ${statusColor[idea.status] ?? ""}`}
+                                            >
+                                                {idea.status}
+                                            </Badge>
+                                        </Card>
+                                    </Link>
                                 ))}
                             </div>
                         )}

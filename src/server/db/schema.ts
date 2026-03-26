@@ -87,7 +87,7 @@ export const niche = pgTable("niche", {
 export const inspiration = pgTable("inspiration", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-  sourceProfileUrl: text("source_profile_url").notNull(),
+  postData: text("post_data"),
   createdAt: timestamp("created_at")
     .$defaultFn(() => new Date())
     .notNull(),

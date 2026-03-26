@@ -27,6 +27,7 @@ export const inspirationRouter = createTRPCRouter({
         .input(
             z.object({
                 sourceProfileUrl: z.string().url(),
+                postData: z.string().optional(),
             }),
         )
         .mutation(async ({ ctx, input }) => {
@@ -34,7 +35,7 @@ export const inspirationRouter = createTRPCRouter({
                 .insert(inspiration)
                 .values({
                     userId: ctx.session.user.id,
-                    sourceProfileUrl: input.sourceProfileUrl,
+                    postData: input.postData,
                 })
                 .returning();
             return created;

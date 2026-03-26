@@ -120,13 +120,9 @@ export default function CreatePostPage() {
             toast.error("Write some content first!");
             return;
         }
-        if (!selectedIdeaId) {
-            toast.error("Select a source idea first.");
-            return;
-        }
 
         createDraft.mutate({
-            ideaId: selectedIdeaId,
+            ideaId: selectedIdeaId ?? undefined,
             content: content.trim(),
             platform: platform,
             status: "writing",
@@ -134,7 +130,7 @@ export default function CreatePostPage() {
 
         // Mark the idea as "drafting"
         if (selectedIdea && selectedIdea.status !== "drafting" && selectedIdea.status !== "done") {
-            updateIdea.mutate({ id: selectedIdeaId, status: "drafting" });
+            updateIdea.mutate({ id: selectedIdeaId!, status: "drafting" });
         }
     }
 
@@ -247,7 +243,7 @@ export default function CreatePostPage() {
                                         variant="outline"
                                         className="rounded-full gap-2 transition-all px-5 border-border/40"
                                         onClick={handleSave}
-                                        disabled={isSaving || !content.trim() || !selectedIdeaId}
+                                        disabled={isSaving || !content.trim()}
                                     >
                                         {isSaving ? (
                                             <>
@@ -264,7 +260,7 @@ export default function CreatePostPage() {
                                         size="sm"
                                         className="rounded-full gap-2 shadow-md hover:shadow-primary/25 transition-all px-5"
                                         onClick={() => toast.info("Publishing coming soon! 🚀")}
-                                        disabled={isSaving || !content.trim() || !selectedIdeaId}
+                                        disabled={isSaving || !content.trim()}
                                     >
                                         <Send className="h-3.5 w-3.5" />
                                         Post
