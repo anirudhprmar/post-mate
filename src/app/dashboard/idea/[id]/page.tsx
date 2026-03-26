@@ -159,7 +159,6 @@ export default function IdeaDetailPage() {
                             </Button>
                         </Link>
                         <div>
-                            <h1 className="text-2xl font-bold tracking-tight text-foreground/90">Idea</h1>
                             <p className="text-xs text-muted-foreground mt-0.5 font-medium flex items-center gap-1.5">
                                 <Clock className="h-3 w-3" /> Created {timeAgo(idea.createdAt)}
                             </p>

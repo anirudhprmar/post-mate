@@ -117,14 +117,14 @@ export default function Dashboard() {
             {/* Animated Mesh Background */}
             <div className="absolute inset-0 -z-10 bg-mesh animate-mesh opacity-40 dark:opacity-20 pointer-events-none" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-start w-full">
                 {/* ─── Left Column: Composer ─── */}
-                <div className="max-w-5xl mx-auto w-full p-4 md:p-8 space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out relative z-10">
+                <div className="max-w-5xl mx-auto w-full p-4 md:p-8 space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out relative z-10 min-w-0">
                     <IdeaNote />
                 </div>
 
                 {/* ─── Right Column: Stats + Lists ─── */}
-                <div className="p-4 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150 ease-out">
+                <div className="p-4 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150 ease-out min-w-0">
 
                     {/* Stats Row */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -207,13 +207,13 @@ export default function Dashboard() {
                         ) : stats?.recentIdeas.length === 0 ? (
                             <EmptyIdeas />
                         ) : (
-                            <div className="grid gap-3">
+                            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                                 {stats?.recentIdeas.map((idea) => (
                                     <Link key={idea.id} href={`/dashboard/idea/${idea.id}`} className="block">
                                         <Card
                                             className="p-4 flex items-center justify-between transition-all duration-300 cursor-pointer border-border/40 group bg-background/40 backdrop-blur-xl hover:bg-background/60 hover:shadow-lg hover:shadow-foreground/5 hover:-translate-y-0.5 rounded-2xl"
                                         >
-                                            <div className="space-y-1.5 overflow-hidden pr-4 text-left flex-1">
+                                            <div className="space-y-1.5 overflow-hidden pr-4 text-left flex-1 min-w-0">
                                                 <p className="font-semibold text-sm truncate group-hover:text-primary transition-colors">{idea.content}</p>
                                                 <div className="flex items-center gap-2 text-xs text-muted-foreground/80 font-medium">
                                                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {timeAgo(idea.createdAt)}</span>
@@ -251,13 +251,13 @@ export default function Dashboard() {
                         ) : stats?.recentDrafts.length === 0 ? (
                             <EmptyDrafts />
                         ) : (
-                            <div className="grid gap-3">
+                            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                                 {stats?.recentDrafts.map((d) => (
                                     <Card
                                         key={d.id}
                                         className="p-4 flex items-center justify-between transition-all duration-300 cursor-pointer border-border/40 group bg-background/40 backdrop-blur-xl hover:bg-background/60 hover:shadow-lg hover:shadow-foreground/5 hover:-translate-y-0.5 rounded-2xl"
                                     >
-                                        <div className="space-y-1.5 overflow-hidden pr-4 text-left flex-1">
+                                        <div className="space-y-1.5 overflow-hidden pr-4 text-left flex-1 min-w-0">
                                             <p className="font-semibold text-sm truncate group-hover:text-primary transition-colors">{d.content}</p>
                                             <div className="flex items-center gap-2 text-xs text-muted-foreground/80 font-medium">
                                                 <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {timeAgo(d.createdAt)}</span>
