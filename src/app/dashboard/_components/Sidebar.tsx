@@ -48,26 +48,26 @@ const navItems: NavItem[] = [
     href: "/dashboard/inspiration",
     icon: Sparkles,
   },
-  {
-    label: "Calendar",
-    href: "/dashboard/calendar",
-    icon: Calendar,
-  },
-  {
-    label: "References",
-    href: "/dashboard/references",
-    icon: Waypoints,
-  },
+  // {
+  //   label: "Calendar",
+  //   href: "/dashboard/calendar",
+  //   icon: Calendar,
+  // },
+  // {
+  //   label: "References",
+  //   href: "/dashboard/references",
+  //   icon: Waypoints,
+  // },
   {
     label: "Drafts",
     href: "/dashboard/drafts",
     icon: PenTool,
   },
-  {
-    label: "Connections",
-    href: "/dashboard/connect",
-    icon: Users,
-  },
+  // {
+  //   label: "Connections",
+  //   href: "/dashboard/connect",
+  //   icon: Users,
+  // },
 ];
 
 export default function DashboardSideBar() {

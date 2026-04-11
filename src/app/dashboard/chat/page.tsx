@@ -38,10 +38,11 @@ export default function ChatPage() {
     const [finalContent, setFinalContent] = useState(prompt || "");
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [input, setInput] = useState("");
+    const [pendingAction, setPendingAction] = useState<"post" | "save" | null>(null);
 
     const { messages, sendMessage, status, error } = useChat({
         id: "post-chat",
-        transport: new DefaultChatTransport({ api: "/api/chat" }),
+        transport: new DefaultChatTransport({ api: `/api/chat?platform=${platform}` }),
         onFinish: (message) => {
             // Optionally auto-update final content
         },
@@ -66,7 +67,7 @@ export default function ChatPage() {
     useEffect(() => {
         if (prompt && !initialPromptAppended.current && messages.length === 0) {
             initialPromptAppended.current = true;
-            sendMessage({ text: `Please help me improve and finalize this post idea for ${platform.toUpperCase()}:\n\n${prompt}` });
+            sendMessage({ text: prompt });
         }
     }, [prompt, sendMessage, messages.length]);
 
@@ -88,6 +89,7 @@ export default function ChatPage() {
             toast.error("Final content is empty!");
             return;
         }
+        setPendingAction("save");
         createDraft.mutate({
             ideaId: ideaId || "dummy-idea", // Assuming ideaId is passed or we can make it optional in schema, wait schema requires ideaId!
             content: finalContent.trim(),
@@ -100,6 +102,7 @@ export default function ChatPage() {
             },
             onError: (err) => {
                 toast.error("Failed to save draft: " + err.message);
+                setPendingAction(null);
             }
         });
     };
@@ -109,6 +112,7 @@ export default function ChatPage() {
             toast.error("Final content is empty!");
             return;
         }
+        setPendingAction("post");
         createDraft.mutate({
             ideaId: ideaId || "dummy-idea",
             content: finalContent.trim(),
@@ -121,6 +125,7 @@ export default function ChatPage() {
             },
             onError: (err) => {
                 toast.error("Failed to post: " + err.message);
+                setPendingAction(null);
             }
         });
     };
@@ -131,12 +136,12 @@ export default function ChatPage() {
     };
 
     return (
-        <div className="relative min-h-screen w-full flex overflow-hidden bg-background">
+        <div className="relative min-h-screen grid grid-cols-2  bg-background">
             {/* Mesh Background */}
             <div className="absolute inset-0 -z-10 bg-mesh animate-mesh opacity-40 dark:opacity-20 pointer-events-none" />
 
             {/* Left Column: Chat */}
-            <div className={`flex flex-col transition-all duration-300 ${isSidebarOpen ? "w-full lg:w-3/5" : "w-full"} h-screen relative z-10`}>
+            <div className={`flex flex-col transition-all duration-300 ${isSidebarOpen ? "w-full" : "w-full"} h-screen relative z-10`}>
 
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 md:p-6 border-b border-border/40 bg-background/50 backdrop-blur-md">
@@ -148,16 +153,6 @@ export default function ChatPage() {
                             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
                             Back
                         </Link>
-                        <div className="h-4 w-px bg-border/50" />
-                        <div className="flex items-center gap-2">
-                            <div className="h-8 w-8 rounded-full bg-violet-500/10 flex items-center justify-center">
-                                <Sparkles className="h-4 w-4 text-violet-500" />
-                            </div>
-                            <div>
-                                <h1 className="text-sm font-semibold">AI Assistant</h1>
-                                <p className="text-[10px] text-muted-foreground">Brainstorming & Refining</p>
-                            </div>
-                        </div>
                     </div>
 
                     <Button
@@ -309,18 +304,18 @@ export default function ChatPage() {
                             <Button
                                 className="w-full rounded-2xl py-6 shadow-md shadow-primary/20 gap-2"
                                 onClick={handlePostNow}
-                                disabled={createDraft.isPending || !finalContent.trim()}
+                                disabled={pendingAction !== null || !finalContent.trim()}
                             >
-                                {createDraft.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                                {pendingAction === "post" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                                 Post it now
                             </Button>
                             <Button
                                 variant="outline"
                                 className="w-full rounded-2xl py-6 border-border/40 gap-2"
                                 onClick={handleSaveDraft}
-                                disabled={createDraft.isPending || !finalContent.trim()}
+                                disabled={pendingAction !== null || !finalContent.trim()}
                             >
-                                <Save className="h-4 w-4 text-muted-foreground" />
+                                {pendingAction === "save" ? <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" /> : <Save className="h-4 w-4 text-muted-foreground" />}
                                 Save to Drafts
                             </Button>
                         </div>
@@ -338,17 +333,17 @@ export default function ChatPage() {
                     <Button
                         className="flex-1 rounded-xl shadow-md gap-1.5 h-10 text-xs"
                         onClick={handlePostNow}
-                        disabled={createDraft.isPending || !finalContent.trim()}
+                        disabled={pendingAction !== null || !finalContent.trim()}
                     >
-                        <Send className="h-3 w-3" /> Post
+                        {pendingAction === "post" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />} Post
                     </Button>
                     <Button
                         variant="outline"
                         className="flex-1 rounded-xl gap-1.5 h-10 text-xs"
                         onClick={handleSaveDraft}
-                        disabled={createDraft.isPending || !finalContent.trim()}
+                        disabled={pendingAction !== null || !finalContent.trim()}
                     >
-                        <Save className="h-3 w-3" /> Draft
+                        {pendingAction === "save" ? <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" /> : <Save className="h-3 w-3 text-muted-foreground" />} Draft
                     </Button>
                 </div>
             </div>
