@@ -3,6 +3,7 @@ import Navbar from "./_components/navbar";
 import Hero from "./_components/hero";
 import Features from "./_components/features";
 import Why from "./_components/why";
+import Pricing from "./_components/pricing";
 
 
 export default function Page() {
@@ -16,6 +17,10 @@ export default function Page() {
           <Hero />
           <Features />
           <Why />
+          <Pricing />
+          {/* <FAQ />
+          <FooterCTA />
+          <Footer /> */}
         </main>
       </Container>
 
