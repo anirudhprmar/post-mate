@@ -239,7 +239,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                 ) : (
                                     <div className="flex-col w-full gap-4">
                                         <Button
-                                            className="w-full"
+                                            className="w-full bg-[#7f22fe]"
                                             size={'lg'}
                                             onClick={() => handleCheckout(PRO_MONTHLY_TIER, PRO_MONTHLY_SLUG)}
                                         >
