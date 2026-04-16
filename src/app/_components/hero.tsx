@@ -9,7 +9,7 @@ export default function Hero() {
 
                 <div className="flex flex-col gap-4">
                     <h1 className="text-6xl max-w-xl">Win the content game.</h1>
-                    <p className="text-xl max-w-lg">PostSpark helps you build a consistent presence across all social media platforms without the daily grind.</p>
+                    <p className="text-xl max-w-lg">post mate helps you build a consistent presence across all social media platforms without the daily grind.</p>
                     <Button size="lg" variant={'default'} className="bg-[#7f22fe] w-fit rounded-md">Join the waitlist</Button>
                 </div>
                 <DashboardView />

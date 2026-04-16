@@ -36,12 +36,12 @@ export default function Footer() {
                             <div className="w-8 h-8 bg-foreground text-background rounded-md flex items-center justify-center shrink-0">
                                 <Zap className="w-4 h-4" fill="currentColor" />
                             </div>
-                            <span className="font-bold text-lg tracking-tight">post spark</span>
+                            <span className="font-bold text-lg tracking-tight">post mate</span>
                         </div>
 
                         {/* Description */}
                         <p className="text-muted-foreground text-sm leading-relaxed">
-                            PostSpark empowers founders and creators to transform ideas into
+                            post mate empowers founders and creators to transform ideas into
                             compelling social media content &mdash; saving hours with
                             AI-powered workflows.
                         </p>
@@ -91,7 +91,7 @@ export default function Footer() {
             {/* Bottom bar */}
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-1">
                 <p className="text-sm text-muted-foreground">
-                    &copy; 2026 PostSpark. All rights reserved.
+                    &copy; 2026 post mate. All rights reserved.
                 </p>
                 <div className="flex items-center gap-4">
                     {legalLinks.map(({ label, href }) => (

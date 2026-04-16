@@ -12,7 +12,7 @@ export default function FAQ() {
             <div className="flex items-start justify-between mx-auto max-w-7xl px-6 py-30 lg:px-8">
                 <div className="flex flex-col gap-4">
                     <h1 className="text-6xl max-w-xl">Frequently Asked Questions</h1>
-                    <p className="text-xl max-w-lg">Everything you need to know about PostSpark.</p>
+                    <p className="text-xl max-w-lg">Everything you need to know about post mate.</p>
                 </div>
                 <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
                     <AccordionItem value="item-1">

@@ -274,7 +274,7 @@ export default function ExperimentPage() {
                                             </div>
                                             <p className="text-foreground/80 text-sm leading-relaxed">
                                                 Building a SaaS in 2026 requires more than just code. It requires an obsession with user experience. <br /><br />
-                                                We’ve spent the last 3 months refining every single transition, every mesh gradient, and every button click to ensure that PostSpark isn't just a tool, but an experience.<br /><br />
+                                                We’ve spent the last 3 months refining every single transition, every mesh gradient, and every button click to ensure that post mate isn't just a tool, but an experience.<br /><br />
                                                 What are you building today? Let me know below! 👇
                                             </p>
                                         </div>
