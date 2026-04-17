@@ -14,7 +14,7 @@ import { CheckIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { type RefObject } from "react";
-import { env } from "~/env";
+// import { env } from "~/env";
 // import { api } from "~/lib/api";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
 
@@ -112,11 +112,11 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                 <h2 className="text-3xl font-semibold tracking-tight">
                     Choose the plan that fits your goals.
                 </h2>
-                <p>Choose the plan that</p>
+                <p className="text-md ">Choose the plan that</p>
             </div>
 
-            <Tabs defaultValue="monthly" className="w-full">
-                <div className="flex justify-center">
+            <Tabs defaultValue="monthly" className="w-full flex flex-col">
+                <div className="flex justify-center items-center">
                     <TabsList className="flex justify-center">
                         <TabsTrigger value="monthly">
                             Monthly
@@ -239,7 +239,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                 ) : (
                                     <div className="flex-col w-full gap-4">
                                         <Button
-                                            className="w-full bg-[#7f22fe]"
+                                            className="w-full"
                                             size={'lg'}
                                             onClick={() => handleCheckout(PRO_MONTHLY_TIER, PRO_MONTHLY_SLUG)}
                                         >

@@ -1,4 +1,3 @@
-import { Zap } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '~/components/ui/button'
@@ -17,9 +16,6 @@ export default function Navbar() {
 
                     {/* Brand */}
                     <Link href="/" className="flex items-center gap-2.5 shrink-0">
-                        <div className="w-8 h-8 bg-foreground text-background rounded-md flex items-center justify-center shrink-0">
-                            <Zap className="w-4 h-4" fill="currentColor" />
-                        </div>
                         <span className="font-bold text-base tracking-tight">post mate</span>
                     </Link>
 
