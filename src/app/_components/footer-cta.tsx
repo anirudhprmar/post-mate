@@ -10,7 +10,7 @@ export default function FooterCTA() {
                         <p className="text-lg text-muted-foreground">Join hundreds of founders and creators who use post mate to save hours of their time for content.</p>
 
                     </div>
-                    <button className="bg-primary text-primary-foreground px-4 py-2 rounded-lg">Get Started</button>
+                    <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md">Get Started</button>
                 </div>
             </div>
         </section>

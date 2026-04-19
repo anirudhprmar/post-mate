@@ -4,7 +4,7 @@ MVP :
 - platform targetting = linkedIN x threads instagram
 - schedule and publishing (x only)
 
-[ ]- rewrite the copy for landing page
-[x]- font and color selection and overall landing page structure
+[X]- rewrite the copy for landing page
+[ ]- pop up for purchase
 [ ]- define the current dashboard 
 [ ]- implement schedule and publishing for all diff platforms

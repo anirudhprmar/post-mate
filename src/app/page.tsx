@@ -6,6 +6,7 @@ import Pricing from "./_components/pricing";
 import FAQ from "./_components/faq";
 import FooterCTA from "./_components/footer-cta";
 import Footer from "./_components/footer";
+import SupportedPlatforms from "./_components/supported-platforms";
 
 
 export default function Page() {
@@ -18,6 +19,7 @@ export default function Page() {
         <main>
           <Hero />
           <Features />
+          <SupportedPlatforms />
           <Pricing />
           <FAQ />
           <FooterCTA />

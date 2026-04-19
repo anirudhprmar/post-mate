@@ -16,25 +16,25 @@ export default function Navbar() {
 
                     <div className='flex items-center gap-2.5 shrink-0'>
 
-                    {/* Brand */}
-                    <Link href="/" className="flex items-center gap-2.5 shrink-0">
-                        <span className="font-bold text-2xl tracking-tight">post mate</span>
-                    </Link>
+                        {/* Brand */}
+                        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+                            <p className="font-bold text-2xl tracking-tight">post mate</p>
+                        </Link>
 
-                    {/* Nav links */}
-                    <ul className="group/nav flex items-center justify-center gap-6 px-4 py-1 rounded-md border border-border bg-muted/70 backdrop-blur-xs">
-                        {navLinks.map(({ label, href }) => (
-                            <li key={label}>
-                                <Link
-                                    href={href}
-                                    className="text-sm font-normal text-foreground transition-colors group-hover/nav:text-muted-foreground hover:text-foreground"
+                        {/* Nav links */}
+                        <ul className="group/nav flex items-center justify-center gap-6 px-4 py-1 rounded-md border border-border bg-muted/70 backdrop-blur-xs">
+                            {navLinks.map(({ label, href }) => (
+                                <li key={label}>
+                                    <Link
+                                        href={href}
+                                        className="text-sm font-normal text-foreground transition-colors group-hover/nav:text-muted-foreground hover:text-foreground"
                                     >
-                                    {label}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                        </div>
+                                        {label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
 
                     {/* Actions */}
                     <div className="flex items-center gap-2 shrink-0">

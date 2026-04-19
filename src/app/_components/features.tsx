@@ -3,42 +3,41 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Sparkles, LayoutGrid, CalendarClock, Layers, Lightbulb } from 'lucide-react'
-import Image from 'next/image'
 
 const featureList = [
     {
         icon: Lightbulb,
         title: 'Curate ideas for your niche',
         description: 'AI-powered content ideas tailored to your audience and niche — never stare at a blank screen again.',
-        action: '',
+        action: 'ai.mp4',
         altTag: ''
     },
     {
         icon: Layers,
-        title: 'Post to multiple platforms',
+        title: 'Post to multiple platforms & Schedule posts',
         description: 'Publish to Instagram, X, LinkedIn, and more with a single click. Reach everywhere effortlessly.',
-        action: '',
+        action: '/scheduling.mp4',
         altTag: ''
     },
-    {
-        icon: CalendarClock,
-        title: 'Schedule posts for later',
-        description: 'Queue up content for peak engagement times. Your audience will always see you at the right moment.',
-        action: '',
-        altTag: ''
-    },
+    // {
+    //     icon: CalendarClock,
+    //     title: 'Schedule posts for later',
+    //     description: 'Queue up content for peak engagement times. Your audience will always see you at the right moment.',
+    //     action: '',
+    //     altTag: ''
+    // },
     {
         icon: LayoutGrid,
         title: 'Unified content management',
         description: 'One dashboard to manage all your platforms. Track performance, edit drafts, and stay organised.',
-        action: '',
+        action: 'manage.mp4',
         altTag: ''
     },
     {
         icon: Sparkles,
         title: 'Never run out of ideas',
         description: 'A continuous stream of fresh, relevant post ideas keeps your content calendar full every week.',
-        action: '',
+        action: '/inspire.mp4',
         altTag: ''
     },
 ]
@@ -58,10 +57,10 @@ export default function Features() {
             </div>
 
             {/* Feature grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mx-auto max-w-7xl px-6 py-14 lg:px-8 items-start">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 mx-auto max-w-7xl px-6 py-14 lg:px-8 items-start">
 
                 {/* Left: feature list */}
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 w-full lg:w-1/2 lg:max-w-lg">
                     {featureList.map((feature, index) => {
                         const Icon = feature.icon
                         const isActive = current === index
@@ -115,19 +114,13 @@ export default function Features() {
                 </div>
 
                 {/* Right: video player */}
-                <div className="rounded-2xl overflow-hidden border border-border shadow-md sticky top-24 h-fit min-h-[300px] flex items-center justify-center bg-muted/30">
+                <div className="rounded-xl overflow-hidden border border-border shadow-md h-fit flex items-center justify-center bg-muted/30 w-full lg:w-1/2 lg:sticky lg:top-32">
                     {(featureList[current]?.action || featureList[current]?.action) ? (
-                        <Image
-                            src={(featureList[current]?.action || featureList[current]?.action) as string}
-                            alt={featureList[current]?.altTag || 'Feature image'}
-                            width={500}
-                            height={500}
-                            className="w-full h-auto object-cover"
-                        />
+                        <video src={featureList[current]?.action as string} autoPlay muted loop playsInline className="w-full h-auto object-cover" />
                     ) : (
                         <div className="text-muted-foreground flex flex-col items-center gap-2">
                             <Sparkles className="size-8 opacity-50" />
-                            <p className="text-sm">No image available</p>
+                            <p className="text-sm">No video available</p>
                         </div>
                     )}
                 </div>

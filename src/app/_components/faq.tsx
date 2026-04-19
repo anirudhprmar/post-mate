@@ -6,34 +6,57 @@ import {
     AccordionTrigger,
 } from "~/components/ui/accordion"
 
+const faqs = [
+    {
+        question: "What is Postmate?",
+        answer: "Postmate is a content creation and posting tool that helps you create tailored content for different platform's taste and post content on multiple social media platforms all at the same time."
+    },
+    {
+        question: "Why switch from Hootsuite or Buffer",
+        answer: `These companies charge like $20-$100 per month for features most people never even use. Postmate focuses only on what matters : posting on all platforms from multiple accounts to grow on all platforms with internal tools to help you create better content. ${''}
+        
+        Also, for them you are just another user but for Postmate you are a person who matters. I Anirudh (founder) will take full responsibility to help you grow across social media. You are just a DM away for getting your problem solved.`
+    },
+    {
+        question: "How is Postmate better than ChatGPT ?",
+        answer: "It's a platform all about your content. You can manage your content, schedule it (which chatGPT can't do), and much more giving a complete package for content ideation, management and scheduling."
+    },
+    {
+        question: "What's included in Postmate's 7-days free trial?",
+        answer: `Postmate's 7-day trial gives you full access to all features that plan offers. ${"\n\n"}A credit card is required to start your trial, but you won't be charged during the 7 days. We'll send you a reminder 3 days before your trial ends, and you can cancel anytime.`
+    },
+    {
+        question: "What platforms does Postmate support?",
+        answer: `Currently we support X, Instagram, LinkedIn, Threads & YouTube for scheduled posting and instant posting.${'\n\n'}If you have a request please feel free to email us at [app.postmate@gmail.com]`
+    },
+    {
+        question: "Can Postmate help with personal branding as well as business?",
+        answer: "Yes. Its built for the this purpose only. Its built to help you and your business to grow on social media."
+    },
+    {
+        question: "Can i use Postmate on my phone?",
+        answer: "Yes, but for a better experience it is recommended to use it on a desktop. "
+    }
+]
+
 export default function FAQ() {
     return (
         <section className="mt-10 min-h-screen">
             <div className="flex flex-col items-center justify-center gap-5 mx-auto max-w-7xl px-6 py-30 lg:px-8">
                 <div className="flex flex-col gap-4 text-center items-center justify-center">
                     <h1 className="text-5xl max-w-md text-center">Frequently Asked Questions</h1>
-                    <p className="text-xl max-w-lg text-foreground/70">Everything you need to know about post mate.</p>
+                    <p className="text-xl max-w-lg text-foreground/70">Everything you need to know about Postmate.</p>
                 </div>
-                <div className='max-w-2xl w-full'>
-                    <Accordion type="single" collapsible defaultValue="item-1" className="w-full gap-1">
-                        <AccordionItem value="item-1">
-                            <AccordionTrigger className='text-lg'>Is it accessible?</AccordionTrigger>
-                            <AccordionContent className='text-lg '>
-                                Yes. It adheres to the WAI-ARIA design pattern.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-2">
-                            <AccordionTrigger className='text-lg'>Is it styled?</AccordionTrigger>
-                            <AccordionContent className='text-lg'>
-                                Yes. It comes with default styling that can be overridden.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-3">
-                            <AccordionTrigger className='text-lg'>Is it animated?</AccordionTrigger>
-                            <AccordionContent className='text-lg'>
-                                Yes. It uses a slide-down animation for the content.
-                            </AccordionContent>
-                        </AccordionItem>
+                <div className='max-w-3xl w-full'>
+                    <Accordion type="single" collapsible className="w-full gap-1">
+                        {faqs.map((faq, index) => (
+                            <AccordionItem value={`item-${index}`} key={index}>
+                                <AccordionTrigger className='text-lg'>{faq.question}</AccordionTrigger>
+                                <AccordionContent className='text-lg whitespace-pre-wrap w-full'>
+                                    {faq.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
                     </Accordion>
                 </div>
             </div>
