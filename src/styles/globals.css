@@ -259,6 +259,28 @@
   --spacing: var(--spacing);
 }
 
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
 /* ── Base layer ───────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
@@ -303,7 +325,7 @@
     text-decoration: none;
     transition: color var(--duration-base) var(--ease-default);
   }
-  a:hover { color: var(--primary-hover); text-decoration: underline; }
+  a:hover { color: var(--primary-hover); }
 
   code, kbd, samp {
     font-family: var(--font-mono);

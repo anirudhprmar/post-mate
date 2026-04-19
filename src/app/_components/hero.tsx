@@ -5,13 +5,14 @@ import { Input } from '~/components/ui/input'
 import { ArrowUpRight } from 'lucide-react'
 
 export default function Hero() {
+
     return (
         <section className="mt-10 min-h-screen">
-            <div className="flex items-center justify-between mx-auto max-w-7xl px-6 py-30 lg:px-8">
+            <div className="flex flex-col items-center gap-10 justify-between mx-auto max-w-7xl px-6 py-30 lg:px-8">
 
-                <div className="flex flex-col gap-4">
-                    <h1 className="text-6xl max-w-xl">Win the content game.</h1>
-                    <p className="text-xl max-w-lg">post mate helps you build a consistent presence across all social media platforms without the daily grind.</p>
+                <div className="flex flex-col items-center justify-center gap-4 text-center relative">
+                    <h1 className="text-6xl max-w-2xl flex flex-col items-center justify-center gap-1"><span className='border border-border text-sm w-fit rounded-full font-semibold tracking-normal p-2 absolute -top-18 '>✨ All in one content ideation & scheduling platform</span>Win the content game.</h1>
+                    <p className="text-xl max-w-xl text-foreground/70">post mate helps you build a consistent presence across all social media platforms without the daily grind.</p>
                     <div>
                         <form
                             className="flex w-fit items-center gap-2 rounded-2xl border border-border/70 bg-card/95 p-2 shadow-lg shadow-primary/8 ring-1 ring-black/3 backdrop-blur"
@@ -34,6 +35,7 @@ export default function Hero() {
                         </form>
                     </div>
                 </div>
+
                 <DashboardView />
             </div>
         </section>)

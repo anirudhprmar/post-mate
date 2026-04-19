@@ -1,27 +1,135 @@
-import React from 'react'
+"use client"
+
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
+import { Sparkles, LayoutGrid, CalendarClock, Layers, Lightbulb } from 'lucide-react'
+import Image from 'next/image'
+
+const featureList = [
+    {
+        icon: Lightbulb,
+        title: 'Curate ideas for your niche',
+        description: 'AI-powered content ideas tailored to your audience and niche — never stare at a blank screen again.',
+        action: '',
+        altTag: ''
+    },
+    {
+        icon: Layers,
+        title: 'Post to multiple platforms',
+        description: 'Publish to Instagram, X, LinkedIn, and more with a single click. Reach everywhere effortlessly.',
+        action: '',
+        altTag: ''
+    },
+    {
+        icon: CalendarClock,
+        title: 'Schedule posts for later',
+        description: 'Queue up content for peak engagement times. Your audience will always see you at the right moment.',
+        action: '',
+        altTag: ''
+    },
+    {
+        icon: LayoutGrid,
+        title: 'Unified content management',
+        description: 'One dashboard to manage all your platforms. Track performance, edit drafts, and stay organised.',
+        action: '',
+        altTag: ''
+    },
+    {
+        icon: Sparkles,
+        title: 'Never run out of ideas',
+        description: 'A continuous stream of fresh, relevant post ideas keeps your content calendar full every week.',
+        action: '',
+        altTag: ''
+    },
+]
 
 export default function Features() {
+    const [current, setCurrent] = useState(0)
+
     return (
         <section className="mt-10 min-h-screen">
-            <div className="flex flex-col items-center gap-4">
-                <h2 className="text-5xl max-w-md text-center">Features designed for your success.</h2>
-                <p className='text-lg max-w-sm text-muted-foreground text-center'>From content creation to scheduling, we've got you covered.</p>
+            {/* Section header */}
+            <div className="flex flex-col items-center gap-3 text-center px-6">
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">What you get</p>
+                <h2 className="text-5xl max-w-lg font-bold tracking-tight">Features designed for your success.</h2>
+                <p className="text-lg max-w-sm text-muted-foreground">
+                    From content creation to scheduling, we've got you covered.
+                </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2  gap-4 mx-auto max-w-7xl px-6 py-10 lg:px-8">
-                <div className='bg-secondary h-30 rounded-xl flex flex-col items-center justify-center'>
-                    <p className='text-lg text-center'>curate ideas for your niche</p>
+
+            {/* Feature grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mx-auto max-w-7xl px-6 py-14 lg:px-8 items-start">
+
+                {/* Left: feature list */}
+                <div className="flex flex-col gap-2">
+                    {featureList.map((feature, index) => {
+                        const Icon = feature.icon
+                        const isActive = current === index
+
+                        return (
+                            <motion.button
+                                key={index}
+                                onClick={() => setCurrent(index)}
+                                whileTap={{ scale: 0.985 }}
+                                className="relative w-full text-left rounded-xl px-5 py-4 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors duration-200"
+                            >
+                                {/* Active background pill */}
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="active-feature-bg"
+                                        className="absolute inset-0 rounded-xl bg-card border border-primary/20 shadow-sm"
+                                        transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                                    />
+                                )}
+
+                                <div className="relative flex items-start gap-4">
+                                    {/* Icon */}
+                                    <div className={`mt-0.5 shrink-0 rounded-lg p-2 transition-colors duration-200 ${isActive ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                                        <Icon className="size-4" />
+                                    </div>
+
+                                    {/* Text */}
+                                    <div>
+                                        <p className={`text-base font-semibold leading-snug transition-colors duration-200 ${isActive ? 'text-foreground' : 'text-foreground/60'}`}>
+                                            {feature.title}
+                                        </p>
+                                        <AnimatePresence initial={false}>
+                                            {isActive && (
+                                                <motion.p
+                                                    key="desc"
+                                                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                                                    animate={{ opacity: 1, height: 'auto', marginTop: 4 }}
+                                                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                                                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                                                    className="text-sm text-muted-foreground overflow-hidden"
+                                                >
+                                                    {feature.description}
+                                                </motion.p>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
+                                </div>
+                            </motion.button>
+                        )
+                    })}
                 </div>
-                <div className='bg-secondary h-30 rounded-xl flex flex-col items-center justify-center'>
-                    <p className='text-lg text-center'>post to multiple platforms with ease</p>
-                </div>
-                <div className='bg-secondary h-30 rounded-xl flex flex-col items-center justify-center'>
-                    <p className='text-lg text-center'>schedule posts for later</p>
-                </div>
-                <div className='bg-secondary h-30 rounded-xl flex flex-col items-center justify-center'>
-                    <p className='text-lg text-center'>easy content management across different platforms</p>
-                </div>
-                <div className='bg-secondary h-30 rounded-xl flex flex-col items-center justify-center'>
-                    <p className='text-lg text-center' >never run out of ideas of what to post</p>
+
+                {/* Right: video player */}
+                <div className="rounded-2xl overflow-hidden border border-border shadow-md sticky top-24 h-fit min-h-[300px] flex items-center justify-center bg-muted/30">
+                    {(featureList[current]?.action || featureList[current]?.action) ? (
+                        <Image
+                            src={(featureList[current]?.action || featureList[current]?.action) as string}
+                            alt={featureList[current]?.altTag || 'Feature image'}
+                            width={500}
+                            height={500}
+                            className="w-full h-auto object-cover"
+                        />
+                    ) : (
+                        <div className="text-muted-foreground flex flex-col items-center gap-2">
+                            <Sparkles className="size-8 opacity-50" />
+                            <p className="text-sm">No image available</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>

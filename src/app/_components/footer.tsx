@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import { Zap } from 'lucide-react'
-
 const footerLinks = {
     Product: [
         { label: 'Features', href: '#features' },
@@ -55,7 +53,7 @@ export default function Footer() {
     return (
         <footer className="mt-10 pb-8">
             {/* Main card */}
-            <div className="bg-card border border-border rounded-2xl p-10">
+            <div className="p-10 border-border backdrop-blur-lg shadow-sm rounded-xl bg-card">
                 <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
                     {/* Brand block */}
                     <div className="flex flex-col gap-5 max-w-xs">
