@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState, useRef } from "react";
+import { use, useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useChat } from "@ai-sdk/react";
@@ -20,22 +20,35 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 
 import { Button } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
 import { api } from "~/trpc/react";
 
 import { DefaultChatTransport } from "ai";
 
 export default function ChatPage() {
+    return (
+        <Suspense fallback={
+            <div className="h-screen w-full flex items-center justify-center bg-background">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        }>
+            <ChatContent />
+        </Suspense>
+    );
+}
+
+function ChatContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const prompt = searchParams.get("prompt");
-    const ideaId = searchParams.get("ideaId");
-    const platform = searchParams.get("platform") || "linkedin";
+    
+    // Ensure params are strings to fix TypeScript errors
+    const prompt = searchParams.get("prompt") ?? "";
+    const ideaId = searchParams.get("ideaId") ?? "";
+    const platform = searchParams.get("platform") ?? "";
 
     const utils = api.useUtils();
 
     // Final post editor state
-    const [finalContent, setFinalContent] = useState(prompt || "");
+    const [finalContent, setFinalContent] = useState(prompt);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [input, setInput] = useState("");
     const [pendingAction, setPendingAction] = useState<"post" | "save" | null>(null);
@@ -91,9 +104,9 @@ export default function ChatPage() {
         }
         setPendingAction("save");
         createDraft.mutate({
-            ideaId: ideaId || "dummy-idea", // Assuming ideaId is passed or we can make it optional in schema, wait schema requires ideaId!
+            ideaId: ideaId || "dummy-idea",
             content: finalContent.trim(),
-            platform: platform,
+            platform: platform || "X",
             status: "writing", // draft
         }, {
             onSuccess: () => {
@@ -116,7 +129,7 @@ export default function ChatPage() {
         createDraft.mutate({
             ideaId: ideaId || "dummy-idea",
             content: finalContent.trim(),
-            platform: platform,
+            platform: platform || "X",
             status: "ready", // ready to post
         }, {
             onSuccess: () => {

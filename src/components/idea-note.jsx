@@ -93,6 +93,7 @@ const IdeaNote = () => {
   }, [isAnimating, noteText, showToast, createIdea]);
 
   const handleKeyDown = useCallback(
+    /** @param {React.KeyboardEvent<HTMLTextAreaElement>} e */
     (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
         e.preventDefault();

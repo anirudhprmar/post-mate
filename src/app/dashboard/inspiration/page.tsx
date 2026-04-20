@@ -92,9 +92,14 @@ export default function InspirationPage() {
                                     if (item.postData) post = JSON.parse(item.postData);
                                 } catch (e) { }
 
+                                const sourceProfileUrl = (item as { sourceProfileUrl?: string })
+                                    .sourceProfileUrl;
+
                                 // Format the prompt for AI properly
-                                const promptText = post ? (post.text ? post.text : post.title) : item.sourceProfileUrl;
-                                const promptUrl = `Remake this post concept and writing style:\n\n${promptText}\n\nUrl: ${item.sourceProfileUrl}`;
+                                const promptText = post
+                                    ? (post.text ? post.text : post.title)
+                                    : (sourceProfileUrl ?? "");
+                                const promptUrl = `Remake this post concept and writing style:\n\n${promptText}\n\nUrl: ${sourceProfileUrl ?? ""}`;
 
                                 return (
                                     <div key={item.id} className="h-full flex flex-col">
@@ -138,9 +143,9 @@ export default function InspirationPage() {
                                         ) : (
                                             <Card className="p-6 flex flex-col justify-between h-full bg-[#16161a] border-[#2a2a30]">
                                                 <div className="text-[#aaa] break-all mb-4 text-sm font-medium">
-                                                    {item.sourceProfileUrl}
+                                                    {sourceProfileUrl}
                                                 </div>
-                                                <Link href={`/dashboard/chat?prompt=Remake this post link:\n\n${encodeURIComponent(item.sourceProfileUrl)}&platform=x`}>
+                                                <Link href={`/dashboard/chat?prompt=Remake this post link:\n\n${encodeURIComponent(sourceProfileUrl ?? "")}&platform=x`}>
                                                     <Button className="w-full gap-2 rounded-xl" variant="outline">
                                                         <RefreshCw className="h-4 w-4" /> Remake
                                                     </Button>

@@ -28,7 +28,7 @@ function LoginContent() {
           className="group inline-flex items-center gap-2 text-foreground/80 transition-colors hover:text-foreground"
           href="/"
         >
-          <span className="text-xl font-bold tracking-tight">CSV2PDF</span>
+          <span className="text-xl font-bold tracking-tight">post mate</span>
         </Link>
       </header>
 

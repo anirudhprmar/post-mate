@@ -1,6 +1,21 @@
 "use client";
 import { useState } from "react";
 
+/**
+ * @typedef {{
+ *   platform: "reddit" | "twitter";
+ *   url: string;
+ *   title: string | null;
+ *   text: string | null;
+ *   author: string | null;
+ *   subreddit?: string | null;
+ *   score?: number | null;
+ *   externalLink?: string | null;
+ *   createdAt?: string | null;
+ *   media?: Array<{ type: "image" | "video" | "gif"; url: string }>;
+ * }} ScrapedPost
+ */
+
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const RedditIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
@@ -22,10 +37,11 @@ const LinkIcon = () => (
 );
 
 // ─── Main Component ───────────────────────────────────────────────────────────
+/** @param {{ onSave?: (url: string, post: ScrapedPost) => void }} props */
 export default function PostScraper({ onSave }) {
   const [url, setUrl] = useState("");
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
+  const [result, setResult] = useState(/** @type {ScrapedPost | null} */ (null));
+  const [error, setError] = useState(/** @type {string | null} */ (null));
   const [loading, setLoading] = useState(false);
 
   const handleFetch = async () => {
@@ -44,12 +60,13 @@ export default function PostScraper({ onSave }) {
       if (!res.ok) throw new Error(data.error || "Something went wrong");
       setResult(data);
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
+  /** @param {React.KeyboardEvent<HTMLInputElement>} e */
   const handleKeyDown = (e) => {
     if (e.key === "Enter") handleFetch();
   };
@@ -108,8 +125,10 @@ export default function PostScraper({ onSave }) {
 }
 
 // ─── PostCard ─────────────────────────────────────────────────────────────────
+/** @param {{ post: ScrapedPost, actions?: React.ReactNode }} props */
 export function PostCard({ post, actions }) {
   const isReddit = post.platform === "reddit";
+  const media = post.media ?? [];
 
   return (
     <div className={`post-card ${post.platform}`}>
@@ -143,11 +162,11 @@ export function PostCard({ post, actions }) {
       )}
 
       {/* Media */}
-      {post.media?.length > 0 && (
+      {media.length > 0 && (
         <div className="media-section">
-          <div className="media-label">Media ({post.media.length})</div>
+          <div className="media-label">Media ({media.length})</div>
           <div className="media-grid">
-            {post.media.map((m, i) => (
+            {media.map((m, i) => (
               <MediaItem key={i} item={m} />
             ))}
           </div>
@@ -169,6 +188,7 @@ export function PostCard({ post, actions }) {
   );
 }
 
+/** @param {{ item: { type: "image" | "video" | "gif"; url: string } }} props */
 function MediaItem({ item }) {
   if (item.type === "image" || item.type === "gif") {
     return (
