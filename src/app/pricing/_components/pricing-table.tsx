@@ -116,12 +116,12 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
     return (
         <section id="pricing" className="w-full p-5" ref={ref}>
 
-            <div className="mb-8 flex items-center flex-col text-center gap-2">
+            <div className="mb-8 flex items-center flex-col text-center gap-2 px-4">
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">Pricing</p>
-                <h2 className="font-semibold text-5xl">
+                <h2 className="font-semibold text-3xl sm:text-4xl md:text-5xl tracking-tight">
                     Simple pricing, maximum value.
                 </h2>
-                <p className="text-xl max-w-lg text-foreground/70">Choose the plan that fits your goals</p>
+                <p className="text-base sm:text-lg md:text-xl max-w-lg text-foreground/70 mt-2">Choose the plan that fits your goals</p>
             </div>
 
             <Tabs defaultValue="monthly" className="w-full flex flex-col">
@@ -137,9 +137,9 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                 </div>
 
                 <TabsContent value="monthly">
-                    <div className="mx-auto flex items-center justify-center gap-5">
+                    <div className="mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-5 px-4 md:px-0 mt-8">
 
-                        <Card className="relative drop-shadow-xl ">
+                        <Card className="relative drop-shadow-xl w-full max-w-sm">
                             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
                                 <Badge className="px-4 py-1 text-sm" variant={"outline"}>{hasPurchasedProduct(CREATOR_MONTHLY_TIER) ? "Purchased" : "Best Value"}</Badge>
                             </div>
@@ -199,7 +199,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                 )}
                             </CardFooter>
                         </Card>
-                        <Card className="relative drop-shadow-xl ">
+                        <Card className="relative drop-shadow-xl w-full max-w-sm">
                             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
                                 <Badge className="px-4 py-1 text-sm" variant={"default"}>{hasPurchasedProduct(PRO_MONTHLY_TIER) ? "Purchased" : "Most Popular"}</Badge>
                             </div>
@@ -263,9 +263,9 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                 </TabsContent>
 
                 <TabsContent value="yearly">
-                    <div className="mx-auto flex items-center justify-center gap-5">
+                    <div className="mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-5 px-4 md:px-0 mt-8">
 
-                        <Card className="relative drop-shadow-xl">
+                        <Card className="relative drop-shadow-xl w-full max-w-sm">
                             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
                                 <Badge className="px-4 py-1 text-sm" variant={"outline"}>{hasPurchasedProduct(CREATOR_YEARLY_TIER) ? "Purchased" : "Best Value"}</Badge>
                             </div>
@@ -326,7 +326,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                 )}
                             </CardFooter>
                         </Card>
-                        <Card className="relative drop-shadow-xl ">
+                        <Card className="relative drop-shadow-xl w-full max-w-sm">
                             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
                                 <Badge className="px-4 py-1 text-sm" variant={"default"}>{hasPurchasedProduct(PRO_MONTHLY_TIER) ? "Purchased" : "Most Popular"}</Badge>
                             </div>

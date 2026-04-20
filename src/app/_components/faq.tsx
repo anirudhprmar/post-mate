@@ -19,7 +19,7 @@ const faqs = [
     },
     {
         question: "How is Postmate better than ChatGPT ?",
-        answer: "It's a platform all about your content. You can manage your content, schedule it (which chatGPT can't do), and much more giving a complete package for content ideation, management and scheduling."
+        answer: "It's a platform all about your content. You can manage your content, schedule it (which chatGPT can't do and manually will take forever to post the same thing to multiple accounts this hustle never ends), and much more giving a complete package for content ideation, management and scheduling."
     },
     {
         question: "What's included in Postmate's 7-days free trial?",
@@ -43,17 +43,17 @@ export default function FAQ() {
     return (
         <section className="mt-10 min-h-screen">
             <div className="flex flex-col items-center justify-center gap-5 mx-auto max-w-7xl px-6 py-30 lg:px-8">
-                <div className="flex flex-col gap-4 text-center items-center justify-center">
+                <div className="flex flex-col gap-4 text-center items-center justify-center px-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">faq</p>
-                    <h1 className="text-5xl max-w-md text-center">Frequently Asked Questions</h1>
-                    <p className="text-xl max-w-lg text-foreground/70">Everything you need to know about Postmate.</p>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl max-w-md text-center font-bold tracking-tight">Frequently Asked Questions</h2>
+                    <p className="text-base sm:text-lg md:text-xl max-w-lg text-foreground/70 mt-2">Everything you need to know about Postmate.</p>
                 </div>
                 <div className='max-w-3xl w-full'>
                     <Accordion type="single" collapsible className="w-full gap-1">
                         {faqs.map((faq, index) => (
                             <AccordionItem value={`item-${index}`} key={index}>
-                                <AccordionTrigger className='text-lg'>{faq.question}</AccordionTrigger>
-                                <AccordionContent className='text-lg whitespace-pre-wrap w-full'>
+                                <AccordionTrigger className='text-base sm:text-lg text-left'>{faq.question}</AccordionTrigger>
+                                <AccordionContent className='text-sm sm:text-base whitespace-pre-wrap w-full text-muted-foreground'>
                                     {faq.answer}
                                 </AccordionContent>
                             </AccordionItem>

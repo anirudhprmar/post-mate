@@ -22,7 +22,7 @@ export default function Navbar() {
                         </Link>
 
                         {/* Nav links */}
-                        <ul className="group/nav flex items-center justify-center gap-6 px-4 py-1 rounded-md border border-border bg-muted/70 backdrop-blur-xs">
+                        <ul className="hidden group/nav md:flex items-center justify-center gap-6 px-4 py-1 rounded-md border border-border bg-muted/70 backdrop-blur-xs">
                             {navLinks.map(({ label, href }) => (
                                 <li key={label}>
                                     <Link
@@ -38,9 +38,9 @@ export default function Navbar() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2 shrink-0">
-                        <Button asChild variant="default" size="lg" className="rounded-md">
+                        {/* <Button asChild variant="default" size="lg" className="rounded-md">
                             <Link href="/login" >Login</Link>
-                        </Button>
+                        </Button> */}
                         <Button asChild variant="outline" size="lg" className="rounded-md">
                             <Link href="#waitlist" className="">
                                 Join the waitlist

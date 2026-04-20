@@ -36,18 +36,19 @@ export default function Hero() {
         <section className="mt-10 min-h-screen">
             <div className="flex flex-col items-center gap-10 justify-between mx-auto max-w-7xl px-6 py-30 lg:px-8">
 
-                <div className="flex flex-col items-center justify-center gap-4 text-center relative">
-                    <h1 className="text-6xl max-w-2xl flex flex-col items-center justify-center gap-1"><span className='border border-border text-sm w-fit rounded-full font-semibold tracking-normal p-2 absolute -top-18 '>✨ No more cross platform struggle. Ideate smart. Post everywhere.</span>Create Once.Tailor Accordingly.Post Everywhere.</h1>
-                    <p className="text-xl max-w-xl text-foreground/70">Generate ideas, captions, and visuals that match the unique style and algorithm of each platform. Then schedule and publish to all your accounts from one place.</p>
-                    <div>
+                <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 text-center">
+                    <span className='border border-border text-xs sm:text-sm w-fit max-w-[90%] rounded-full font-semibold tracking-normal py-1.5 px-4 sm:p-2 sm:px-4'>✨ No more cross platform struggle. Ideate smart. Post everywhere.</span>
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl max-w-2xl flex flex-col items-center justify-center gap-1 mt-2 sm:mt-6 font-bold tracking-tight">Create Once. Tailor Accordingly. Post Everywhere.</h1>
+                    <p className="text-sm sm:text-base md:text-xl max-w-lg text-foreground/70 px-4">Generate ideas, captions, and visuals that match the unique style and algorithm of each platform. Then schedule and publish to all your accounts from one place.</p>
+                    <div className="w-full max-w-sm sm:max-w-fit px-4 sm:px-0">
                         <form
                             onSubmit={handleJoinWaitlist}
-                            className="flex w-fit items-center gap-2 rounded-2xl border border-border/70 bg-card/95 p-2 shadow-lg shadow-primary/8 ring-1 ring-black/3 backdrop-blur"
+                            className="flex flex-col sm:flex-row w-full sm:w-fit items-center gap-2 rounded-2xl border border-border/70 bg-card/95 p-2 shadow-lg shadow-primary/8 ring-1 ring-black/3 backdrop-blur mx-auto"
                         >
                             <Input
                                 type="email"
                                 placeholder="Enter your email"
-                                className="h-12 min-w-64 rounded-xl border-0 bg-muted/70 px-4 text-sm shadow-none focus-visible:ring-0"
+                                className="h-12 w-full sm:min-w-64 rounded-xl border-0 bg-muted/70 px-4 text-sm shadow-none focus-visible:ring-0"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 disabled={status == "isPending"}
@@ -57,7 +58,7 @@ export default function Hero() {
                                 type="submit"
                                 size="lg"
                                 variant="default"
-                                className="h-12 rounded-xl border border-primary/20 bg-primary px-5 shadow-[0_14px_30px_-16px_rgba(109,40,217,0.9)] transition duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_18px_38px_-18px_rgba(109,40,217,0.95)]"
+                                className="h-12 w-full sm:w-auto rounded-xl border border-primary/20 bg-primary px-5 shadow-[0_14px_30px_-16px_rgba(109,40,217,0.9)] transition duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_18px_38px_-18px_rgba(109,40,217,0.95)]"
                             >
                                 {status == "isPending" ? (
                                     <Loader2 className="size-5 animate-spin text-primary-foreground" />

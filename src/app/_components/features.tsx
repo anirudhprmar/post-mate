@@ -50,8 +50,8 @@ export default function Features() {
             {/* Section header */}
             <div className="flex flex-col items-center gap-3 text-center px-6">
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">What you get</p>
-                <h2 className="text-5xl max-w-lg font-bold tracking-tight">Features designed for your success.</h2>
-                <p className="text-lg max-w-sm text-muted-foreground">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl max-w-lg font-bold tracking-tight">Features designed for your success.</h2>
+                <p className="text-base sm:text-lg max-w-sm text-muted-foreground">
                     From content creation to scheduling, we've got you covered.
                 </p>
             </div>
@@ -60,7 +60,7 @@ export default function Features() {
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 mx-auto max-w-7xl px-6 py-14 lg:px-8 items-start">
 
                 {/* Left: feature list */}
-                <div className="flex flex-col gap-2 w-full lg:w-1/2 lg:max-w-lg">
+                <div className="flex flex-col gap-2 w-full lg:w-1/2 lg:max-w-lg order-2 lg:order-1">
                     {featureList.map((feature, index) => {
                         const Icon = feature.icon
                         const isActive = current === index
@@ -114,7 +114,7 @@ export default function Features() {
                 </div>
 
                 {/* Right: video player */}
-                <div className="rounded-xl overflow-hidden border border-border shadow-md h-fit flex items-center justify-center bg-muted/30 w-full lg:w-1/2 lg:sticky lg:top-32">
+                <div className="rounded-xl overflow-hidden border border-border shadow-md h-fit flex items-center justify-center bg-muted/30 w-full lg:w-1/2 lg:sticky lg:top-32 order-1 lg:order-2">
                     {(featureList[current]?.action || featureList[current]?.action) ? (
                         <video src={featureList[current]?.action as string} autoPlay muted loop playsInline className="w-full h-auto object-cover" />
                     ) : (

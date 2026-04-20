@@ -51,10 +51,10 @@ const legalLinks = [
 
 export default function Footer() {
     return (
-        <footer className="mt-10 pb-8">
+        <footer className="mt-10 pb-8 px-5 md:px-0">
             {/* Main card */}
-            <div className="p-10 border-border backdrop-blur-lg shadow-sm rounded-xl bg-card">
-                <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
+            <div className="p-6 sm:p-10 border border-border backdrop-blur-lg shadow-sm rounded-xl bg-card">
+                <div className="flex flex-col gap-8 lg:gap-10 lg:flex-row lg:justify-between">
                     {/* Brand block */}
                     <div className="flex flex-col gap-5 max-w-xs">
                         {/* Logo */}
@@ -110,11 +110,11 @@ export default function Footer() {
             </div>
 
             {/* Bottom bar */}
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-1">
-                <p className="text-sm text-muted-foreground">
+            <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-between px-1">
+                <p className="text-sm text-muted-foreground text-center sm:text-left">
                     &copy; 2026 post mate. All rights reserved.
                 </p>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap justify-center items-center gap-4 sm:justify-end">
                     {legalLinks.map(({ label, href }) => (
                         <Link
                             key={label}
