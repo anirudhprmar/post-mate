@@ -7,8 +7,9 @@ export default function SupportedPlatforms() {
         <section className="mt-10 min-h-screen">
             <div className="flex flex-col items-center justify-center gap-5 mx-auto max-w-7xl px-6 py-30 lg:px-8">
                 <div className="flex flex-col gap-4 text-center items-center justify-center">
-                    <h1 className="text-5xl text-center">Supported Platforms</h1>
-                    <p className="text-xl max-w-lg text-foreground/70">All the platforms you can post to from within Postmate.</p>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">Supported Platforms</p>
+                    <h1 className="text-5xl text-center">All the platforms you can post to</h1>
+                    <p className="text-xl max-w-lg text-foreground/70">No more jumping between apps. Create, customize, and schedule posts for all your platforms—from one unified dashboard.</p>
                 </div>
                 <div className='flex flex-wrap items-center justify-center gap-10 py-10'>
                     <Image

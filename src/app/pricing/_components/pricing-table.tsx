@@ -97,27 +97,36 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
 
 
 
-    const creatorMonthlyFeatures = [
-        "Unlimited CSV file uploads and conversions",
-        "Convert to PDF instantly",
-        "No monthly subscription",
-        "Lifetime access",
+    const creatorFeatures = [
+        "15 connected social accounts",
+        "Schedule posts",
+        "AI posts generation",
+        "Platform specific content generation",
+        "Idea pipeline",
+    ];
+
+    const proFeatures = [
+        "Everything in creator plan",
+        "unlimited connected social accounts",
         "Priority support",
+        "Invite team members",
+        "Monthly Strategy Calls"
     ];
 
     return (
         <section id="pricing" className="w-full p-5" ref={ref}>
 
             <div className="mb-8 flex items-center flex-col text-center gap-2">
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">Pricing</p>
                 <h2 className="font-semibold text-5xl">
-                    Choose the plan that fits your goals.
+                    Simple pricing, maximum value.
                 </h2>
-                <p className="text-xl max-w-lg text-foreground/70">Choose the plan that suits you</p>
+                <p className="text-xl max-w-lg text-foreground/70">Choose the plan that fits your goals</p>
             </div>
 
             <Tabs defaultValue="monthly" className="w-full flex flex-col">
                 <div className="flex justify-center items-center">
-                    <TabsList className="flex justify-center">
+                    <TabsList className="flex justify-center bg-white">
                         <TabsTrigger value="monthly">
                             Monthly
                         </TabsTrigger>
@@ -132,10 +141,10 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
 
                         <Card className="relative drop-shadow-xl ">
                             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
-                                <Badge className="bg-foreground text-background px-4 py-1 text-sm">{hasPurchasedProduct(CREATOR_MONTHLY_TIER) ? "Purchased" : "Best Value"}</Badge>
+                                <Badge className="px-4 py-1 text-sm" variant={"outline"}>{hasPurchasedProduct(CREATOR_MONTHLY_TIER) ? "Purchased" : "Best Value"}</Badge>
                             </div>
-                            <CardHeader className="text-center pt-10 pb-8">
-                                <CardTitle className="text-2xl font-semibold">Creator</CardTitle>
+                            <CardHeader className="text-center pt-12 pb-8">
+                                <CardTitle className="text-2xl font-semibold">CREATOR</CardTitle>
 
                                 <CardDescription className="text-base mt-2">Perfect for individuals and small teams
                                 </CardDescription>
@@ -143,7 +152,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                 <div className="mt-6">
                                     <div className="flex items-baseline justify-center gap-2">
                                         <span className="text-5xl font-bold tracking-tight">$19</span>
-                                        <span className="text-muted-foreground text-sm">
+                                        <span className="text-muted-foreground text-sm py-2 pt-2">
                                             /month
                                         </span>
                                     </div>
@@ -151,7 +160,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <ul className="space-y-3">
-                                    {creatorMonthlyFeatures.map((feature, index) => (
+                                    {creatorFeatures.map((feature, index) => (
                                         <li key={index} className="flex items-start gap-3">
                                             <CheckIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                                             <span className="text-sm">{feature}</span>
@@ -185,16 +194,16 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                         >
                                             {isAuthenticated === false ? "Sign In to Purchase" : "Get Creator Monthly Access"}
                                         </Button>
-                                        <p className="text-muted-foreground text-xs text-center">$0.00 due today, cancel anytime</p>
+                                        <p className="text-muted-foreground text-xs text-center pt-2">$0.00 due today, cancel anytime</p>
                                     </div>
                                 )}
                             </CardFooter>
                         </Card>
                         <Card className="relative drop-shadow-xl ">
                             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
-                                <Badge className="bg-foreground text-background px-4 py-1 text-sm">{hasPurchasedProduct(PRO_MONTHLY_TIER) ? "Purchased" : "Best Value"}</Badge>
+                                <Badge className="px-4 py-1 text-sm" variant={"default"}>{hasPurchasedProduct(PRO_MONTHLY_TIER) ? "Purchased" : "Most Popular"}</Badge>
                             </div>
-                            <CardHeader className="text-center pt-10 pb-8">
+                            <CardHeader className="text-center pt-12 pb-8">
                                 <CardTitle className="text-2xl font-semibold">PRO</CardTitle>
 
                                 <CardDescription className="text-base mt-2">Perfect for professionals and businesses
@@ -203,7 +212,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                 <div className="mt-6">
                                     <div className="flex items-baseline justify-center gap-2">
                                         <span className="text-5xl font-bold tracking-tight">$39</span>
-                                        <span className="text-muted-foreground text-sm">
+                                        <span className="text-muted-foreground text-sm py-2 pt-2">
                                             /month
                                         </span>
                                     </div>
@@ -211,7 +220,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <ul className="space-y-3">
-                                    {creatorMonthlyFeatures.map((feature, index) => (
+                                    {proFeatures.map((feature, index) => (
                                         <li key={index} className="flex items-start gap-3">
                                             <CheckIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                                             <span className="text-sm">{feature}</span>
@@ -245,7 +254,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                         >
                                             {isAuthenticated === false ? "Sign In to Purchase" : "Get PRO Monthly Access"}
                                         </Button>
-                                        <p className="text-muted-foreground text-xs text-center">$0.00 due today, cancel anytime</p>
+                                        <p className="text-muted-foreground text-xs text-center pt-2">$0.00 due today, cancel anytime</p>
                                     </div>
                                 )}
                             </CardFooter>
@@ -258,27 +267,27 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
 
                         <Card className="relative drop-shadow-xl">
                             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
-                                <Badge className="bg-foreground text-background px-4 py-1 text-sm">{hasPurchasedProduct(CREATOR_YEARLY_TIER) ? "Purchased" : "Best Value"}</Badge>
+                                <Badge className="px-4 py-1 text-sm" variant={"outline"}>{hasPurchasedProduct(CREATOR_YEARLY_TIER) ? "Purchased" : "Best Value"}</Badge>
                             </div>
-                            <CardHeader className="text-center pt-10 pb-8">
-                                <CardTitle className="text-2xl font-semibold">Creator</CardTitle>
+                            <CardHeader className="text-center pt-12 pb-8">
+                                <CardTitle className="text-2xl font-semibold">CREATOR</CardTitle>
 
                                 <CardDescription className="text-base mt-2">Perfect for individuals and small teams
                                 </CardDescription>
 
-                                <div className="mt-6">
+                                <div className="mt-6 flex flex-col items-center justify-center gap-2">
                                     <div className="flex items-baseline justify-center gap-2">
                                         <span className="text-5xl font-bold tracking-tight">$16</span>
                                         <span className="text-muted-foreground/80 text-sm">
                                             /month
                                         </span>
-                                        <span className="text-muted-foreground text-sm">Billed as $192/year</span>
                                     </div>
+                                    <span className="text-muted-foreground text-sm">Billed as $192/year</span>
                                 </div>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <ul className="space-y-3">
-                                    {creatorMonthlyFeatures.map((feature, index) => (
+                                    {creatorFeatures.map((feature, index) => (
                                         <li key={index} className="flex items-start gap-3">
                                             <CheckIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                                             <span className="text-sm">{feature}</span>
@@ -312,34 +321,34 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                         >
                                             {isAuthenticated === false ? "Sign In to Purchase" : "Get Creator Yearly Access"}
                                         </Button>
-                                        <p className="text-muted-foreground text-xs text-center">$0.00 due today, cancel anytime</p>
+                                        <p className="text-muted-foreground text-xs text-center pt-2">$0.00 due today, cancel anytime</p>
                                     </div>
                                 )}
                             </CardFooter>
                         </Card>
                         <Card className="relative drop-shadow-xl ">
                             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
-                                <Badge className="bg-foreground text-background px-4 py-1 text-sm">{hasPurchasedProduct(PRO_MONTHLY_TIER) ? "Purchased" : "Best Value"}</Badge>
+                                <Badge className="px-4 py-1 text-sm" variant={"default"}>{hasPurchasedProduct(PRO_MONTHLY_TIER) ? "Purchased" : "Most Popular"}</Badge>
                             </div>
-                            <CardHeader className="text-center pt-10 pb-8">
+                            <CardHeader className="text-center pt-12 pb-8">
                                 <CardTitle className="text-2xl font-semibold">PRO</CardTitle>
 
                                 <CardDescription className="text-base mt-2">Perfect for professionals and businesses
                                 </CardDescription>
 
-                                <div className="mt-6">
+                                <div className="mt-6 flex flex-col items-center justify-center gap-2">
                                     <div className="flex items-baseline justify-center gap-2">
                                         <span className="text-5xl font-bold tracking-tight">$34</span>
                                         <span className="text-muted-foreground/80 text-sm">
                                             /month
                                         </span>
-                                        <span className="text-muted-foreground text-sm">Billed as $408/year</span>
                                     </div>
+                                    <span className="text-muted-foreground text-sm">Billed as $408/year</span>
                                 </div>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <ul className="space-y-3">
-                                    {creatorMonthlyFeatures.map((feature, index) => (
+                                    {proFeatures.map((feature, index) => (
                                         <li key={index} className="flex items-start gap-3">
                                             <CheckIcon className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                                             <span className="text-sm">{feature}</span>
@@ -373,7 +382,7 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
                                         >
                                             {isAuthenticated === false ? "Sign In to Purchase" : "Get PRO Yearly Access"}
                                         </Button>
-                                        <p className="text-muted-foreground text-xs text-center">$0.00 due today, cancel anytime</p>
+                                        <p className="text-muted-foreground text-xs text-center pt-2">$0.00 due today, cancel anytime</p>
                                     </div>
                                 )}
                             </CardFooter>

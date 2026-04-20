@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import { DashboardView } from './dashboard-view'
+// import { DashboardView } from './dashboard-view'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { ArrowUpRight, Loader2 } from 'lucide-react'
@@ -37,8 +37,8 @@ export default function Hero() {
             <div className="flex flex-col items-center gap-10 justify-between mx-auto max-w-7xl px-6 py-30 lg:px-8">
 
                 <div className="flex flex-col items-center justify-center gap-4 text-center relative">
-                    <h1 className="text-6xl max-w-2xl flex flex-col items-center justify-center gap-1"><span className='border border-border text-sm w-fit rounded-full font-semibold tracking-normal p-2 absolute -top-18 '>✨ All in one content ideation & scheduling platform</span>Grow on all social media platforms.</h1>
-                    <p className="text-xl max-w-xl text-foreground/70">Never run out of ideas to post and get your content posted to all your social media accounts from one single place.</p>
+                    <h1 className="text-6xl max-w-2xl flex flex-col items-center justify-center gap-1"><span className='border border-border text-sm w-fit rounded-full font-semibold tracking-normal p-2 absolute -top-18 '>✨ No more cross platform struggle. Ideate smart. Post everywhere.</span>Create Once.Tailor Accordingly.Post Everywhere.</h1>
+                    <p className="text-xl max-w-xl text-foreground/70">Generate ideas, captions, and visuals that match the unique style and algorithm of each platform. Then schedule and publish to all your accounts from one place.</p>
                     <div>
                         <form
                             onSubmit={handleJoinWaitlist}
@@ -72,7 +72,7 @@ export default function Hero() {
                     </div>
                 </div>
 
-                <DashboardView />
+                {/* <DashboardView /> */}
             </div>
         </section>)
 }
