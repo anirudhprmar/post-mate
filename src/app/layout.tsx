@@ -25,7 +25,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://postmate.vercel.app"),
+  metadataBase: new URL("https://postmate-one.vercel.app/"),
   alternates: {
     canonical: "/",
   },
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     title: "post mate - create once. post everywhere.",
     description:
       "Create platform-specific posts from one idea, then schedule and publish to all your accounts from one place.",
-    url: "https://postmate.vercel.app/",
+    url: "https://postmate-one.vercel.app//",
     siteName: "post mate",
     images: [
       {

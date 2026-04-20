@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: "*",
             allow: "/",
         },
-        sitemap: "https://postmate.vercel.app/sitemap.xml",
+        sitemap: "https://postmate-one.vercel.app//sitemap.xml",
     };
 }
