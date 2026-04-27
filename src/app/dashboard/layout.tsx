@@ -13,7 +13,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
                     {children}
                 </main>
             </div>
-            <MobileBottomNav />
+            {/* <MobileBottomNav /> */}
         </>
     )
 }

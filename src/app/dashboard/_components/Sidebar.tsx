@@ -76,27 +76,26 @@ export default function DashboardSideBar() {
 
 
   return (
-    <div className="min-[1024px]:block hidden group w-14 hover:w-64 border-r h-full bg-background transition-all duration-300 ease-in-out">
+    <div className="hidden min-[1024px]:block group w-64 border-r h-full bg-background">
       <div className="flex h-full flex-col">
-        <nav aria-label="Main Navigation" className="flex flex-col h-full justify-between items-start w-full space-y-1 py-5">
-          {/* Main Navigation */}
-          <div className="w-full space-y-1 px-2">
-            <ul className="space-y-1">
+        <nav aria-label="Main Navigation" className="flex flex-col h-full justify-between w-full py-4">
+
+          {/* Top Navigation */}
+          <div className="w-full px-3">
+            <ul className="list-none pl-0 space-y-0.5">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     className={clsx(
-                      "flex items-center group-hover:justify-start gap-3 w-full rounded-lg px-2.5 group-hover:px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
+                      "flex items-center gap-3 w-full rounded-sm px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
                       pathname === item.href
                         ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
                     )}
                   >
                     <item.icon className="h-5 w-5 shrink-0" />
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {item.label}
-                    </span>
+                    <span>{item.label}</span>
                   </Link>
                 </li>
               ))}
@@ -104,63 +103,47 @@ export default function DashboardSideBar() {
           </div>
 
           {/* Bottom Section */}
-          <div className="flex flex-col gap-2 w-full">
-            <div className="px-2">
-              <ul className="space-y-1">
+          <div className="flex flex-col w-full">
+            {/* Notifications + Settings */}
+            <div className="px-3 space-y-0.5">
+              <ul className="list-none pl-0">
                 <li>
                   <Link
                     href="/notifications"
                     className={clsx(
-                      "flex items-center group-hover:justify-start w-full gap-3 rounded-lg px-2.5 group-hover:px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
+                      "flex items-center w-full gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
                       pathname === "/notifications"
                         ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
                     )}
                   >
                     <Bell className="h-5 w-5 shrink-0" />
-                    {/* <div className="relative">
-                      {!!unreadCount && unreadCount > 0 && (
-                        <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground group-hover:hidden">
-                          {unreadCount}
-                        </span>
-                      )}
-                      {!!unreadCount && unreadCount > 0 && (
-                        <span className="hidden group-hover:flex absolute right-0 top-0 h-2 w-2 rounded-full bg-primary" />
-                      )}
-                    </div> */}
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      Notifications
-                    </span>
-                    {/* {!!unreadCount && unreadCount > 0 && (
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-auto bg-primary/20 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                        {unreadCount}
-                      </span>
-                    )} */}
+                    <span>Notifications</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/settings"
                     className={clsx(
-                      "flex items-center group-hover:justify-start w-full gap-3 rounded-lg px-2.5 group-hover:px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
+                      "flex items-center w-full gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
                       pathname === "/settings"
                         ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
                     )}
                   >
                     <Settings className="h-5 w-5 shrink-0" />
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      Settings
-                    </span>
+                    <span>Settings</span>
                   </Link>
                 </li>
               </ul>
             </div>
 
-            <div className="overflow-hidden">
-              <UserProfile />
+            {/* Profile — aligned with nav items */}
+            <div className="mt-2 pt-2 px-3">
+              <UserProfile showName={true} />
             </div>
           </div>
+
         </nav>
       </div>
     </div>
