@@ -1,6 +1,5 @@
 
 # TODO
 
-[X]- fix layout
-
-
+- [X]- Homepage update
+- [ ] platform specific content > ideation & posting style feature
