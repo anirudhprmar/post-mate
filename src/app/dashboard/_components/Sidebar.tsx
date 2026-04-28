@@ -16,10 +16,21 @@ import {
   Sprout,
   Waypoints,
   FileText,
-  Lightbulb
+  Lightbulb,
+  PlusIcon
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { api } from "~/lib/api";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog"
+import PostContent from "~/components/post-content";
 
 interface NavItem {
   label: string;
@@ -29,7 +40,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: "Home",
+    label: "Calendar",
     href: "/dashboard",
     icon: Home,
   },
@@ -72,12 +83,30 @@ const navItems: NavItem[] = [
 
 export default function DashboardSideBar() {
   const pathname = usePathname();
-  // const { data: unreadCount } = api.notification.getUnreadCount.useQuery()
 
 
   return (
     <div className="hidden min-[1024px]:block group w-64 border-r h-full bg-background">
       <div className="flex h-full flex-col">
+        <div className="pl-4 pt-4 pb-2">
+          <p className="text-foreground font-bold text-xl">post mate</p>
+        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size={'lg'} variant={'default'} className="m-2 rounded-sm"><PlusIcon className="h-4 w-4" /> Create Post</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px] min-w-5xl h-150 flex flex-col">
+            <DialogHeader>
+              <DialogTitle>Create Post</DialogTitle>
+              <DialogDescription>
+                What are you posting today?
+              </DialogDescription>
+            </DialogHeader>
+
+            <PostContent />
+
+          </DialogContent>
+        </Dialog>
         <nav aria-label="Main Navigation" className="flex flex-col h-full justify-between w-full py-4">
 
           {/* Top Navigation */}
