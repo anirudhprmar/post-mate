@@ -1,3 +1,4 @@
+import {PostEditor} from "./post-editor";
 
 export default function PostContent() {
     return (
@@ -10,7 +11,7 @@ export default function PostContent() {
                 </div>
 
                 <div>
-                    {/* <CustomEditor/> */}
+                    <PostEditor/>
                 </div>
 
             </div>
