@@ -95,12 +95,9 @@ export default function DashboardSideBar() {
           <DialogTrigger asChild>
             <Button size={'lg'} variant={'default'} className="m-2 rounded-sm"><PlusIcon className="h-4 w-4" /> Create Post</Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] min-w-5xl h-150 flex flex-col">
+          <DialogContent className="sm:max-w-[425px] min-w-4xl h-150 flex flex-col">
             <DialogHeader>
               <DialogTitle>Create Post</DialogTitle>
-              <DialogDescription>
-                What are you posting today?
-              </DialogDescription>
             </DialogHeader>
 
             <PostContent />
