@@ -98,8 +98,10 @@ export default function DashboardSideBar() {
           <DialogContent className="sm:max-w-[425px] min-w-4xl h-150 flex flex-col">
             <DialogHeader>
               <DialogTitle>Create Post</DialogTitle>
+              <DialogDescription>
+                What are you posting today ?
+              </DialogDescription>
             </DialogHeader>
-
             <PostContent />
 
           </DialogContent>

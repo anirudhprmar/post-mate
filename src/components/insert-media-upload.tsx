@@ -23,7 +23,7 @@ export default function InsertMediaUpload({ onImageSelected, onVideoSelected }: 
 
         if (imagePreviewRef.current) {
             imagePreviewRef.current.src = URL.createObjectURL(file);
-            imagePreviewRef.current.style.display = 'block';
+            // imagePreviewRef.current.style.display = 'block';
         }
 
         setImageName(file.name);

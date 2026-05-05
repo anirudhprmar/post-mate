@@ -8,6 +8,8 @@ import {
   Smile,
   ItalicIcon,
   PlusIcon,
+  List,
+  ListOrdered,
 } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { Button } from "./ui/button";
@@ -24,7 +26,8 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
       underline: ctx.editor?.isActive("underline") ?? false,
       strike: ctx.editor?.isActive("strike") ?? false,
       italic: ctx.editor?.isActive("italic") ?? false,
-      emoji: ctx.editor?.isActive("emoji") ?? false,
+      bulletList: ctx.editor?.isActive("bulletList") ?? false,
+      orderedList: ctx.editor?.isActive("orderedList") ?? false,
     }),
   });
 
@@ -50,9 +53,21 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
       active: activeMarks?.italic,
     },
     {
+      icon: List,
+      action: () => editor?.chain().focus().toggleBulletList().run(),
+      active: activeMarks?.bulletList,
+    },
+    {
       icon: Smile,
-      action: () => editor?.chain().focus().setEmoji("Zap").run(),
-      active: activeMarks?.emoji,
+      action: () => {
+        editor?.chain().focus().insertContent(':').run()
+      },
+      active: false, // emoji has no "active" state
+    },
+    {
+      icon: ListOrdered,
+      action: () => editor?.chain().focus().toggleOrderedList().run(),
+      active: activeMarks?.orderedList,
     },
   ];
 
