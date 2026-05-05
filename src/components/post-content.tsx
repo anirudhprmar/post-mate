@@ -17,7 +17,7 @@ export default function PostContent() {
                         {/* <p className="text-sm font-medium">Selected</p> */}
                     </div>
 
-                    <div className="rounded-md p-3 bg-muted-foreground/30 flex flex-col gap-2">
+                    <div className="rounded-md p-3 bg-muted/70 flex flex-col gap-2">
                         <InsertMedia />
                         <PostEditor />
                     </div>
