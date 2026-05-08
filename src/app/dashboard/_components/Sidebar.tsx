@@ -17,7 +17,10 @@ import {
   Waypoints,
   FileText,
   Lightbulb,
-  PlusIcon
+  PlusIcon,
+  CalendarDays,
+  Cable,
+  LinkIcon
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { api } from "~/lib/api";
@@ -42,7 +45,7 @@ const navItems: NavItem[] = [
   {
     label: "Calendar",
     href: "/dashboard",
-    icon: Home,
+    icon: CalendarDays,
   },
   {
     label: "Ideas",
@@ -59,26 +62,16 @@ const navItems: NavItem[] = [
     href: "/dashboard/inspiration",
     icon: Sparkles,
   },
-  // {
-  //   label: "Calendar",
-  //   href: "/dashboard/calendar",
-  //   icon: Calendar,
-  // },
-  // {
-  //   label: "References",
-  //   href: "/dashboard/references",
-  //   icon: Waypoints,
-  // },
   {
     label: "Drafts",
     href: "/dashboard/drafts",
     icon: PenTool,
   },
-  // {
-  //   label: "Connections",
-  //   href: "/dashboard/connect",
-  //   icon: Users,
-  // },
+  {
+    label: "Connections",
+    href: "/dashboard/connect",
+    icon: LinkIcon,
+  },
 ];
 
 export default function DashboardSideBar() {

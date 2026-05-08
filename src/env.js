@@ -18,6 +18,8 @@ export const env = createEnv({
       .default("development"),
     AUTH_GOOGLE_ID: z.string(),
     AUTH_GOOGLE_SECRET: z.string(),
+    AUTH_LINKEDIN_CLIENT_ID: z.string(),
+    AUTH_LINKEDIN_CLIENT_SECRET: z.string(),
     POLAR_ACCESS_TOKEN: z.string(),
     POLAR_WEBHOOK_SECRET: z.string(),
     POLAR_SUCCESS_URL: z.string(),
@@ -54,6 +56,8 @@ export const env = createEnv({
     NEXT_PUBLIC_STARTER_ID: process.env.NEXT_PUBLIC_STARTER_ID,
     NEXT_PUBLIC_STARTER_SLUG: process.env.NEXT_PUBLIC_STARTER_SLUG,
     NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
+    AUTH_LINKEDIN_CLIENT_ID: process.env.AUTH_LINKEDIN_CLIENT_ID,
+    AUTH_LINKEDIN_CLIENT_SECRET: process.env.AUTH_LINKEDIN_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

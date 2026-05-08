@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { eq, and, desc } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { connectedAccount } from "~/server/db/schema";
+import { connectedAccount, account } from "~/server/db/schema";
 
 export const connectedAccountRouter = createTRPCRouter({
     getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -11,68 +12,93 @@ export const connectedAccountRouter = createTRPCRouter({
             orderBy: [desc(connectedAccount.createdAt)],
         });
     }),
-
-    getById: protectedProcedure
-        .input(z.object({ id: z.string() }))
-        .query(async ({ ctx, input }) => {
-            return ctx.db.query.connectedAccount.findFirst({
-                where: and(
-                    eq(connectedAccount.id, input.id),
-                    eq(connectedAccount.userId, ctx.session.user.id),
-                ),
-            });
-        }),
-
-    create: protectedProcedure
+    syncFromOAuth: protectedProcedure
         .input(
             z.object({
-                username: z.string().min(1),
-                platform: z.string().min(1),
-                platformUserId: z.string().min(1),
-                accessToken: z.string().min(1),
-                refreshToken: z.string().optional(),
-                tokenExpiresAt: z.date().optional(),
+                provider: z.enum(["instagram", "x", "facebook", "linkedin", "youtube", "threads"]),
             }),
         )
         .mutation(async ({ ctx, input }) => {
-            const [created] = await ctx.db
+            // 1. Read the linked OAuth account from Better Auth's account table
+            const linkedAccount = await ctx.db.query.account.findFirst({
+                where: and(
+                    eq(account.userId, ctx.session.user.id),
+                    eq(account.providerId, input.provider),
+                ),
+            });
+
+            if (!linkedAccount?.accessToken) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: `No linked ${input.provider} OAuth account found. Please re-connect via OAuth.`,
+                });
+            }
+
+            // 2. Fetch the user's profile from the provider API (server-side only)
+            let profileAccountId: string;
+            let profileUsername: string;
+            let profileAvatarUrl: string | undefined;
+
+            if (input.provider === "linkedin") {
+                // LinkedIn OpenID Connect userinfo endpoint
+                const res = await fetch("https://api.linkedin.com/v2/userinfo", {
+                    headers: { Authorization: `Bearer ${linkedAccount.accessToken}` },
+                });
+                if (!res.ok) {
+                    throw new TRPCError({
+                        code: "BAD_GATEWAY",
+                        message: `LinkedIn API returned ${res.status}: ${await res.text()}`,
+                    });
+                }
+                const data = await res.json() as {
+                    sub: string;
+                    name?: string;
+                    given_name?: string;
+                    family_name?: string;
+                    picture?: string;
+                    email?: string;
+                };
+                profileAccountId = data.sub;
+                profileUsername = data.name ?? data.email ?? data.given_name ?? "LinkedIn User";
+                profileAvatarUrl = data.picture;
+            } else {
+                // Fallback: use the Better Auth accountId as the profile identifier
+                profileAccountId = linkedAccount.accountId;
+                profileUsername = linkedAccount.accountId;
+                profileAvatarUrl = undefined;
+            }
+
+            // 3. Upsert into connectedAccount (unique on userId + platform + accountId)
+            const [upserted] = await ctx.db
                 .insert(connectedAccount)
                 .values({
                     userId: ctx.session.user.id,
-                    username: input.username,
-                    platform: input.platform,
-                    platformUserId: input.platformUserId,
-                    accessToken: input.accessToken,
-                    refreshToken: input.refreshToken,
-                    tokenExpiresAt: input.tokenExpiresAt,
+                    platform: input.provider,
+                    accountId: profileAccountId,
+                    username: profileUsername,
+                    avatarUrl: profileAvatarUrl,
+                    accessToken: linkedAccount.accessToken,
+                    refreshToken: linkedAccount.refreshToken ?? undefined,
+                    expiresAt: linkedAccount.accessTokenExpiresAt ?? undefined,
+                    status: "active",
+                    lastRefreshed: new Date(),
+                })
+                .onConflictDoUpdate({
+                    target: [connectedAccount.userId, connectedAccount.platform, connectedAccount.accountId],
+                    set: {
+                        username: profileUsername,
+                        avatarUrl: profileAvatarUrl,
+                        accessToken: linkedAccount.accessToken,
+                        refreshToken: linkedAccount.refreshToken ?? null,
+                        expiresAt: linkedAccount.accessTokenExpiresAt ?? null,
+                        status: "active",
+                        lastRefreshed: new Date(),
+                        updatedAt: new Date(),
+                    },
                 })
                 .returning();
-            return created;
-        }),
 
-    update: protectedProcedure
-        .input(
-            z.object({
-                id: z.string(),
-                username: z.string().min(1).optional(),
-                accessToken: z.string().min(1).optional(),
-                refreshToken: z.string().nullable().optional(),
-                tokenExpiresAt: z.date().nullable().optional(),
-            }),
-        )
-        .mutation(async ({ ctx, input }) => {
-            const { id, ...data } = input;
-            const [updated] = await ctx.db
-                .update(connectedAccount)
-                .set(data)
-                .where(
-                    and(
-                        eq(connectedAccount.id, id),
-                        eq(connectedAccount.userId, ctx.session.user.id),
-                    ),
-                )
-                .returning();
-            return updated;
+            return upserted;
         }),
 
     delete: protectedProcedure
