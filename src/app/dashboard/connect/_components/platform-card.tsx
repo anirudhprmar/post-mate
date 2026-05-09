@@ -5,7 +5,7 @@ import { Loader2, Plus } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { cn } from "~/lib/utils";
 
-const LINKABLE_PROVIDERS = new Set(["google", "linkedin", "instagram", "facebook", "x", "threads"]) as Set<string>;
+const LINKABLE_PROVIDERS = new Set(["google", "linkedin", "instagram", "facebook", "twitter", "threads", "youtube"]) as Set<string>;
 import {
   Sheet,
   SheetContent,
@@ -150,13 +150,13 @@ export function PlatformCard({ platform }: { platform: Platform }) {
           </div>
 
           {/* Add account button — amber/warning color */}
-          {LINKABLE_PROVIDERS.has(platform.oauthProvider ?? id) && (
+          {LINKABLE_PROVIDERS.has(id) && (
             <Button
               className="flex items-center justify-center w-8 h-8 rounded-full bg-warning/10 border border-warning/30 text-warning hover:bg-warning/20 hover:border-warning/50 transition-all duration-150 shrink-0"
               aria-label={`Add ${name} account`}
               disabled={loading}
               onClick={async () => {
-                const provider = platform.oauthProvider ?? id;
+                const provider = id;
                 try {
                   await authClient.linkSocial(
                     {

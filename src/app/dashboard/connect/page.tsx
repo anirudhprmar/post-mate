@@ -34,7 +34,7 @@ const PLATFORM_CONFIGS: Omit<Platform, "connected" | "accounts">[] = [
         iconColor: "#1877F2",
     },
     {
-        id: "x",
+        id: "twitter",
         name: "X",
         icon: <XIcon />,
         brandColor: "#888888",

@@ -8,6 +8,7 @@ import { Polar } from "@polar-sh/sdk";
 import { account, subscription, session, user, verification } from '~/server/db/schema';
 import { env } from "~/env";
 import { db } from "~/server/db";
+import { genericOAuth } from "better-auth/plugins";
 
 function safeParseDate(value: string | Date | null | undefined): Date | null {
   if (!value) return null;
@@ -48,19 +49,34 @@ export const auth = betterAuth({
       clientSecret: env.AUTH_GOOGLE_SECRET
     },
     linkedin: {
-      clientId: env.AUTH_LINKEDIN_CLIENT_ID,
-      clientSecret: env.AUTH_LINKEDIN_CLIENT_SECRET
-    }
+      clientId: env.LINKEDIN_CLIENT_ID,
+      clientSecret: env.LINKEDIN_CLIENT_SECRET
+    },
+    twitter: {
+      clientId: env.X_CLIENT_ID,
+      clientSecret: env.X_CLIENT_SECRET,
+    },
   },
   account: {
     accountLinking: {
       enabled: true,
       allowDifferentEmails: true,
-      // Allow linking via trusted providers without email verification
-      trustedProviders: ["linkedin"],
+      trustedProviders: ["linkedin", "twitter", "instagram"],
     },
   },
   plugins: [
+    genericOAuth({
+      config: [
+        {
+          providerId: "instagram",
+          clientId: env.INSTA_CLIENT_ID,
+          clientSecret: env.INSTA_CLIENT_SECRET,
+          authorizationUrl: "https://api.instagram.com/oauth/authorize",
+          tokenUrl: "https://api.instagram.com/oauth/access_token",
+          scopes: ["user_profile", "user_media", "threads_basic"],
+        },
+      ],
+    }),
     polar({
       client: polarClient,
       createCustomerOnSignUp: true,

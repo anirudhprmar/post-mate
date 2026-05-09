@@ -15,7 +15,7 @@ export const connectedAccountRouter = createTRPCRouter({
     syncFromOAuth: protectedProcedure
         .input(
             z.object({
-                provider: z.enum(["instagram", "x", "facebook", "linkedin", "youtube", "threads"]),
+                provider: z.enum(["instagram", "twitter", "facebook", "linkedin", "youtube", "threads"]),
             }),
         )
         .mutation(async ({ ctx, input }) => {
@@ -61,6 +61,28 @@ export const connectedAccountRouter = createTRPCRouter({
                 profileAccountId = data.sub;
                 profileUsername = data.name ?? data.email ?? data.given_name ?? "LinkedIn User";
                 profileAvatarUrl = data.picture;
+            } else if (input.provider === "twitter") {
+                // Twitter API v2 users/me endpoint
+                const res = await fetch("https://api.twitter.com/2/users/me?user.fields=profile_image_url", {
+                    headers: { Authorization: `Bearer ${linkedAccount.accessToken}` },
+                });
+                if (!res.ok) {
+                    throw new TRPCError({
+                        code: "BAD_GATEWAY",
+                        message: `Twitter API returned ${res.status}: ${await res.text()}`,
+                    });
+                }
+                const data = await res.json() as {
+                    data: {
+                        id: string;
+                        name: string;
+                        username: string;
+                        profile_image_url?: string;
+                    }
+                };
+                profileAccountId = data.data.id;
+                profileUsername = data.data.username;
+                profileAvatarUrl = data.data.profile_image_url;
             } else {
                 // Fallback: use the Better Auth accountId as the profile identifier
                 profileAccountId = linkedAccount.accountId;

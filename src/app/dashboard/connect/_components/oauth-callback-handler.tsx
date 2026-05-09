@@ -6,8 +6,8 @@ import { api } from "~/trpc/react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-type SupportedProvider = "linkedin" | "instagram" | "x" | "facebook" | "youtube" | "threads";
-const SUPPORTED: SupportedProvider[] = ["linkedin", "instagram", "x", "facebook", "youtube", "threads"];
+type SupportedProvider = "linkedin" | "instagram" | "twitter" | "facebook" | "threads";
+const SUPPORTED: SupportedProvider[] = ["linkedin", "instagram", "twitter", "facebook", "threads"];
 
 
 export function OAuthCallbackHandler() {
