@@ -27,6 +27,8 @@ const config = {
         // Optimize images for production
         formats: ["image/avif", "image/webp"],
     },
+
+    allowedDevOrigins: []
 };
 
 export default config;

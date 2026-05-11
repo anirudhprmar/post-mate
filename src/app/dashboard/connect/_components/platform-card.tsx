@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, RefreshCcwDot, RefreshCcwIcon, Trash } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { cn } from "~/lib/utils";
 
@@ -195,8 +195,7 @@ export function PlatformCard({ platform }: { platform: Platform }) {
               style={{ color: "var(--foreground)" }}
             >
               <span
-                className="inline-flex items-center justify-center w-6 h-6 rounded-md"
-                style={{ background: iconBgColor, color: iconColor }}
+                className="inline-flex items-center justify-center w-6 h-6 rounded-none"
               >
                 {icon}
               </span>
@@ -221,10 +220,17 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                     {account.initials}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-foreground">
-                    {account.username ?? `@account_${account.initials.toLowerCase()}`}
-                  </span>
+                <div className="flex flex-col w-full">
+                  <div className="flex justify-between items-center gap-4">
+
+                    <span className="text-sm font-medium text-foreground">
+                      {account.username ?? `@account_${account.initials.toLowerCase()}`}
+                    </span>
+                    <div className="flex justify-between gap-2">
+                      <Button className="h-7 w-7 rounded-full" variant="ghost"><RefreshCcwIcon /></Button>
+                      <Button className="h-7 w-7 rounded-full" variant="ghost"><Trash /></Button>
+                    </div>
+                  </div>
                   <span className="text-xs text-muted-foreground">{name}</span>
                 </div>
               </div>

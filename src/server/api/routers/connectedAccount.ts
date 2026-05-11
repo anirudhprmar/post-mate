@@ -83,7 +83,26 @@ export const connectedAccountRouter = createTRPCRouter({
                 profileAccountId = data.data.id;
                 profileUsername = data.data.username;
                 profileAvatarUrl = data.data.profile_image_url;
-            } else {
+            } else if (input.provider === "instagram") {
+                const res = await fetch("https://graph.facebook.com/me?fields=id,name,picture.type(large)", {
+                    headers: { Authorization: `Bearer ${linkedAccount.accessToken}` },
+                });
+                if (!res.ok) {
+                    throw new TRPCError({
+                        code: "BAD_GATEWAY",
+                        message: `Instagram API returned ${res.status}: ${await res.text()}`,
+                    });
+                }
+                const data = await res.json() as {
+                    id: string;
+                    name: string;
+                    picture: { data: { url: string } };
+                };
+                profileAccountId = data.id;
+                profileUsername = data.name;
+                profileAvatarUrl = data.picture.data.url;
+            }
+            else {
                 // Fallback: use the Better Auth accountId as the profile identifier
                 profileAccountId = linkedAccount.accountId;
                 profileUsername = linkedAccount.accountId;

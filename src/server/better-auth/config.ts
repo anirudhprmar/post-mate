@@ -71,9 +71,11 @@ export const auth = betterAuth({
           providerId: "instagram",
           clientId: env.INSTA_CLIENT_ID,
           clientSecret: env.INSTA_CLIENT_SECRET,
-          authorizationUrl: "https://api.instagram.com/oauth/authorize",
+          authorizationUrl: "https://www.instagram.com/oauth/authorize",
           tokenUrl: "https://api.instagram.com/oauth/access_token",
-          scopes: ["user_profile", "user_media", "threads_basic"],
+          scopes: [
+            "public_profile"
+          ],
         },
       ],
     }),
