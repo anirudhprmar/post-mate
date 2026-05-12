@@ -10,12 +10,14 @@ import Typography from '@tiptap/extension-typography'
 import { TiptapEditor } from "./tiptap-editor";
 import { EditorToolbar } from "./editor-toolbar";
 import EmojiSuggestion from '~/lib/emoji-suggestions'
-
+import { usePostStore } from "~/store/post";
 
 const LIMIT = 250; // will depend on each platform and will be different
 
-
 export function PostEditor() {
+  const content = usePostStore(state => state.content);
+  const setContent = usePostStore(state => state.setContent);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ bulletList: false, orderedList: false }),
@@ -30,6 +32,10 @@ export function PostEditor() {
       OrderedList,
       Typography,
     ],
+    content,
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML());
+    },
     immediatelyRender: false,
     autofocus: true,
   });
@@ -41,4 +47,3 @@ export function PostEditor() {
     </div>
   );
 }
-

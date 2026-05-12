@@ -22,6 +22,16 @@ const config = {
                 protocol: "https",
                 hostname: "lh3.googleusercontent.com",
                 pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "media.licdn.com",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "pbs.twimg.com",
+                pathname: "/**",
             }
         ],
         // Optimize images for production

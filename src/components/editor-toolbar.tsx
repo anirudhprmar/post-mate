@@ -28,6 +28,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
       italic: ctx.editor?.isActive("italic") ?? false,
       bulletList: ctx.editor?.isActive("bulletList") ?? false,
       orderedList: ctx.editor?.isActive("orderedList") ?? false,
+      wordCount: ctx.editor?.storage.characterCount.words() ?? 0,
     }),
   });
 
@@ -72,7 +73,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   ];
 
   return (
-    <div className="flex flex-wrap items-center gap-1 border-t border-[#1e1e1c] px-3 py-2">
+    <div className="flex flex-wrap items-center gap-1 border-t border-[#1e1e1c] px-3 py-2 min-h-[52px]">
 
       {/* Formatting tools */}
       {tools.map(({ icon: Icon, action, active }, i) => (
@@ -100,7 +101,10 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
         <Button
           variant={"default"}
           size={"lg"}
-          className="rounded-full w-6 h-6 flex items-center justify-center"
+          className={cn(
+            "rounded-full w-6 h-6 flex items-center justify-center transition-all duration-300",
+            (activeMarks?.wordCount ?? 0) > 0 ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible"
+          )}
         >
           <PlusIcon className="h-4 w-4" />
         </Button>

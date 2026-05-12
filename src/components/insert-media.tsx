@@ -1,21 +1,23 @@
+"use client";
+
 import InsertMediaUpload from './insert-media-upload';
-
-async function uploadImageToR2(file: File): Promise<void> {
-    // "use server";
-    // TODO: generate presigned URL and upload to R2
-}
-
-async function uploadVideoToR2(file: File): Promise<void> {
-    // "use server";
-    // TODO: generate presigned URL and upload to R2
-}
+import { usePostStore } from '~/store/post';
 
 export default function InsertMedia() {
+    const addMedia = usePostStore(state => state.addMedia);
+
+    const handleImageSelected = async (file: File) => {
+        addMedia([file]);
+    };
+
+    const handleVideoSelected = async (file: File) => {
+        addMedia([file]);
+    };
+
     return (
         <InsertMediaUpload
-            onImageSelected={uploadImageToR2}
-            onVideoSelected={uploadVideoToR2}
+            onImageSelected={handleImageSelected}
+            onVideoSelected={handleVideoSelected}
         />
     );
 }
-
