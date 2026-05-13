@@ -1,7 +1,7 @@
 
 # TODO
 
-- [ ]- for waitlist remove convex use neondb 
+- [X]- for waitlist remove convex use neondb 
 - [ ]- platform word limit 
 - [ ]- add comments to main post
 - [ ]- preview content (state management)
