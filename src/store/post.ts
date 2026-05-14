@@ -16,6 +16,9 @@ interface PostState {
   addMedia: (files: File[]) => void;
   removeMedia: (id: string) => void;
   clearMedia: () => void;
+  scheduledDate: Date | undefined;
+  setScheduledDate: (date: Date | undefined) => void;
+  reset: () => void;
 }
 
 export const usePostStore = create<PostState>((set) => ({
@@ -27,6 +30,8 @@ export const usePostStore = create<PostState>((set) => ({
       ? state.selectedAccountIds.filter(id => id !== accountId)
       : [...state.selectedAccountIds, accountId]
   })),
+  scheduledDate: undefined,
+  setScheduledDate: (date) => set({ scheduledDate: date }),
   media: [],
   addMedia: (files) => set((state) => {
     const newMedia = files.map(file => ({
@@ -47,5 +52,14 @@ export const usePostStore = create<PostState>((set) => ({
   clearMedia: () => set((state) => {
     state.media.forEach(m => URL.revokeObjectURL(m.previewUrl));
     return { media: [] };
+  }),
+  reset: () => set((state) => {
+    state.media.forEach(m => URL.revokeObjectURL(m.previewUrl));
+    return {
+      content: '',
+      selectedAccountIds: [],
+      media: [],
+      scheduledDate: undefined,
+    };
   })
 }));

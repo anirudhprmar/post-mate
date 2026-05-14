@@ -1,9 +1,7 @@
 
 # TODO
 
-- [X]- cloudflare R2 setup
-- [ ]- schedule / post now content using inggest1
-- [X]- preview content (state management)
+- [ ]- schedule / post now content using inggest
 - [ ]- platform word limit 
 - [ ]- add comments to main post
 

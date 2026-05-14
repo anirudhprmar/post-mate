@@ -1,15 +1,19 @@
 "use client"
 
-import { X, User, Loader2 } from "lucide-react";
+import { X, User, Loader2, CalendarIcon, Clock } from "lucide-react";
 import { useState } from "react";
 import InsertMedia from "./insert-media";
 import { PostEditor } from "./post-editor";
 import { Button } from "./ui/button";
+import { Calendar } from "./ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { api } from "~/trpc/react";
 import { usePostStore } from "~/store/post";
 import Image from "next/image";
 import { XIcon, LinkedInIcon, FacebookIcon, InstagramIcon, ThreadsIcon, YouTubeIcon } from "~/lib/platform-icons";
 import { uploadAllMedia } from "~/lib/upload-media";
+import { format } from "date-fns";
+import { inngest } from "~/lib/inngest";
 
 const platformIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
     twitter: XIcon,
@@ -27,22 +31,36 @@ export default function PostContent() {
     const toggleAccount = usePostStore(state => state.toggleAccount);
     const media = usePostStore(state => state.media);
     const removeMedia = usePostStore(state => state.removeMedia);
-    const clearMedia = usePostStore(state => state.clearMedia);
+    const reset = usePostStore(state => state.reset);
+    const scheduledDate = usePostStore(state => state.scheduledDate);
+    const setScheduledDate = usePostStore(state => state.setScheduledDate);
 
     const [userSelectedPreviewId, setUserSelectedPreviewId] = useState<string | null>(null);
-    const [isPublishing, setIsPublishing] = useState(false);
+    const [publishingMode, setPublishingMode] = useState<'draft' | 'schedule' | null>(null);
     const [publishError, setPublishError] = useState<string | null>(null);
+    const [scheduleOpen, setScheduleOpen] = useState(false);
+    const [scheduleHour, setScheduleHour] = useState("12");
+    const [scheduleMinute, setScheduleMinute] = useState("00");
 
     const createPost = api.post.createPost.useMutation();
     const createUploadUrl = api.media.createUploadUrl.useMutation();
     const confirmUpload = api.media.confirmUpload.useMutation();
     const confirmStatus = api.post.confirmStatus.useMutation();
+    const schedule = api.post.schedule.useMutation();
 
     const handlePublish = async (mode: 'draft' | 'schedule') => {
         if (selectedAccountIds.length === 0) return;
 
-        setIsPublishing(true);
+        setPublishingMode(mode);
         setPublishError(null);
+
+        if (mode === 'schedule') {
+            if (!scheduledDate || scheduledDate <= new Date()) {
+                setPublishError('Scheduled time must be in the future.');
+                setPublishingMode(null);
+                return;
+            }
+        }
 
         try {
             const post = await createPost.mutateAsync({
@@ -65,12 +83,29 @@ export default function PostContent() {
             await confirmStatus.mutateAsync({
                 postId,
                 status: mode === 'schedule' ? 'scheduled' : 'draft',
+                scheduledFor: mode === 'schedule' ? scheduledDate : undefined,
             });
-            clearMedia();
+
+            for (const account of selectedAccountIds) {
+                await schedule.mutateAsync({
+                    postId,
+                    connectedAccountId: account,
+                });
+            }
+
+            await inngest.send({
+                name: "post.publish",
+                data: {
+                    postId,
+                    scheduledFor: mode === 'schedule' ? scheduledDate : undefined,
+                },
+            });
+
+            reset();
         } catch (err) {
             setPublishError(err instanceof Error ? err.message : 'Something went wrong');
         } finally {
-            setIsPublishing(false);
+            setPublishingMode(null);
         }
     };
 
@@ -237,20 +272,97 @@ export default function PostContent() {
                 )}
                 <Button
                     variant={"secondary"}
-                    disabled={isPublishing}
+                    disabled={publishingMode !== null}
                     onClick={() => handlePublish('draft')}
                 >
-                    {isPublishing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    {publishingMode === 'draft' ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                     Save as Draft
                 </Button>
-                <Button
-                    variant={'default'}
-                    disabled={isPublishing || selectedAccountIds.length === 0}
-                    onClick={() => handlePublish('schedule')}
-                >
-                    {isPublishing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                    Schedule
-                </Button>
+                <Popover open={scheduleOpen} onOpenChange={setScheduleOpen}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant={'default'}
+                            disabled={publishingMode !== null || selectedAccountIds.length === 0}
+                        >
+                            {publishingMode === 'schedule' ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                            <CalendarIcon className="w-4 h-4 mr-2" />
+                            {scheduledDate
+                                ? format(scheduledDate, "MMM d, yyyy 'at' HH:mm")
+                                : "Schedule"}
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="end" sideOffset={8}>
+                        <div className="p-3 space-y-3">
+                            <Calendar
+                                mode="single"
+                                selected={scheduledDate}
+                                onSelect={(date) => {
+                                    if (date) {
+                                        const newDate = new Date(date);
+                                        newDate.setHours(parseInt(scheduleHour), parseInt(scheduleMinute));
+                                        setScheduledDate(newDate);
+                                    } else {
+                                        setScheduledDate(undefined);
+                                    }
+                                }}
+                                disabled={{ before: new Date() }}
+                            />
+                            <div className="border-t pt-3 px-1">
+                                <div className="flex items-center gap-2">
+                                    <Clock className="w-4 h-4 text-muted-foreground" />
+                                    <span className="text-sm text-muted-foreground">Time</span>
+                                    <div className="flex items-center gap-1 ml-auto">
+                                        <input
+                                            type="number"
+                                            min={0}
+                                            max={23}
+                                            value={scheduleHour}
+                                            onChange={(e) => {
+                                                const val = e.target.value.slice(0, 2);
+                                                setScheduleHour(val);
+                                                if (scheduledDate) {
+                                                    const d = new Date(scheduledDate);
+                                                    d.setHours(parseInt(val) || 0, parseInt(scheduleMinute));
+                                                    setScheduledDate(d);
+                                                }
+                                            }}
+                                            className="w-12 rounded-md border bg-background px-2 py-1 text-sm text-center focus:outline-none focus:ring-2 focus:ring-ring"
+                                        />
+                                        <span className="text-muted-foreground font-bold">:</span>
+                                        <input
+                                            type="number"
+                                            min={0}
+                                            max={59}
+                                            value={scheduleMinute}
+                                            onChange={(e) => {
+                                                const val = e.target.value.slice(0, 2);
+                                                setScheduleMinute(val);
+                                                if (scheduledDate) {
+                                                    const d = new Date(scheduledDate);
+                                                    d.setHours(parseInt(scheduleHour), parseInt(val) || 0);
+                                                    setScheduledDate(d);
+                                                }
+                                            }}
+                                            className="w-12 rounded-md border bg-background px-2 py-1 text-sm text-center focus:outline-none focus:ring-2 focus:ring-ring"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <Button
+                                className="w-full"
+                                disabled={!scheduledDate}
+                                onClick={() => {
+                                    setScheduleOpen(false);
+                                    handlePublish('schedule');
+                                }}
+                            >
+                                {scheduledDate
+                                    ? `Schedule for ${format(scheduledDate, "MMM d 'at' HH:mm")}`
+                                    : "Pick a date"}
+                            </Button>
+                        </div>
+                    </PopoverContent>
+                </Popover>
             </div>
         </div >
     )

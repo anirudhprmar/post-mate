@@ -3,14 +3,31 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { posts, post_targets } from "~/server/db/schema";
 
+function htmlToPlainText(html: string): string {
+    return html
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<\/p>/gi, '\n')
+        .replace(/<\/li>/gi, '\n')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'")
+        .replace(/&nbsp;/g, ' ')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+}
+
 export const postRouter = createTRPCRouter({
     createPost: protectedProcedure
         .input(z.object({
             content: z.string()
         }))
         .mutation(async ({ input, ctx }) => {
+            const plainContent = htmlToPlainText(input.content);
             const [post] = await ctx.db.insert(posts).values({
-                content: input.content,
+                content: plainContent,
                 userId: ctx.session.user.id,
             }).returning();
             return post!;
@@ -19,10 +36,32 @@ export const postRouter = createTRPCRouter({
         .input(z.object({
             postId: z.string(),
             status: z.enum(["draft", "scheduled"]),
+            scheduledFor: z.date().optional(),
         }))
         .mutation(async ({ input, ctx }) => {
+            if (input.status === "scheduled") {
+                if (!input.scheduledFor) {
+                    throw new Error("A scheduled date is required when scheduling a post.");
+                }
+                if (input.scheduledFor <= new Date()) {
+                    throw new Error("Scheduled time must be in the future.");
+                }
+            }
+
             await ctx.db.update(posts).set({
                 status: input.status,
+                scheduledFor: input.scheduledFor,
             }).where(eq(posts.id, input.postId));
+        }),
+    schedule: protectedProcedure
+        .input(z.object({
+            postId: z.string(),
+            connectedAccountId: z.string(),
+        }))
+        .mutation(async ({ input, ctx }) => {
+            await ctx.db.insert(post_targets).values({
+                postId: input.postId,
+                connectedAccountId: input.connectedAccountId
+            });
         }),
 })
