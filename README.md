@@ -1,11 +1,13 @@
 
 # TODO
 
-- [X]- for waitlist remove convex use neondb 
+- [X]- cloudflare R2 setup
+- [ ]- schedule / post now content using inggest1
+- [X]- preview content (state management)
 - [ ]- platform word limit 
 - [ ]- add comments to main post
-- [ ]- preview content (state management)
 
 - [ ]- add a calender to dashboard
+- [ ]- post analytics
 - [ ]- mobile sidebar
 - [ ]- schedule content

@@ -15,7 +15,7 @@ export const ideaStatus = pgEnum("idea_status", ["raw", "refined", "drafting", "
 export const scheduleStatus = pgEnum("schedule_status", ["pending", "publishing", "published", "failed"]);
 export const accountStatus = pgEnum("account_status", ["active", "expired", "revoked", "error"]);
 export const platform = pgEnum("platform", ["instagram", "twitter", "facebook", "linkedin", "youtube", "threads"]);
-export const postStatus = pgEnum("post_status", ["draft", "scheduled", "publishing", "published", "failed", "partially_failed"]);
+export const postStatus = pgEnum("post_status", ["draft", "scheduled", "published", "failed"]);
 export const targetStatus = pgEnum("target_status", ["pending", "publishing", "published", "failed", "skipped"])
 
 export const user = pgTable("user", {
@@ -193,8 +193,6 @@ export const posts = pgTable("posts", {
   scheduledFor: timestamp("scheduled_for"),
   publishedAt: timestamp("published_at"),
   status: postStatus("status").notNull().default("draft"),
-  title: text("title"),
-  tags: text("tags").array(),
   createdAt: timestamp("created_at")
     .$defaultFn(() => new Date())
     .notNull(),

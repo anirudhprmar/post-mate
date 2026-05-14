@@ -1,6 +1,6 @@
 "use client"
 
-import { X, User } from "lucide-react";
+import { X, User, Loader2 } from "lucide-react";
 import { useState } from "react";
 import InsertMedia from "./insert-media";
 import { PostEditor } from "./post-editor";
@@ -9,6 +9,7 @@ import { api } from "~/trpc/react";
 import { usePostStore } from "~/store/post";
 import Image from "next/image";
 import { XIcon, LinkedInIcon, FacebookIcon, InstagramIcon, ThreadsIcon, YouTubeIcon } from "~/lib/platform-icons";
+import { uploadAllMedia } from "~/lib/upload-media";
 
 const platformIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
     twitter: XIcon,
@@ -26,8 +27,52 @@ export default function PostContent() {
     const toggleAccount = usePostStore(state => state.toggleAccount);
     const media = usePostStore(state => state.media);
     const removeMedia = usePostStore(state => state.removeMedia);
+    const clearMedia = usePostStore(state => state.clearMedia);
 
     const [userSelectedPreviewId, setUserSelectedPreviewId] = useState<string | null>(null);
+    const [isPublishing, setIsPublishing] = useState(false);
+    const [publishError, setPublishError] = useState<string | null>(null);
+
+    const createPost = api.post.createPost.useMutation();
+    const createUploadUrl = api.media.createUploadUrl.useMutation();
+    const confirmUpload = api.media.confirmUpload.useMutation();
+    const confirmStatus = api.post.confirmStatus.useMutation();
+
+    const handlePublish = async (mode: 'draft' | 'schedule') => {
+        if (selectedAccountIds.length === 0) return;
+
+        setIsPublishing(true);
+        setPublishError(null);
+
+        try {
+            const post = await createPost.mutateAsync({
+                content: content,
+            });
+            const postId = post.id;
+
+            if (media.length > 0) {
+                const uploadedMedia = await uploadAllMedia(
+                    media,
+                    (input) => createUploadUrl.mutateAsync(input),
+                );
+
+                await confirmUpload.mutateAsync({
+                    postId,
+                    media: uploadedMedia,
+                });
+            }
+
+            await confirmStatus.mutateAsync({
+                postId,
+                status: mode === 'schedule' ? 'scheduled' : 'draft',
+            });
+            clearMedia();
+        } catch (err) {
+            setPublishError(err instanceof Error ? err.message : 'Something went wrong');
+        } finally {
+            setIsPublishing(false);
+        }
+    };
 
     const selectedAccounts = connectedAccounts.filter(ca => selectedAccountIds.includes(ca.id));
 
@@ -187,8 +232,25 @@ export default function PostContent() {
                 </div>
             </div>
             <div className="flex w-full justify-end items-center mt-6 gap-2" >
-                <Button variant={"secondary"}>Save as Draft</Button>
-                <Button variant={'default'}>Schedule</Button>
+                {publishError && (
+                    <p className="text-sm text-destructive mr-auto">{publishError}</p>
+                )}
+                <Button
+                    variant={"secondary"}
+                    disabled={isPublishing}
+                    onClick={() => handlePublish('draft')}
+                >
+                    {isPublishing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    Save as Draft
+                </Button>
+                <Button
+                    variant={'default'}
+                    disabled={isPublishing || selectedAccountIds.length === 0}
+                    onClick={() => handlePublish('schedule')}
+                >
+                    {isPublishing ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    Schedule
+                </Button>
             </div>
         </div >
     )

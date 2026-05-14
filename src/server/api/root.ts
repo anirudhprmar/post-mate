@@ -5,6 +5,8 @@ import { inspirationRouter } from "~/server/api/routers/inspiration";
 import { connectedAccountRouter } from "~/server/api/routers/connectedAccount";
 import { subscriptionRouter } from "~/server/api/routers/subscription";
 import { userRouter } from "./routers/user";
+import { mediaRouter } from "./routers/media";
+import { postRouter } from "./routers/post";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +20,8 @@ export const appRouter = createTRPCRouter({
     inspiration: inspirationRouter,
     connectedAccount: connectedAccountRouter,
     subscription: subscriptionRouter,
+    media: mediaRouter,
+    post: postRouter,
 });
 
 // export type definition of API
