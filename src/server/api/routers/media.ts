@@ -24,7 +24,7 @@ export const mediaRouter = createTRPCRouter({
             fileType: z.enum(["image", "video"]),
         }))
         .mutation(async ({ input, ctx }) => {
-            const key = `${ctx.session.user.id}/${Date.now()}-${input.fileName}`;
+            const key = `${ctx.session.user.id}/${Date.now()}-${input.fileName}`; //images/input.filename 
             const command = new PutObjectCommand({
                 Bucket: env.R2_BUCKET_NAME,
                 Key: key,

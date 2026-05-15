@@ -1,8 +1,9 @@
 import { Inngest } from "inngest";
-import { env } from "~/env";
+
+const isDev = process.env.INNGEST_DEV === "1" || process.env.NODE_ENV === "development";
 
 export const inngest = new Inngest({
     id: "post-mate",
     name: "Postmate",
-    serveUrl: env.NEXT_PUBLIC_APP_URL,
+    isDev,
 });

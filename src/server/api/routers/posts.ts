@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { posts, post_targets } from "~/server/db/schema";
+import { inngest } from "~/lib/inngest";
 
 function htmlToPlainText(html: string): string {
     return html
@@ -63,5 +64,51 @@ export const postRouter = createTRPCRouter({
                 postId: input.postId,
                 connectedAccountId: input.connectedAccountId
             });
+        }),
+
+    /**
+     * Publish a post immediately to all its targets.
+     * Triggers the Inngest "post/publish" event which handles
+     * the actual platform API calls asynchronously.
+     */
+    publishNow: protectedProcedure
+        .input(z.object({
+            postId: z.string(),
+        }))
+        .mutation(async ({ input, ctx }) => {
+            // Verify the post belongs to this user
+            const post = await ctx.db.query.posts.findFirst({
+                where: eq(posts.id, input.postId),
+            });
+
+            if (!post) {
+                throw new Error("Post not found");
+            }
+
+            if (post.userId !== ctx.session.user.id) {
+                throw new Error("Unauthorized");
+            }
+
+            // Verify there are targets configured
+            const targets = await ctx.db.query.post_targets.findMany({
+                where: eq(post_targets.postId, input.postId),
+            });
+
+            if (targets.length === 0) {
+                throw new Error("No connected accounts selected for this post");
+            }
+
+            // Send the Inngest event to trigger async publishing
+            await inngest.send({
+                name: "post/publish",
+                data: { postId: input.postId },
+            });
+
+            // Update status to publishing
+            await ctx.db.update(posts).set({
+                status: "publishing",
+            }).where(eq(posts.id, input.postId));
+
+            return { success: true, postId: input.postId };
         }),
 })

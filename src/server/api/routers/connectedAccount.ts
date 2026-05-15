@@ -12,6 +12,13 @@ export const connectedAccountRouter = createTRPCRouter({
             orderBy: [desc(connectedAccount.createdAt)],
         });
     }),
+    getById: protectedProcedure
+        .input(z.object({ id: z.string() }))
+        .query(async ({ ctx, input }) => {
+            return ctx.db.query.connectedAccount.findFirst({
+                where: eq(connectedAccount.id, input.id),
+            });
+        }),
     syncFromOAuth: protectedProcedure
         .input(
             z.object({

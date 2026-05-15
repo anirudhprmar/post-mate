@@ -55,6 +55,7 @@ export const auth = betterAuth({
     twitter: {
       clientId: env.X_CLIENT_ID,
       clientSecret: env.X_CLIENT_SECRET,
+      scopes: ["tweet.read", "tweet.write", "users.read", "offline.access", "media.access"],
     },
   },
   account: {

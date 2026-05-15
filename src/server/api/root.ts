@@ -6,7 +6,7 @@ import { connectedAccountRouter } from "~/server/api/routers/connectedAccount";
 import { subscriptionRouter } from "~/server/api/routers/subscription";
 import { userRouter } from "./routers/user";
 import { mediaRouter } from "./routers/media";
-import { postRouter } from "./routers/post";
+import { postRouter } from "./routers/posts";
 
 /**
  * This is the primary router for your server.

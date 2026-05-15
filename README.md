@@ -1,7 +1,7 @@
 
 # TODO
 
-- [ ]- schedule / post now content using inggest
+- [X]- schedule / post now using Inngest
 - [ ]- platform word limit 
 - [ ]- add comments to main post
 

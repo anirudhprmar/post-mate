@@ -43,7 +43,6 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: z.string(),
     NEXT_PUBLIC_STARTER_ID: z.string(),
     NEXT_PUBLIC_STARTER_SLUG: z.string(),
-    NEXT_PUBLIC_CONVEX_URL: z.string(),
   },
 
   /**
@@ -63,7 +62,6 @@ export const env = createEnv({
     POLAR_SUCCESS_URL: process.env.POLAR_SUCCESS_URL,
     NEXT_PUBLIC_STARTER_ID: process.env.NEXT_PUBLIC_STARTER_ID,
     NEXT_PUBLIC_STARTER_SLUG: process.env.NEXT_PUBLIC_STARTER_SLUG,
-    NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
     LINKEDIN_CLIENT_ID: process.env.LINKEDIN_CLIENT_ID,
     LINKEDIN_CLIENT_SECRET: process.env.LINKEDIN_CLIENT_SECRET,
     X_CLIENT_ID: process.env.X_CLIENT_ID,
