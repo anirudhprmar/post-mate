@@ -24,7 +24,7 @@ const socialLinks = [
             </svg>
         ),
         href: 'https://x.com/app_postmate',
-        label: 'Twitter / X'
+        label: 'X'
     },
     {
         icon: (

@@ -5,7 +5,7 @@ import { Loader2, Plus, RefreshCcwDot, RefreshCcwIcon, Trash } from "lucide-reac
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { cn } from "~/lib/utils";
 
-const LINKABLE_PROVIDERS = new Set(["google", "linkedin", "instagram", "facebook", "twitter", "threads", "youtube"]) as Set<string>;
+const LINKABLE_PROVIDERS = new Set(["google", "linkedin", "instagram", "facebook", "x", "threads", "youtube"]) as Set<string>;
 import {
   Sheet,
   SheetContent,
@@ -13,7 +13,6 @@ import {
   SheetTitle,
 } from "~/components/ui/sheet";
 import { Button } from "~/components/ui/button";
-import { authClient } from "~/server/better-auth/client";
 import { toast } from "sonner";
 
 export interface Account {
@@ -157,27 +156,16 @@ export function PlatformCard({ platform }: { platform: Platform }) {
               disabled={loading}
               onClick={async () => {
                 const provider = id;
-                try {
-                  await authClient.linkSocial(
-                    {
-                      provider: provider as Parameters<typeof authClient.linkSocial>[0]["provider"],
-                      callbackURL: `/dashboard/connect?linked=${provider}`,
-                    },
-                    {
-                      onRequest: () => setLoading(true),
-                      onResponse: () => setLoading(false),
-                      onError: (ctx) => {
-                        setLoading(false);
-                        console.error("Link failed:", ctx.error);
-                        toast.error(ctx.error.message || `Failed to connect ${name}`);
-                      },
-                    },
-                  );
-                } catch (error) {
-                  setLoading(false);
-                  console.error("Link error:", error);
-                  toast.error("An unexpected error occurred");
+
+                // Supported platforms with custom OAuth flows
+                const SUPPORTED_CUSTOM_OAUTH = new Set(["x"]);
+                if (SUPPORTED_CUSTOM_OAUTH.has(provider)) {
+                  setLoading(true);
+                  window.location.href = `/api/social/${provider}/authorize`;
+                  return;
                 }
+
+                toast.info(`Integration for ${name} is coming soon!`);
               }}
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}

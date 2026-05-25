@@ -5,7 +5,7 @@ import {
   posts,
   post_targets,
 } from "~/server/db/schema";
-import { publishToTwitter } from "~/inngest/publishers/twitter";
+import { publishToX } from "~/inngest/publishers/x";
 import { publishToLinkedIn } from "~/inngest/publishers/linkedin";
 
 type PostMedia = {
@@ -95,9 +95,17 @@ export const publishPost = inngest.createFunction(
 
             switch (account.platform) {
               case "twitter": {
-                const result = await publishToTwitter(
+                // Extract OAuth 1.0a token secret from platformSpecificData
+                const platformData = account.platformSpecificData as { oauthTokenSecret?: string } | null;
+                const oauthTokenSecret = platformData?.oauthTokenSecret;
+                if (!oauthTokenSecret) {
+                  throw new Error("Missing OAuth token secret for X account");
+                }
+
+                const result = await publishToX(
                   post.content,
                   account.accessToken,
+                  oauthTokenSecret,
                   media.length > 0 ? media : undefined,
                 );
                 publishedUrl = result.publishedUrl;

@@ -1,2 +1,2 @@
-export { publishToTwitter } from "./twitter";
+export { publishToX } from "./x";
 export { publishToLinkedIn } from "./linkedin";

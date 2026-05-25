@@ -119,7 +119,7 @@ export default function PostEditor() {
             return;
         }
         if (platform === "x") {
-            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(content)}`;
+            const url = `https://x.com/intent/tweet?text=${encodeURIComponent(content)}`;
             window.open(url, "_blank", "noopener,noreferrer");
         } else {
             toast.info("Scheduling for this platform is coming soon! 🚀");
@@ -229,7 +229,7 @@ export default function PostEditor() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="linkedin">LinkedIn</SelectItem>
-                                        <SelectItem value="x">X (Twitter)</SelectItem>
+                                        <SelectItem value="x">X</SelectItem>
                                         <SelectItem value="threads">Threads</SelectItem>
                                         <SelectItem value="instagram">Instagram</SelectItem>
                                     </SelectContent>

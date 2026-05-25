@@ -13,7 +13,7 @@ import {
 
 export const ideaStatus = pgEnum("idea_status", ["raw", "refined", "drafting", "done"]);
 export const scheduleStatus = pgEnum("schedule_status", ["pending", "publishing", "published", "failed"]);
-export const platform = pgEnum("platform", ["instagram", "twitter", "facebook", "linkedin", "youtube", "threads"]);
+export const platform = pgEnum("platform", ["instagram", "x", "facebook", "linkedin", "youtube", "threads"]);
 export const postStatus = pgEnum("post_status", [
   "draft", "scheduled", "publishing", "published", "failed", "partially_failed"
 ]);

@@ -16,7 +16,7 @@ import { format } from "date-fns";
 import { inngest } from "~/lib/inngest";
 
 const platformIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
-    twitter: XIcon,
+    x: XIcon,
     linkedin: LinkedInIcon,
     facebook: FacebookIcon,
     instagram: InstagramIcon,
