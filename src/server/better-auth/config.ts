@@ -8,7 +8,6 @@ import { Polar } from "@polar-sh/sdk";
 import { account, subscription, session, user, verification } from '~/server/db/schema';
 import { env } from "~/env";
 import { db } from "~/server/db";
-import { genericOAuth } from "better-auth/plugins";
 
 function safeParseDate(value: string | Date | null | undefined): Date | null {
   if (!value) return null;
@@ -47,39 +46,9 @@ export const auth = betterAuth({
       prompt: "select_account",
       clientId: env.AUTH_GOOGLE_ID,
       clientSecret: env.AUTH_GOOGLE_SECRET
-    },
-    linkedin: {
-      clientId: env.LINKEDIN_CLIENT_ID,
-      clientSecret: env.LINKEDIN_CLIENT_SECRET
-    },
-    twitter: {
-      clientId: env.X_CLIENT_ID,
-      clientSecret: env.X_CLIENT_SECRET,
-      scopes: ["tweet.read", "tweet.write", "users.read", "offline.access", "media.access"],
-    },
-  },
-  account: {
-    accountLinking: {
-      enabled: true,
-      allowDifferentEmails: true,
-      trustedProviders: ["linkedin", "twitter", "instagram"],
-    },
+    }
   },
   plugins: [
-    genericOAuth({
-      config: [
-        {
-          providerId: "instagram",
-          clientId: env.INSTA_CLIENT_ID,
-          clientSecret: env.INSTA_CLIENT_SECRET,
-          authorizationUrl: "https://www.instagram.com/oauth/authorize",
-          tokenUrl: "https://api.instagram.com/oauth/access_token",
-          scopes: [
-            "public_profile"
-          ],
-        },
-      ],
-    }),
     polar({
       client: polarClient,
       createCustomerOnSignUp: true,

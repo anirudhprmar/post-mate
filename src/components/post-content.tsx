@@ -93,13 +93,6 @@ export default function PostContent() {
                 });
             }
 
-            await inngest.send({
-                name: "post.publish",
-                data: {
-                    postId,
-                    scheduledFor: mode === 'schedule' ? scheduledDate : undefined,
-                },
-            });
 
             reset();
         } catch (err) {
