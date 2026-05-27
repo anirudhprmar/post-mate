@@ -94,6 +94,7 @@ export const publishPost = inngest.createFunction(
             let publishedUrl: string;
 
             switch (account.platform) {
+              case "x":
               case "twitter": {
                 // Extract OAuth 1.0a token secret from platformSpecificData
                 const platformData = account.platformSpecificData as { oauthTokenSecret?: string } | null;

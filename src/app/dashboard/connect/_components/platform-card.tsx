@@ -158,7 +158,7 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                 const provider = id;
 
                 // Supported platforms with custom OAuth flows
-                const SUPPORTED_CUSTOM_OAUTH = new Set(["x"]);
+                const SUPPORTED_CUSTOM_OAUTH = new Set(["x", "linkedin", "instagram"]);
                 if (SUPPORTED_CUSTOM_OAUTH.has(provider)) {
                   setLoading(true);
                   window.location.href = `/api/social/${provider}/authorize`;

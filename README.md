@@ -2,11 +2,9 @@
 # TODO
 
 
-- [ ]- check x auth flow to get the correct access tokens
-- [ ]- fix the leak in LinkedIn posting maybe same issue of access token as of x
-- [ ]- get scheduling working
-
-- [ ]- fix x and linked api for posting
+- [X]- check x auth flow to get the correct access tokens
+- [X]- fix x and linked api for posting
+- [X]- fix the leak in LinkedIn posting maybe same issue of access token as of x
 - [ ]- add bluesky/ insta / threads / facebook / YT support 
 - [ ]- move scheduling from inngest to BullMQ with redis
 - [ ]- platform word limit 

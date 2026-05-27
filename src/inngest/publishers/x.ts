@@ -1,5 +1,5 @@
 import { env } from "~/env";
-import { buildOAuthHeader } from "~/lib/x-oauth";
+import { buildOAuthHeader } from "~/lib/social-oauth/x-oauth";
 
 interface XPublishResult {
   publishedUrl: string;

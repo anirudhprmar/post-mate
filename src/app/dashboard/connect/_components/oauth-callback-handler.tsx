@@ -20,9 +20,14 @@ export function OAuthCallbackHandler() {
 
     // Invalidate the connected accounts query so the UI refreshes
     void utils.connectedAccount.getAll.invalidate();
-    
+
     // Normalize platform name for toast display
-    const platformDisplay = connected === "twitter" ? "X" : connected;
+    const platformDisplay =
+      connected === "x"
+        ? "X"
+        : connected === "linkedin"
+          ? "LinkedIn"
+          : connected.charAt(0).toUpperCase() + connected.slice(1);
     toast.success(`${platformDisplay} connected!`);
 
     // Clean up the URL
