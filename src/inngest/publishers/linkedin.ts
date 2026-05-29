@@ -3,9 +3,7 @@ interface LinkedInPublishResult {
   platformPostId: string;
 }
 
-interface LinkedInImageUploadResult {
-  asset: string;
-}
+
 
 /**
  * Register an image upload with LinkedIn and upload the binary.

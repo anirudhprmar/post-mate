@@ -19,7 +19,7 @@ export async function GET(
     // Verify the user is logged in
     const session = await getSession();
     if (!session?.user) {
-        return NextResponse.redirect(new URL("/login", request.url));
+        return NextResponse.redirect(new URL("/login", env.NEXT_PUBLIC_APP_URL));
     }
 
     const { searchParams } = new URL(request.url);
@@ -29,7 +29,7 @@ export async function GET(
     if (errorParam) {
         console.error(`[OAuth Callback] Platform ${platform} returned error:`, errorParam, errorDescription);
         return NextResponse.redirect(
-            new URL(`/dashboard/connect?error=${errorParam}`, request.url),
+            new URL(`/dashboard/connect?error=${errorParam}`, env.NEXT_PUBLIC_APP_URL),
         );
     }
 
@@ -42,7 +42,7 @@ export async function GET(
         const storedToken = request.cookies.get("x_oauth_token")?.value;
         if (!storedToken || storedToken !== oauth_token) {
             return NextResponse.redirect(
-                new URL("/dashboard/connect?error=token_mismatch", request.url),
+                new URL("/dashboard/connect?error=token_mismatch", env.NEXT_PUBLIC_APP_URL),
             );
         }
 
@@ -56,7 +56,7 @@ export async function GET(
             const errorText = await tokenResponse.text();
             console.error("[X OAuth] access_token failed:", tokenResponse.status, errorText);
             return NextResponse.redirect(
-                new URL("/dashboard/connect?error=x_token_exchange_failed", request.url),
+                new URL("/dashboard/connect?error=x_token_exchange_failed", env.NEXT_PUBLIC_APP_URL),
             );
         }
 
@@ -70,7 +70,7 @@ export async function GET(
 
         if (!accessToken || !accessSecret || !xUserId) {
             return NextResponse.redirect(
-                new URL("/dashboard/connect?error=x_missing_tokens", request.url),
+                new URL("/dashboard/connect?error=x_missing_tokens", env.NEXT_PUBLIC_APP_URL),
             );
         }
 
@@ -139,7 +139,7 @@ export async function GET(
 
         // Clear cookies and redirect
         const redirectResponse = NextResponse.redirect(
-            new URL("/dashboard/connect?connected=x", request.url),
+            new URL("/dashboard/connect?connected=x", env.NEXT_PUBLIC_APP_URL),
         );
         redirectResponse.cookies.delete("x_oauth_token");
         redirectResponse.cookies.delete("x_oauth_token_secret");
@@ -150,14 +150,14 @@ export async function GET(
     // ── Generic OAuth 2.0 Callback (LinkedIn, Instagram, etc.) ────────────
     if (!VALID_PLATFORMS.includes(platform as any)) {
         return NextResponse.redirect(
-            new URL(`/dashboard/connect?error=invalid_platform`, request.url),
+            new URL(`/dashboard/connect?error=invalid_platform`, env.NEXT_PUBLIC_APP_URL),
         );
     }
 
     const config = PLATFORM_OAUTH_CONFIGS[platform];
     if (!config) {
         return NextResponse.redirect(
-            new URL(`/dashboard/connect?error=platform_not_configured`, request.url),
+            new URL(`/dashboard/connect?error=platform_not_configured`, env.NEXT_PUBLIC_APP_URL),
         );
     }
 
@@ -166,7 +166,7 @@ export async function GET(
 
     if (!code || !state) {
         return NextResponse.redirect(
-            new URL(`/dashboard/connect?error=missing_code_or_state`, request.url),
+            new URL(`/dashboard/connect?error=missing_code_or_state`, env.NEXT_PUBLIC_APP_URL),
         );
     }
 
@@ -175,7 +175,7 @@ export async function GET(
     if (!stateUserId || stateUserId !== session.user.id) {
         console.error("[OAuth Callback] State verification failed", { stateUserId, sessionUserId: session.user.id });
         return NextResponse.redirect(
-            new URL(`/dashboard/connect?error=state_verification_failed`, request.url),
+            new URL(`/dashboard/connect?error=state_verification_failed`, env.NEXT_PUBLIC_APP_URL),
         );
     }
 
@@ -186,7 +186,7 @@ export async function GET(
         if (!codeVerifier) {
             console.error(`[OAuth Callback] Missing code verifier for ${platform}`);
             return NextResponse.redirect(
-                new URL(`/dashboard/connect?error=missing_code_verifier`, request.url),
+                new URL(`/dashboard/connect?error=missing_code_verifier`, env.NEXT_PUBLIC_APP_URL),
             );
         }
     }
@@ -216,7 +216,7 @@ export async function GET(
         const errorText = await tokenResponse.text();
         console.error(`[OAuth Callback] ${platform} token exchange failed:`, tokenResponse.status, errorText);
         return NextResponse.redirect(
-            new URL(`/dashboard/connect?error=token_exchange_failed`, request.url),
+            new URL(`/dashboard/connect?error=token_exchange_failed`, env.NEXT_PUBLIC_APP_URL),
         );
     }
 
@@ -235,7 +235,7 @@ export async function GET(
 
     if (!accessToken) {
         return NextResponse.redirect(
-            new URL(`/dashboard/connect?error=missing_access_token`, request.url),
+            new URL(`/dashboard/connect?error=missing_access_token`, env.NEXT_PUBLIC_APP_URL),
         );
     }
 
@@ -256,7 +256,7 @@ export async function GET(
     } catch (e) {
         console.error(`[OAuth Callback] Failed to fetch profile for ${platform}:`, e);
         return NextResponse.redirect(
-            new URL(`/dashboard/connect?error=profile_fetch_failed`, request.url),
+            new URL(`/dashboard/connect?error=profile_fetch_failed`, env.NEXT_PUBLIC_APP_URL),
         );
     }
 
@@ -299,7 +299,7 @@ export async function GET(
 
     // Clean up cookies and redirect
     const redirectResponse = NextResponse.redirect(
-        new URL(`/dashboard/connect?connected=${platform}`, request.url),
+        new URL(`/dashboard/connect?connected=${platform}`, env.NEXT_PUBLIC_APP_URL),
     );
 
     if (config.usePKCE) {

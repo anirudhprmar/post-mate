@@ -38,7 +38,7 @@ const config = {
         formats: ["image/avif", "image/webp"],
     },
 
-    allowedDevOrigins: []
+    allowedDevOrigins: ['']
 };
 
 export default config;

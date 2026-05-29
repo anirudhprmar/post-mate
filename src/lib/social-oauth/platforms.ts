@@ -41,11 +41,16 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
   },
   instagram: {
     platformId: "instagram",
-    authorizationUrl: "https://api.instagram.com/oauth/authorize",
+    authorizationUrl: "https://www.instagram.com/oauth/authorize",
     tokenUrl: "https://api.instagram.com/oauth/access_token",
     // Instagram Graph / Basic Display API user info
     userInfoUrl: "https://graph.instagram.com/me?fields=id,username",
-    scopes: ["instagram_graph_user_profile"],
+    scopes: [
+      "instagram_business_basic",
+      "instagram_business_content_publish",
+      "instagram_business_manage_comments",
+      "instagram_business_manage_messages"
+    ],
     clientId: env.INSTA_CLIENT_ID,
     clientSecret: env.INSTA_CLIENT_SECRET,
     usePKCE: false,

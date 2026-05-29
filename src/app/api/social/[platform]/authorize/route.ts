@@ -114,8 +114,12 @@ export async function GET(
     redirectUrl.searchParams.set("response_type", "code");
     redirectUrl.searchParams.set("client_id", config.clientId);
     redirectUrl.searchParams.set("redirect_uri", `${env.NEXT_PUBLIC_APP_URL}/api/social/${platform}/callback`);
-    redirectUrl.searchParams.set("scope", config.scopes.join(" "));
+    redirectUrl.searchParams.set("scope", config.scopes.join(","));
     redirectUrl.searchParams.set("state", state);
+    if (platform === "instagram") {
+        redirectUrl.searchParams.set("enable_fb_login", "0");
+        redirectUrl.searchParams.set("force_authentication", "1");
+    }
 
     let codeVerifier: string | undefined;
     if (config.usePKCE) {
