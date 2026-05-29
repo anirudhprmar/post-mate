@@ -206,7 +206,7 @@ export default function CreatePostPage() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="linkedin">LinkedIn</SelectItem>
-                                        <SelectItem value="x">X (Twitter)</SelectItem>
+                                        <SelectItem value="x">X</SelectItem>
                                         <SelectItem value="threads">Threads</SelectItem>
                                         <SelectItem value="instagram">Instagram</SelectItem>
                                         <SelectItem value="youtube">YouTube</SelectItem>

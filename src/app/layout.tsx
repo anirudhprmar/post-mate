@@ -7,6 +7,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { Providers } from "./_components/provider";
 import { Toaster } from "~/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next"
+import { TooltipProvider } from "~/components/ui/tooltip";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -81,7 +82,9 @@ export default function RootLayout({
       <body>
         <TRPCReactProvider>
           <Providers>
-            {children}
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
             <Toaster position="top-center" />
             <Analytics />
           </Providers>

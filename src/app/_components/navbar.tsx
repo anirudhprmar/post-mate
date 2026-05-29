@@ -4,6 +4,8 @@ import { Button } from '~/components/ui/button'
 
 const navLinks = [
     { label: 'Demo', href: '#demo' },
+    { label: 'Reviews', href: '#reviews' },
+    { label: 'Features', href: '#features' },
     { label: 'Blog', href: '#blog' },
     { label: 'Pricing', href: '#pricing' },
 ]
@@ -38,13 +40,11 @@ export default function Navbar() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2 shrink-0">
-                        {/* <Button asChild variant="default" size="lg" className="rounded-md">
+                        <Button asChild variant="outline" size="lg" className="rounded-md ">
                             <Link href="/login" >Login</Link>
-                        </Button> */}
-                        <Button asChild variant="outline" size="lg" className="rounded-md">
-                            <Link href="#waitlist" className="">
-                                Join the waitlist
-                            </Link>
+                        </Button>
+                        <Button asChild variant="default" size="lg" className="rounded-md">
+                            <Link href="#">Get started for free</Link>
                         </Button>
                     </div>
 

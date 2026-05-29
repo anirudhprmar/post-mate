@@ -68,7 +68,7 @@ export default function DraftsPage() {
                                     All Drafts
                                 </TabsTrigger>
                                 <TabsTrigger value="x" className="rounded-full px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all duration-300">
-                                    X (Twitter)
+                                    X
                                 </TabsTrigger>
                                 <TabsTrigger value="linkedin" className="rounded-full px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all duration-300">
                                     LinkedIn
@@ -154,7 +154,7 @@ export default function DraftsPage() {
                                                     ))}
                                                 </div>
                                             ) : (
-                                                <div className="flex flex-col items-center justify-center py-20 px-4 text-center border border-dashed border-border/50 rounded-[2rem] bg-background/20 backdrop-blur-sm mx-2">
+                                                <div className="flex flex-col items-center justify-center py-20 px-4 text-center border border-dashed border-border/50 rounded-4xl bg-background/20 backdrop-blur-sm mx-2">
                                                     <div className="h-16 w-16 rounded-3xl bg-muted/50 flex items-center justify-center text-muted-foreground mb-4">
                                                         <PenTool className="h-6 w-6" />
                                                     </div>

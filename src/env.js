@@ -18,9 +18,19 @@ export const env = createEnv({
       .default("development"),
     AUTH_GOOGLE_ID: z.string(),
     AUTH_GOOGLE_SECRET: z.string(),
+    LINKEDIN_CLIENT_ID: z.string(),
+    LINKEDIN_CLIENT_SECRET: z.string(),
+    X_CONSUMER_KEY: z.string(),
+    X_CONSUMER_SECRET: z.string(),
+    INSTA_CLIENT_ID: z.string(),
+    INSTA_CLIENT_SECRET: z.string(),
     POLAR_ACCESS_TOKEN: z.string(),
     POLAR_WEBHOOK_SECRET: z.string(),
     POLAR_SUCCESS_URL: z.string(),
+    R2_ACCESS_KEY_ID: z.string(),
+    R2_SECRET_ACCESS_KEY: z.string(),
+    R2_ENDPOINT: z.string(),
+    R2_BUCKET_NAME: z.string(),
   },
 
   /**
@@ -33,7 +43,6 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: z.string(),
     NEXT_PUBLIC_STARTER_ID: z.string(),
     NEXT_PUBLIC_STARTER_SLUG: z.string(),
-    NEXT_PUBLIC_CONVEX_URL: z.string(),
   },
 
   /**
@@ -53,7 +62,16 @@ export const env = createEnv({
     POLAR_SUCCESS_URL: process.env.POLAR_SUCCESS_URL,
     NEXT_PUBLIC_STARTER_ID: process.env.NEXT_PUBLIC_STARTER_ID,
     NEXT_PUBLIC_STARTER_SLUG: process.env.NEXT_PUBLIC_STARTER_SLUG,
-    NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
+    LINKEDIN_CLIENT_ID: process.env.LINKEDIN_CLIENT_ID,
+    LINKEDIN_CLIENT_SECRET: process.env.LINKEDIN_CLIENT_SECRET,
+    X_CONSUMER_KEY: process.env.X_CONSUMER_KEY,
+    X_CONSUMER_SECRET: process.env.X_CONSUMER_SECRET,
+    INSTA_CLIENT_ID: process.env.INSTA_CLIENT_ID,
+    INSTA_CLIENT_SECRET: process.env.INSTA_CLIENT_SECRET,
+    R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID,
+    R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,
+    R2_ENDPOINT: process.env.R2_ENDPOINT,
+    R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

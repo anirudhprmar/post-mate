@@ -1,13 +1,12 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { ideaRouter } from "~/server/api/routers/idea";
 import { draftRouter } from "~/server/api/routers/draft";
-import { scheduledPostRouter } from "~/server/api/routers/scheduledPost";
-import { nicheRouter } from "~/server/api/routers/niche";
 import { inspirationRouter } from "~/server/api/routers/inspiration";
 import { connectedAccountRouter } from "~/server/api/routers/connectedAccount";
-import { dashboardRouter } from "~/server/api/routers/dashboard";
 import { subscriptionRouter } from "~/server/api/routers/subscription";
 import { userRouter } from "./routers/user";
+import { mediaRouter } from "./routers/media";
+import { postRouter } from "./routers/posts";
 
 /**
  * This is the primary router for your server.
@@ -18,12 +17,11 @@ export const appRouter = createTRPCRouter({
     user: userRouter,
     idea: ideaRouter,
     draft: draftRouter,
-    scheduledPost: scheduledPostRouter,
-    niche: nicheRouter,
     inspiration: inspirationRouter,
     connectedAccount: connectedAccountRouter,
-    dashboard: dashboardRouter,
     subscription: subscriptionRouter,
+    media: mediaRouter,
+    post: postRouter,
 });
 
 // export type definition of API

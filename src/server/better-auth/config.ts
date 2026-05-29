@@ -97,11 +97,15 @@ export const auth = betterAuth({
               try {
                 // STEP 1: Extract user ID from customer data
                 const userId = data.customer?.externalId;
+                if (!userId || !data.checkoutId) {
+                  console.warn("No user or checkout found", { userId, checkoutId: data.checkoutId });
+                  return;
+                }
                 // STEP 2: Build subscription data
                 const subscriptionData = {
                   id: data.id,
                   createdAt: new Date(data.createdAt),
-                  modifiedAt: safeParseDate(data.modifiedAt),
+                  updatedAt: safeParseDate(data.modifiedAt),
                   amount: data.amount,
                   currency: data.currency,
                   recurringInterval: data.recurringInterval,
@@ -118,7 +122,7 @@ export const auth = betterAuth({
                   customerId: data.customerId,
                   productId: data.productId,
                   discountId: data.discountId ?? null,
-                  checkoutId: data.checkoutId ?? "",
+                  checkoutId: data.checkoutId,
                   customerCancellationReason:
                     data.customerCancellationReason ?? null,
                   customerCancellationComment:
@@ -141,7 +145,7 @@ export const auth = betterAuth({
                   .onConflictDoUpdate({
                     target: subscription.id,
                     set: {
-                      modifiedAt: subscriptionData.modifiedAt ?? new Date(),
+                      updatedAt: subscriptionData.updatedAt ?? new Date(),
                       amount: subscriptionData.amount,
                       currency: subscriptionData.currency,
                       recurringInterval: subscriptionData.recurringInterval,
