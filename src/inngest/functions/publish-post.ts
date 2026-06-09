@@ -7,6 +7,7 @@ import {
 } from "~/server/db/schema";
 import { publishToX } from "~/inngest/publishers/x";
 import { publishToLinkedIn } from "~/inngest/publishers/linkedin";
+import { publishToInsta } from "~/inngest/publishers/instagram";
 
 type PostMedia = {
   url: string;
@@ -118,6 +119,37 @@ export const publishPost = inngest.createFunction(
                   account.accessToken,
                   account.accountId,
                   media.length > 0 ? media : undefined,
+                );
+                publishedUrl = result.publishedUrl;
+                break;
+              }
+
+              case "instagram": {
+                if (media.length === 0) {
+                  throw new Error("Instagram requires at least one image or video to publish");
+                }
+
+                let mediaType: "REELS" | "CAROUSEL" | "STORIES" | "IMAGE";
+                if (media.length > 1) {
+                  mediaType = "CAROUSEL";
+                } else if (media[0]?.type === "video") {
+                  mediaType = "REELS";
+                } else {
+                  mediaType = "IMAGE";
+                }
+
+                const result = await publishToInsta(
+                  mediaType,
+                  post.content,
+                  account.accessToken,
+                  account.accountId,
+                  media.map((m) => ({
+                    url: m.url,
+                    key: m.key,
+                    type: m.type,
+                    mimeType: m.mimeType,
+                    coverUrl: m.thumbnailUrl,
+                  })),
                 );
                 publishedUrl = result.publishedUrl;
                 break;

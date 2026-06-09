@@ -38,7 +38,7 @@ const config = {
         formats: ["image/avif", "image/webp"],
     },
 
-    allowedDevOrigins: ['']
+    allowedDevOrigins: ['440a-2405-201-3007-a8ac-2cfb-d137-1a8f-5f63.ngrok-free.app']
 };
 
 export default config;
