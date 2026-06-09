@@ -1,29 +1,18 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Plus_Jakarta_Sans, IBM_Plex_Mono, Lora } from "next/font/google";
+import { Inter, Noto_Serif } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { Providers } from "./_components/provider";
 import { Toaster } from "~/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next"
 import { TooltipProvider } from "~/components/ui/tooltip";
+import { cn } from "~/lib/utils";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
+const notoSerifHeading = Noto_Serif({subsets:['latin'],variable:'--font-heading'});
 
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  variable: "--font-outfit",
-  weight: "400",
-});
-
-const lora = Lora({
-  subsets: ["latin"],
-  variable: "--font-outfit",
-});
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://postmate-one.vercel.app/"),
@@ -78,7 +67,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${ibmPlexMono.variable} ${lora.variable}`} suppressHydrationWarning>
+    <html lang="en" className={cn("font-sans", inter.variable, notoSerifHeading.variable)} suppressHydrationWarning>
       <body>
         <TRPCReactProvider>
           <Providers>

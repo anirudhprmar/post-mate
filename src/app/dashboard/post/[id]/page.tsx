@@ -29,7 +29,7 @@ const draftStatusStyles: Record<DraftStatus, string> = {
     writing: "bg-amber-500/10 text-amber-600 border-amber-500/20 data-[active=true]:bg-amber-500 data-[active=true]:text-white",
     review: "bg-blue-500/10 text-blue-600 border-blue-500/20 data-[active=true]:bg-blue-500 data-[active=true]:text-white",
     ready: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20 data-[active=true]:bg-emerald-500 data-[active=true]:text-white",
-    published: "bg-violet-500/10 text-violet-600 border-violet-500/20 data-[active=true]:bg-violet-500 data-[active=true]:text-white",
+    published: "bg-teal-500/10 text-teal-600 border-teal-500/20 data-[active=true]:bg-teal-500 data-[active=true]:text-white",
 };
 
 export default function PostEditor() {
