@@ -1,55 +1,70 @@
-import Link from 'next/link'
-import React from 'react'
-import { Button } from '~/components/ui/button'
+import Link from "next/link";
+import { Button } from "~/components/ui/button";
+import { cn } from "~/lib/utils";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "~/components/ui/navigation-menu";
+import Image from "next/image";
 
-const navLinks = [
-    { label: 'Demo', href: '#demo' },
-    { label: 'Reviews', href: '#reviews' },
-    { label: 'Features', href: '#features' },
-    { label: 'Blog', href: '#blog' },
-    { label: 'Pricing', href: '#pricing' },
-]
+const navItems = [
+    { label: "Demo" },
+    { label: "Features"},
+    // { label: "Download", hasChevron: false },
+    {label: "Blog"},
+    { label: "Pricing" },
+];
 
 export default function Navbar() {
     return (
-        <header className="fixed z-50 top-6 right-0 left-0 w-full px-4">
-            <nav className="mx-auto w-full px-5 py-2.5">
-                <div className="flex items-center justify-between gap-6">
+        <header className="fixed top-0 z-50 right-0 left-0 w-full">
+        <nav className="relative flex items-center justify-between w-full h-20 bg-muted px-5 border-b border-dashed">
 
-                    <div className='flex items-center gap-2.5 shrink-0'>
+            <div>
+                <Link href="/" className="flex items-center">
+                    <Image
+                    src={'/pmlogo.png'}
+                    alt="logo"
+                    width={50}
+                    height={50}
+                    />
+                    <p className="text-xl font-bold tracking-tight text-foreground select-none">
+                        Postmate
+                    </p>
+                </Link>
+            </div>
 
-                        {/* Brand */}
-                        <Link href="/" className="flex items-center gap-2.5 shrink-0">
-                            <p className="font-bold text-2xl tracking-tight">post mate</p>
-                        </Link>
+            {/* Center Navigation - Mute others hover effect */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group/nav hidden md:flex items-center gap-5">
+                {navItems.map((item) => (
+                    <Link
+                        key={item.label}
+                        href="#"
+                        className={cn(
+                            "flex items-center gap-1.5 text-[15px] font-medium transition-all duration-300 ease-out",
+                            "text-foreground group-hover/nav:text-foreground/30 hover:text-foreground"
+                        )}
+                    >
+                        {item.label}
+                    </Link>
+                ))}
+            </div>
 
-                        {/* Nav links */}
-                        <ul className="hidden group/nav md:flex items-center justify-center gap-6 px-4 py-1 rounded-md border border-border bg-muted/70 backdrop-blur-xs">
-                            {navLinks.map(({ label, href }) => (
-                                <li key={label}>
-                                    <Link
-                                        href={href}
-                                        className="text-sm font-normal text-foreground transition-colors group-hover/nav:text-muted-foreground hover:text-foreground"
-                                    >
-                                        {label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-2 shrink-0">
-                        <Button asChild variant="outline" size="lg" className="rounded-md ">
-                            <Link href="/login" >Login</Link>
-                        </Button>
-                        <Button asChild variant="default" size="lg" className="rounded-md">
-                            <Link href="#">Get started for free</Link>
-                        </Button>
-                    </div>
-
-                </div>
-            </nav>
+            {/* Right Actions */}
+            <div className="flex items-center gap-3">
+                <Button
+                    variant="secondary"
+                    size={'lg'}
+                    className="rounded-md bg-zinc-200/50"
+                >
+                    <Link href="/login">Log in</Link>
+                </Button>
+                <Button
+                    variant={'default'}
+                    size="lg"
+                    className="rounded-md"
+                >
+                    Start for Free
+                </Button>
+            </div>
+        </nav>
         </header>
-    )
+    );
 }

@@ -48,10 +48,10 @@ export default function Features() {
     return (
         <section className="mt-10 min-h-screen">
             {/* Section header */}
-            <div className="flex flex-col items-center gap-3 text-center px-6">
+            <div className="flex flex-col items-center space-y-4 text-center px-6">
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">What you get</p>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl max-w-lg font-bold tracking-tight">Features designed for your success.</h2>
-                <p className="text-base sm:text-lg max-w-sm text-muted-foreground">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl max-w-lg font-normal tracking-normal leading-relaxed">Features designed for your success.</h2>
+                <p className="text-base sm:text-lg max-w-sm text-foreground/50 ">
                     From content creation to scheduling, we've got you covered.
                 </p>
             </div>

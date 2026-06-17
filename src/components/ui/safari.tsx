@@ -1,3 +1,4 @@
+import Image from "next/image"
 import type { HTMLAttributes } from "react"
 
 const SAFARI_WIDTH = 1203
@@ -43,54 +44,73 @@ export function Safari({
       }}
       {...props}
     >
-      {hasVideo && (
-        <div
-          className="pointer-events-none absolute z-0 overflow-hidden"
-          style={{
-            left: `${LEFT_PCT}%`,
-            top: `${TOP_PCT}%`,
-            width: `${WIDTH_PCT}%`,
-            height: `${HEIGHT_PCT}%`,
-          }}
-        >
-          <video
-            className="block size-full object-cover"
-            src={videoSrc}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-          />
-        </div>
-      )}
+      <Image
+        src="/3430.jpg"
+        alt="bg"
+        fill
+        loading="eager"
+        priority
+        className="object-cover rounded-md"
+      />
 
-      {!hasVideo && imageSrc && (
-        <div
-          className="pointer-events-none absolute z-0 overflow-hidden"
-          style={{
-            left: `${LEFT_PCT}%`,
-            top: `${TOP_PCT}%`,
-            width: `${WIDTH_PCT}%`,
-            height: `${HEIGHT_PCT}%`,
-            borderRadius: "0 0 11px 11px",
-          }}
-        >
-          <img
-            src={imageSrc}
-            alt=""
-            className="block size-full object-cover object-top"
-          />
-        </div>
-      )}
-
-      <svg
-        viewBox={`0 0 ${SAFARI_WIDTH} ${SAFARI_HEIGHT}`}
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="absolute inset-0 z-10 size-full"
-        style={{ transform: "translateZ(0)" }}
+      <div
+        className="absolute"
+        style={{
+          left: "3%",
+          top: "3%",
+          width: "94%",
+          height: "94%",
+        }}
       >
+        <div className="relative w-full h-full">
+          {hasVideo && (
+            <div
+              className="pointer-events-none absolute z-0 overflow-hidden"
+              style={{
+                left: 0,
+                top: `${TOP_PCT}%`,
+                width: "99.917%",
+                height: `${HEIGHT_PCT}%`,
+              }}
+            >
+              <video
+                className="block size-full object-cover"
+                src={videoSrc}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+              />
+            </div>
+          )}
+
+          {!hasVideo && imageSrc && (
+            <div
+              className="pointer-events-none absolute z-0 overflow-hidden"
+              style={{
+                left: 0,
+                top: `${TOP_PCT}%`,
+                width: "99.917%",
+                height: `${HEIGHT_PCT}%`,
+                borderRadius: "0 0 8px 8px",
+              }}
+            >
+              <img
+                src={imageSrc}
+                alt=""  
+                className="block size-full object-fill"
+              />
+            </div>
+          )}
+
+          <svg
+            viewBox={`0 0 ${SAFARI_WIDTH} ${SAFARI_HEIGHT}`}
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0 z-10 size-full"
+            style={{ transform: "translateZ(0)" }}
+          >
         <defs>
           <mask id="safariPunch" maskUnits="userSpaceOnUse">
             <rect
@@ -233,6 +253,8 @@ export function Safari({
           ) : null}
         </g>
       </svg>
+        </div>
+      </div>
     </div>
   )
 }
