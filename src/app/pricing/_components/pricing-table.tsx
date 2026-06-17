@@ -116,12 +116,12 @@ export default function PricingTable({ ref, initialIsAuthenticated, initialPurch
     return (
         <section id="pricing" className="w-full p-5" ref={ref}>
 
-            <div className="mb-8 flex items-center flex-col text-center gap-2 px-4">
+            <div className="mb-8 flex items-center flex-col text-center space-y-4 px-4">
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">Pricing</p>
-                <h2 className="font-semibold text-3xl sm:text-4xl md:text-5xl tracking-tight">
+                <h2 className="font-normal text-3xl sm:text-4xl md:text-5xl tracking-normal leading-relaxed">
                     Simple pricing, maximum value.
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl max-w-lg text-foreground/70 mt-2">Choose the plan that fits your goals</p>
+                <p className="text-base sm:text-lg md:text-xl max-w-lg text-foreground/50 mt-2">Choose the plan that fits your goals</p>
             </div>
 
             <Tabs defaultValue="monthly" className="w-full flex flex-col">

@@ -42,11 +42,11 @@ const faqs = [
 export default function FAQ() {
     return (
         <section className="mt-10 min-h-screen">
-            <div className="flex flex-col items-center justify-center gap-5 mx-auto max-w-7xl px-6 py-30 lg:px-8">
-                <div className="flex flex-col gap-4 text-center items-center justify-center px-4">
+            <div className="flex flex-col items-center justify-center gap-5 mx-auto max-w-7xl px-6 py-30 lg:px-8 space-y-6">
+                <div className="flex flex-col space-y-4 text-center items-center justify-center px-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-primary/70">faq</p>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl max-w-md text-center font-bold tracking-tight">Frequently Asked Questions</h2>
-                    <p className="text-base sm:text-lg md:text-xl max-w-lg text-foreground/70 mt-2">Everything you need to know about Postmate.</p>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl max-w-md text-center font-normal tracking-normal leading-relaxed">Frequently Asked Questions</h2>
+                    <p className="text-base font-medium sm:text-lg md:text-xl max-w-lg text-foreground/50 mt-2">Everything you need to know about Postmate.</p>
                 </div>
                 <div className='max-w-3xl w-full'>
                     <Accordion type="single" collapsible className="w-full gap-1">
