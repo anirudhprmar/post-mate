@@ -2,12 +2,10 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { streamText, convertToModelMessages } from "ai";
 import { NextResponse } from "next/server";
 
-// Initialize the Google provider with the API key
 const google = createGoogleGenerativeAI({
     apiKey: process.env.GOOGLE_API_KEY,
 });
 
-// Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {

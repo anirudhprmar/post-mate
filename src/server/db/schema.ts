@@ -11,12 +11,13 @@ import {
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 
-export const ideaStatus = pgEnum("idea_status", ["raw", "refined", "drafting", "done"]);
 export const scheduleStatus = pgEnum("schedule_status", ["pending", "publishing", "published", "failed"]);
 export const platform = pgEnum("platform", ["instagram", "x", "facebook", "linkedin", "youtube", "threads"]);
 export const postStatus = pgEnum("post_status", [
   "draft", "scheduled", "publishing", "published", "failed", "partially_failed"
 ]);
+
+export const draftStatus = pgEnum("draft_status", [ "published", "draft"]);
 
 export const targetStatus = pgEnum("target_status", [
   "pending", "publishing", "published", "failed", "skipped"
@@ -115,29 +116,12 @@ export const subscription = pgTable("subscription", {
   [index("subscription_userId_idx").on(t.userId),]
 ));
 
-export const idea = pgTable("idea", {
+export const drafts = pgTable("drafts", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
-  status: ideaStatus("status").notNull(),
-  createdAt: timestamp("created_at")
-    .$defaultFn(() => new Date())
-    .notNull(),
-  updatedAt: timestamp("updated_at")
-    .$defaultFn(() => new Date())
-    .$onUpdateFn(() => new Date())
-    .notNull(),
-}, (t) => ([
-  index("idea_userId_idx").on(t.userId),
-]));
-
-export const draft = pgTable("draft", {
-  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  ideaId: text("idea_id").notNull().references(() => idea.id, { onDelete: "cascade" }),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-  content: text("content").notNull(),
-  media: text("media"),
-  status: postStatus("status").notNull(),
+  media: jsonb("media").$type<{ url: string; key: string; type: "image" | "video"; mimeType?: string; thumbnailUrl?: string }[]>().default(sql`'[]'::jsonb`),
+  status: draftStatus("status").notNull(),
   platform: platform("platform").notNull(),
   createdAt: timestamp("created_at")
     .$defaultFn(() => new Date())
@@ -147,24 +131,7 @@ export const draft = pgTable("draft", {
     .$onUpdateFn(() => new Date())
     .notNull(),
 }, (t) => ([
-  index("draft_idea_id_idx").on(t.ideaId),
   index("draft_userId_idx").on(t.userId),
-]))
-
-
-export const inspiration = pgTable("inspiration", {
-  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-  postData: jsonb("post_data"),
-  createdAt: timestamp("created_at")
-    .$defaultFn(() => new Date())
-    .notNull(),
-  updatedAt: timestamp("updated_at")
-    .$defaultFn(() => new Date())
-    .$onUpdateFn(() => new Date())
-    .notNull(),
-}, (t) => ([
-  index("inspiration_userId_idx").on(t.userId),
 ]))
 
 export const connectedAccount = pgTable("connected_account", {
@@ -247,18 +214,9 @@ export const post_targets = pgTable("post_targets", {
 
 // ── Relations ────────────────────────────────────────────────────────
 
-export const ideaRelations = relations(idea, ({ one, many }) => ({
-  user: one(user, { fields: [idea.userId], references: [user.id] }),
-  drafts: many(draft),
-}))
 
-export const draftRelations = relations(draft, ({ one }) => ({
-  idea: one(idea, { fields: [draft.ideaId], references: [idea.id] }),
-  user: one(user, { fields: [draft.userId], references: [user.id] }),
-}))
-
-export const inspirationRelations = relations(inspiration, ({ one }) => ({
-  user: one(user, { fields: [inspiration.userId], references: [user.id] }),
+export const draftRelations = relations(drafts, ({ one }) => ({
+  user: one(user, { fields: [drafts.userId], references: [user.id] }),
 }))
 
 export const connectedAccountRelations = relations(connectedAccount, ({ one }) => ({
@@ -278,9 +236,7 @@ export const postTargetRelations = relations(post_targets, ({ one }) => ({
 export const userRelations = relations(user, ({ many }) => ({
   account: many(account),
   session: many(session),
-  ideas: many(idea),
-  drafts: many(draft),
-  inspirations: many(inspiration),
+  drafts: many(drafts),
   connectedAccounts: many(connectedAccount),
   subscriptions: many(subscription),
   posts: many(posts)

@@ -4,7 +4,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { posts, post_targets } from "~/server/db/schema";
 import { inngest } from "~/lib/inngest";
 
-function htmlToPlainText(html: string): string {
+export function htmlToPlainText(html: string): string {
     return html
         .replace(/<br\s*\/?>/gi, '\n')
         .replace(/<\/p>/gi, '\n')

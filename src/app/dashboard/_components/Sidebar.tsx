@@ -6,24 +6,17 @@ import Link from "next/link";
 import {
   type LucideIcon,
   Settings,
-  Calendar,
-  Home,
-  Sparkles,
-  RocketIcon,
   Bell,
   PenTool,
-  Users,
-  Sprout,
-  Waypoints,
-  FileText,
-  Lightbulb,
   PlusIcon,
   CalendarDays,
-  Cable,
-  LinkIcon
+  LinkIcon,
+  FlaskConical,
+  Calendar,
+  Scroll,
+  ThumbsUp
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { api } from "~/lib/api";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -34,6 +27,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog"
 import PostContent from "~/components/post-content";
+import Image from "next/image";
 
 interface NavItem {
   label: string;
@@ -48,24 +42,29 @@ const navItems: NavItem[] = [
     icon: CalendarDays,
   },
   {
-    label: "Ideas",
-    href: "/dashboard/ideas",
-    icon: Lightbulb,
+    label: "All Posts",
+    href: "/dashboard/all-posts",
+    icon: Scroll,
   },
   {
-    label: "Create",
-    href: "/dashboard/create",
-    icon: FileText,
+    label: "Scheduled",
+    href: "/dashboard/scheduled",
+    icon: Calendar,
   },
   {
-    label: "Inspiration",
-    href: "/dashboard/inspiration",
-    icon: Sparkles,
+    label: "Published",
+    href: "/dashboard/published",
+    icon: ThumbsUp,
   },
   {
     label: "Drafts",
     href: "/dashboard/drafts",
     icon: PenTool,
+  },
+  {
+    label: "Content Lab",
+    href: "/dashboard/create",
+    icon: FlaskConical,
   },
   {
     label: "Connections",
@@ -81,8 +80,15 @@ export default function DashboardSideBar() {
   return (
     <div className="hidden min-[1024px]:block group w-64 border-r h-full bg-background">
       <div className="flex h-full flex-col">
-        <div className="pl-4 pt-4 pb-2">
-          <p className="text-foreground font-bold text-xl">post mate</p>
+        <div className="pl-4 pt-4 pb-2 flex items-center gap-2">
+          <Image
+            src={'/pmlogo.png'}
+            alt="logo"
+            width={40}
+            height={40}
+            className="rounded-sm "
+          />
+          <p className="text-foreground font-bold text-xl">postmate</p>
         </div>
         <Dialog>
           <DialogTrigger asChild>

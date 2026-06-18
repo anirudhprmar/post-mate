@@ -15,7 +15,7 @@ import { uploadAllMedia } from "~/lib/upload-media";
 import { format } from "date-fns";
 import { inngest } from "~/lib/inngest";
 
-const platformIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
+const platformIcons: Record<string, React.FC<{size?: number} & React.SVGProps<SVGSVGElement>>> = {
     x: XIcon,
     linkedin: LinkedInIcon,
     facebook: FacebookIcon,
@@ -43,10 +43,19 @@ export default function PostContent() {
     const [scheduleMinute, setScheduleMinute] = useState("00");
 
     const createPost = api.post.createPost.useMutation();
+    const createDraft = api.draft.create.useMutation();
     const createUploadUrl = api.media.createUploadUrl.useMutation();
     const confirmUpload = api.media.confirmUpload.useMutation();
     const confirmStatus = api.post.confirmStatus.useMutation();
     const schedule = api.post.schedule.useMutation();
+
+    const selectedAccounts = connectedAccounts.filter(ca => selectedAccountIds.includes(ca.id));
+
+    const activePreviewId = selectedAccountIds.includes(userSelectedPreviewId as string)
+        ? userSelectedPreviewId
+        : (selectedAccounts[0]?.id ?? null);
+
+    const activePreviewAccount = selectedAccounts.find(a => a.id === activePreviewId);
 
     const handlePublish = async (mode: 'draft' | 'schedule') => {
         if (selectedAccountIds.length === 0) return;
@@ -63,6 +72,23 @@ export default function PostContent() {
         }
 
         try {
+            if (mode === "draft") {
+                const uploadedMedia = await uploadAllMedia(
+                    media,
+                    (input) => createUploadUrl.mutateAsync(input),
+                );
+
+                for (const account of selectedAccounts) {
+                    await createDraft.mutateAsync({
+                        content,
+                        platform: account.platform,
+                        media: uploadedMedia,
+                    });
+                }
+                reset();
+                return;
+            }
+
             const post = await createPost.mutateAsync({
                 content: content,
             });
@@ -77,7 +103,7 @@ export default function PostContent() {
                 await confirmUpload.mutateAsync({
                     postId,
                     media: uploadedMedia,
-                });
+                });  
             }
 
             await confirmStatus.mutateAsync({
@@ -92,8 +118,6 @@ export default function PostContent() {
                     connectedAccountId: account,
                 });
             }
-
-
             reset();
         } catch (err) {
             setPublishError(err instanceof Error ? err.message : 'Something went wrong');
@@ -101,14 +125,6 @@ export default function PostContent() {
             setPublishingMode(null);
         }
     };
-
-    const selectedAccounts = connectedAccounts.filter(ca => selectedAccountIds.includes(ca.id));
-
-    const activePreviewId = selectedAccountIds.includes(userSelectedPreviewId as string)
-        ? userSelectedPreviewId
-        : (selectedAccounts[0]?.id ?? null);
-
-    const activePreviewAccount = selectedAccounts.find(a => a.id === activePreviewId);
 
     return (
         <div className="flex flex-col justify-between">
@@ -136,7 +152,7 @@ export default function PostContent() {
                                             >
                                                 {account.avatarUrl ? (
                                                     <>
-                                                        <Image src={account.avatarUrl} alt={account.username} width={32} height={32} className="w-8 h-8 rounded-full" referrerPolicy="no-referrer" />
+                                                        <Image src={account.avatarUrl} alt={account.username} width={8} height={8} className="w-8 h-8 rounded-full" referrerPolicy="no-referrer" />
 
                                                     </>
                                                 ) : (
@@ -148,8 +164,8 @@ export default function PostContent() {
                                                     const Icon = platformIcons[account.platform.toLowerCase()];
                                                     if (!Icon) return null;
                                                     return (
-                                                        <div className="absolute -bottom-1 -right-1 bg-black/80 text-white rounded-full p-[3px]">
-                                                            <Icon className="w-2.5 h-2.5" />
+                                                        <div className="absolute -bottom-2 -right-3  rounded-full p-[4px]">
+                                                            <Icon className="w-3 h-3" />
                                                         </div>
                                                     );
                                                 })()}
