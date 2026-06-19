@@ -1,9 +1,3 @@
-
-
-export default function Home() {
-
-    return (
-        <div>
-        </div>
-    );
+export default function Dashboard() {
+  return <div>calender</div>;
 }

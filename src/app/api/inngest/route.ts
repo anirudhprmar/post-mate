@@ -5,6 +5,6 @@ import { checkScheduledPosts } from "~/inngest/functions/check-scheduled";
 import { refreshTokens } from "~/inngest/functions/refresh-tokens";
 
 export const { GET, POST, PUT } = serve({
-    client: inngest,
-    functions: [publishPost, checkScheduledPosts, refreshTokens]
+  client: inngest,
+  functions: [publishPost, checkScheduledPosts, refreshTokens],
 });

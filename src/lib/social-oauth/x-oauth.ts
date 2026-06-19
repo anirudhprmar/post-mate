@@ -1,8 +1,5 @@
 import crypto from "crypto";
 
-/**
- * RFC 3986 percent-encoding (required by OAuth 1.0a spec).
- */
 export function percentEncode(str: string): string {
   return encodeURIComponent(str)
     .replace(/!/g, "%21")
@@ -12,11 +9,6 @@ export function percentEncode(str: string): string {
     .replace(/\)/g, "%29");
 }
 
-/**
- * Build an OAuth 1.0a HMAC-SHA1 signature.
- *
- * @see https://developer.x.com/en/docs/authentication/oauth-1-0a/creating-a-signature
- */
 export function buildSignature(
   method: string,
   baseUrl: string,
@@ -43,10 +35,6 @@ export function buildSignature(
     .digest("base64");
 }
 
-/**
- * Build a complete OAuth 1.0a Authorization header for an authenticated API request.
- * Generates nonce + timestamp automatically.
- */
 export function buildOAuthHeader(
   method: string,
   url: string,

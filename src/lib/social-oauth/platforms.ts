@@ -49,7 +49,7 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
       "instagram_business_basic",
       "instagram_business_content_publish",
       "instagram_business_manage_comments",
-      "instagram_business_manage_messages"
+      "instagram_business_manage_messages",
     ],
     clientId: env.INSTA_CLIENT_ID,
     clientSecret: env.INSTA_CLIENT_SECRET,

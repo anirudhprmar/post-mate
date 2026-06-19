@@ -6,16 +6,19 @@ import { Inter, Noto_Serif } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import { Providers } from "./_components/provider";
 import { Toaster } from "~/components/ui/sonner";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
 
-const notoSerifHeading = Noto_Serif({subsets:['latin'],variable:'--font-heading'});
+const notoSerifHeading = Noto_Serif({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://postmate-one.vercel.app/"),
+  metadataBase: new URL("https://post-mate.xyz/"),
   alternates: {
     canonical: "/",
   },
@@ -24,10 +27,11 @@ export const metadata: Metadata = {
     "social media scheduling",
     "content ideas",
     "cross-platform posting",
-    "postmate"
+    "postmate",
   ],
   title: {
-    default: "post mate - best tool for creators who want to grow on social media.",
+    default:
+      "post mate - best tool for creators who want to grow on social media.",
     template: "%s | Postmate",
   },
   description:
@@ -67,13 +71,15 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable, notoSerifHeading.variable)} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn("font-sans", inter.variable, notoSerifHeading.variable)}
+      suppressHydrationWarning
+    >
       <body>
         <TRPCReactProvider>
           <Providers>
-            <TooltipProvider>
-              {children}
-            </TooltipProvider>
+            <TooltipProvider>{children}</TooltipProvider>
             <Toaster position="top-center" />
             <Analytics />
           </Providers>

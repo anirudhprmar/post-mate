@@ -12,12 +12,12 @@ import { postRouter } from "./routers/posts";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-    user: userRouter,
-    draft: draftRouter,
-    connectedAccount: connectedAccountRouter,
-    subscription: subscriptionRouter,
-    media: mediaRouter,
-    post: postRouter,
+  user: userRouter,
+  draft: draftRouter,
+  connectedAccount: connectedAccountRouter,
+  subscription: subscriptionRouter,
+  media: mediaRouter,
+  post: postRouter,
 });
 
 // export type definition of API

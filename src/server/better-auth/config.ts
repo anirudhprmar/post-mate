@@ -5,7 +5,13 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { polar, checkout, portal, webhooks } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
-import { account, subscription, session, user, verification } from '~/server/db/schema';
+import {
+  account,
+  subscription,
+  session,
+  user,
+  verification,
+} from "~/server/db/schema";
 import { env } from "~/env";
 import { db } from "~/server/db";
 
@@ -21,15 +27,11 @@ const polarClient = new Polar({
 });
 
 export const auth = betterAuth({
-  trustedOrigins: [
-    env.NEXT_PUBLIC_APP_URL
-  ],
-  allowedDevOrigins: [
-    env.NEXT_PUBLIC_APP_URL,
-  ],
+  trustedOrigins: [env.NEXT_PUBLIC_APP_URL],
+  allowedDevOrigins: [env.NEXT_PUBLIC_APP_URL],
   cookieCache: {
     enabled: true,
-    maxAge: 5 * 60, // Cache duration in seconds
+    maxAge: 5 * 60,
   },
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -38,15 +40,15 @@ export const auth = betterAuth({
       session,
       account,
       verification,
-      subscription
-    }
+      subscription,
+    },
   }),
   socialProviders: {
     google: {
       prompt: "select_account",
       clientId: env.AUTH_GOOGLE_ID,
-      clientSecret: env.AUTH_GOOGLE_SECRET
-    }
+      clientSecret: env.AUTH_GOOGLE_SECRET,
+    },
   },
   plugins: [
     polar({
@@ -73,7 +75,7 @@ export const auth = betterAuth({
             },
           ],
           successUrl: `${env.NEXT_PUBLIC_APP_URL}/${env.POLAR_SUCCESS_URL}`,
-          authenticatedUsersOnly: true
+          authenticatedUsersOnly: true,
         }),
         portal(),
         webhooks({
@@ -93,12 +95,14 @@ export const auth = betterAuth({
               type === "subscription.uncanceled" ||
               type === "subscription.updated"
             ) {
-
               try {
                 // STEP 1: Extract user ID from customer data
                 const userId = data.customer?.externalId;
                 if (!userId || !data.checkoutId) {
-                  console.warn("No user or checkout found", { userId, checkoutId: data.checkoutId });
+                  console.warn("No user or checkout found", {
+                    userId,
+                    checkoutId: data.checkoutId,
+                  });
                   return;
                 }
                 // STEP 2: Build subscription data
@@ -136,8 +140,6 @@ export const auth = betterAuth({
                   userId: userId,
                 };
 
-
-
                 // STEP 3: Use Drizzle's onConflictDoUpdate for proper upsert
                 await db
                   .insert(subscription)
@@ -170,8 +172,6 @@ export const auth = betterAuth({
                       userId: subscriptionData.userId,
                     },
                   });
-
-
               } catch (error) {
                 console.error(
                   "💥 Error processing subscription webhook:",
@@ -180,14 +180,12 @@ export const auth = betterAuth({
                 // Don't throw - let webhook succeed to avoid retries
               }
             }
-
           },
-
-        })
+        }),
       ],
     }),
-    nextCookies()]
+    nextCookies(),
+  ],
 });
-
 
 export type Session = typeof auth.$Infer.Session;
