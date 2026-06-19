@@ -61,7 +61,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
     {
       icon: Smile,
       action: () => {
-        editor?.chain().focus().insertContent(':').run()
+        editor?.chain().focus().insertContent(":").run();
       },
       active: false, // emoji has no "active" state
     },
@@ -73,8 +73,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   ];
 
   return (
-    <div className="flex flex-wrap items-center gap-1 border-t border-[#1e1e1c] px-3 py-2 min-h-[52px]">
-
+    <div className="flex min-h-[52px] flex-wrap items-center gap-1 border-t border-[#1e1e1c] px-3 py-2">
       {/* Formatting tools */}
       {tools.map(({ icon: Icon, action, active }, i) => (
         <Button
@@ -102,8 +101,10 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
           variant={"default"}
           size={"lg"}
           className={cn(
-            "rounded-full w-6 h-6 flex items-center justify-center transition-all duration-300",
-            (activeMarks?.wordCount ?? 0) > 0 ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible"
+            "flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300",
+            (activeMarks?.wordCount ?? 0) > 0
+              ? "visible scale-100 opacity-100"
+              : "invisible scale-95 opacity-0",
           )}
         >
           <PlusIcon className="h-4 w-4" />

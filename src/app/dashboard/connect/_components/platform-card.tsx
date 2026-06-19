@@ -1,11 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Plus, RefreshCcwDot, RefreshCcwIcon, Trash } from "lucide-react";
+import {
+  Loader2,
+  Plus,
+  RefreshCcwDot,
+  RefreshCcwIcon,
+  Trash,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { cn } from "~/lib/utils";
 
-const LINKABLE_PROVIDERS = new Set(["google", "linkedin", "instagram", "facebook", "x", "threads", "youtube"]) as Set<string>;
+const LINKABLE_PROVIDERS = new Set([
+  "google",
+  "linkedin",
+  "instagram",
+  "facebook",
+  "x",
+  "threads",
+  "youtube",
+]) as Set<string>;
 import {
   Sheet,
   SheetContent,
@@ -35,8 +49,6 @@ export interface Platform {
   oauthProvider?: string;
 }
 
-
-
 export function PlatformCard({ platform }: { platform: Platform }) {
   const [hovered, setHovered] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -59,21 +71,20 @@ export function PlatformCard({ platform }: { platform: Platform }) {
   return (
     <>
       <div
-        className="relative flex flex-col gap-4 bg-card rounded-2xl p-5 overflow-hidden cursor-pointer select-none"
+        className="bg-card relative flex cursor-pointer flex-col gap-4 overflow-hidden rounded-2xl p-5 select-none"
         style={{
           border: `1px solid ${hovered ? `${brandColor}40` : "var(--border)"}`,
           boxShadow: hovered
             ? `0 8px 32px ${brandColor}18, 0 2px 8px ${brandColor}10`
             : "none",
-          transition:
-            "border-color 220ms ease, box-shadow 220ms ease",
+          transition: "border-color 220ms ease, box-shadow 220ms ease",
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
         {/* Top accent bar */}
         <div
-          className="absolute top-0 left-0 right-0 h-[2px]"
+          className="absolute top-0 right-0 left-0 h-[2px]"
           style={{
             background: brandGradient ?? brandColor,
             opacity: hovered ? 1 : 0,
@@ -85,7 +96,7 @@ export function PlatformCard({ platform }: { platform: Platform }) {
         {/* Icon + optional placeholder top row */}
         <div className="flex items-start justify-between">
           <div
-            className="flex items-center justify-center w-12 h-12 rounded-xl shrink-0"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
             style={{
               background: iconBgColor,
               color: iconColor,
@@ -97,8 +108,8 @@ export function PlatformCard({ platform }: { platform: Platform }) {
         </div>
 
         {/* Platform name & account info */}
-        <div className="flex flex-col gap-0.5 flex-1">
-          <h3 className="text-[15px] font-semibold text-foreground leading-snug">
+        <div className="flex flex-1 flex-col gap-0.5">
+          <h3 className="text-foreground text-[15px] leading-snug font-semibold">
             {name}
           </h3>
           <p
@@ -123,7 +134,7 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                   {visibleAvatars.map((account) => (
                     <Avatar
                       key={account.id}
-                      className="w-7 h-7 border-2 border-card"
+                      className="border-card h-7 w-7 border-2"
                     >
                       {account.avatarUrl && (
                         <AvatarImage
@@ -131,7 +142,7 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                           alt={account.username ?? account.initials}
                         />
                       )}
-                      <AvatarFallback className="text-[10px] font-semibold bg-muted text-muted-foreground">
+                      <AvatarFallback className="bg-muted text-muted-foreground text-[10px] font-semibold">
                         {account.initials}
                       </AvatarFallback>
                     </Avatar>
@@ -139,7 +150,7 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                 </div>
                 <button
                   onClick={() => setSheetOpen(true)}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-150"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors duration-150"
                   aria-label={`View all ${name} accounts`}
                 >
                   View all
@@ -151,14 +162,18 @@ export function PlatformCard({ platform }: { platform: Platform }) {
           {/* Add account button — amber/warning color */}
           {LINKABLE_PROVIDERS.has(id) && (
             <Button
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-warning/10 border border-warning/30 text-warning hover:bg-warning/20 hover:border-warning/50 transition-all duration-150 shrink-0"
+              className="bg-warning/10 border-warning/30 text-warning hover:bg-warning/20 hover:border-warning/50 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-150"
               aria-label={`Add ${name} account`}
               disabled={loading}
               onClick={async () => {
                 const provider = id;
 
                 // Supported platforms with custom OAuth flows
-                const SUPPORTED_CUSTOM_OAUTH = new Set(["x", "linkedin", "instagram"]);
+                const SUPPORTED_CUSTOM_OAUTH = new Set([
+                  "x",
+                  "linkedin",
+                  "instagram",
+                ]);
                 if (SUPPORTED_CUSTOM_OAUTH.has(provider)) {
                   setLoading(true);
                   window.location.href = `/api/social/${provider}/authorize`;
@@ -168,7 +183,11 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                 toast.info(`Integration for ${name} is coming soon!`);
               }}
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Plus className="h-4 w-4" />
+              )}
             </Button>
           )}
         </div>
@@ -182,9 +201,7 @@ export function PlatformCard({ platform }: { platform: Platform }) {
               className="flex items-center gap-2"
               style={{ color: "var(--foreground)" }}
             >
-              <span
-                className="inline-flex items-center justify-center w-6 h-6 rounded-none"
-              >
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-none">
                 {icon}
               </span>
               {name} Accounts
@@ -195,9 +212,9 @@ export function PlatformCard({ platform }: { platform: Platform }) {
             {accounts.map((account) => (
               <div
                 key={account.id}
-                className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors duration-150"
+                className="bg-muted/50 hover:bg-muted flex items-center gap-3 rounded-xl p-3 transition-colors duration-150"
               >
-                <Avatar className="w-9 h-9">
+                <Avatar className="h-9 w-9">
                   {account.avatarUrl && (
                     <AvatarImage
                       src={account.avatarUrl}
@@ -208,18 +225,22 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                     {account.initials}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col w-full">
-                  <div className="flex justify-between items-center gap-4">
-
-                    <span className="text-sm font-medium text-foreground">
-                      {account.username ?? `@account_${account.initials.toLowerCase()}`}
+                <div className="flex w-full flex-col">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-foreground text-sm font-medium">
+                      {account.username ??
+                        `@account_${account.initials.toLowerCase()}`}
                     </span>
                     <div className="flex justify-between gap-2">
-                      <Button className="h-7 w-7 rounded-full" variant="ghost"><RefreshCcwIcon /></Button>
-                      <Button className="h-7 w-7 rounded-full" variant="ghost"><Trash /></Button>
+                      <Button className="h-7 w-7 rounded-full" variant="ghost">
+                        <RefreshCcwIcon />
+                      </Button>
+                      <Button className="h-7 w-7 rounded-full" variant="ghost">
+                        <Trash />
+                      </Button>
                     </div>
                   </div>
-                  <span className="text-xs text-muted-foreground">{name}</span>
+                  <span className="text-muted-foreground text-xs">{name}</span>
                 </div>
               </div>
             ))}

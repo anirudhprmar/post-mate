@@ -75,17 +75,17 @@ export default function MobileBottomNav() {
 
   return (
     <>
-      <div className="min-[1024px]:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t border-border/40">
-        <div className="relative flex items-center justify-around h-16 px-2">
+      <div className="bg-background/80 border-border/40 fixed right-0 bottom-0 left-0 z-50 border-t backdrop-blur-lg min-[1024px]:hidden">
+        <div className="relative flex h-16 items-center justify-around px-2">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={clsx(
-                "flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 flex-1",
+                "flex flex-1 flex-col items-center justify-center gap-1 rounded-lg px-3 py-2 transition-all duration-200",
                 pathname === item.href
                   ? "text-primary scale-105"
-                  : "text-muted-foreground hover:text-foreground hover:scale-105 active:scale-95"
+                  : "text-muted-foreground hover:text-foreground hover:scale-105 active:scale-95",
               )}
             >
               <item.icon className="h-5 w-5" />
@@ -98,15 +98,18 @@ export default function MobileBottomNav() {
             <SheetTrigger asChild>
               <button
                 className={clsx(
-                  "flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all duration-200 flex-1",
-                  "text-muted-foreground hover:text-foreground hover:scale-105 active:scale-95"
+                  "flex flex-1 flex-col items-center justify-center gap-1 rounded-lg px-3 py-2 transition-all duration-200",
+                  "text-muted-foreground hover:text-foreground hover:scale-105 active:scale-95",
                 )}
               >
                 <MoreHorizontal className="h-5 w-5" />
                 <span className="text-[10px] font-medium">More</span>
               </button>
             </SheetTrigger>
-            <SheetContent side="bottom" className="h-[auto] max-h-[85vh] rounded-t-[2.5rem] border-t border-border/40 pb-10">
+            <SheetContent
+              side="bottom"
+              className="border-border/40 h-[auto] max-h-[85vh] rounded-t-[2.5rem] border-t pb-10"
+            >
               <SheetHeader className="pb-4">
                 <SheetTitle className="text-xl font-bold">Menu</SheetTitle>
                 <SheetDescription>
@@ -116,7 +119,7 @@ export default function MobileBottomNav() {
 
               <div className="space-y-6">
                 {/* User Profile Section */}
-                <div className="p-4 rounded-2xl bg-muted/30 border border-border/40">
+                <div className="bg-muted/30 border-border/40 rounded-2xl border p-4">
                   <UserProfile showName={true} />
                 </div>
 
@@ -127,18 +130,18 @@ export default function MobileBottomNav() {
                       key={item.href}
                       onClick={() => handleMoreItemClick(item.href)}
                       className={clsx(
-                        "flex items-center gap-4 p-4 rounded-2xl transition-all active:scale-[0.98]",
+                        "flex items-center gap-4 rounded-2xl p-4 transition-all active:scale-[0.98]",
                         pathname === item.href
-                          ? "bg-primary/10 text-primary border border-primary/20"
-                          : "bg-muted/30 border border-transparent hover:bg-muted/50"
+                          ? "bg-primary/10 text-primary border-primary/20 border"
+                          : "bg-muted/30 hover:bg-muted/50 border border-transparent",
                       )}
                     >
                       <div
                         className={clsx(
-                          "flex items-center justify-center w-12 h-12 rounded-xl relative",
+                          "relative flex h-12 w-12 items-center justify-center rounded-xl",
                           pathname === item.href
                             ? "bg-primary/20 text-primary"
-                            : "bg-muted text-muted-foreground"
+                            : "bg-muted text-muted-foreground",
                         )}
                       >
                         <item.icon className="h-6 w-6" />
@@ -157,7 +160,7 @@ export default function MobileBottomNav() {
                             </span>
                           )} */}
                         </div>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                           {item.description}
                         </p>
                       </div>
@@ -170,7 +173,7 @@ export default function MobileBottomNav() {
         </div>
       </div>
       {/* Bottom padding to prevent content from being hidden behind the nav */}
-      <div className="min-[1024px]:hidden h-16" />
+      <div className="h-16 min-[1024px]:hidden" />
     </>
   );
 }

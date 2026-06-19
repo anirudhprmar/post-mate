@@ -6,17 +6,17 @@ import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
 import Emoji, { gitHubEmojis } from "@tiptap/extension-emoji";
 import { BulletList, OrderedList } from "@tiptap/extension-list";
-import Typography from '@tiptap/extension-typography'
+import Typography from "@tiptap/extension-typography";
 import { TiptapEditor } from "./tiptap-editor";
 import { EditorToolbar } from "./editor-toolbar";
-import EmojiSuggestion from '~/lib/emoji-suggestions'
+import EmojiSuggestion from "~/lib/emoji-suggestions";
 import { usePostStore } from "~/store/post";
 
-const LIMIT = 250; // will depend on each platform and will be different
+const LIMIT = 800; // will depend on each platform and will be different
 
 export function PostEditor() {
-  const content = usePostStore(state => state.content);
-  const setContent = usePostStore(state => state.setContent);
+  const content = usePostStore((state) => state.content);
+  const setContent = usePostStore((state) => state.setContent);
 
   const editor = useEditor({
     extensions: [
@@ -41,7 +41,7 @@ export function PostEditor() {
   });
 
   return (
-    <div className="flex flex-col gap-5 bg-card rounded-md">
+    <div className="bg-card flex flex-col gap-5 rounded-md">
       <TiptapEditor editor={editor} />
       <EditorToolbar editor={editor} />
     </div>

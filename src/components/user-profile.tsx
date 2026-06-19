@@ -18,14 +18,23 @@ import { api } from "~/lib/api";
 import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
 
-
-export default function UserProfile({ mini, showName = false }: { mini?: boolean; showName?: boolean }) {
+export default function UserProfile({
+  mini,
+  showName = false,
+}: {
+  mini?: boolean;
+  showName?: boolean;
+}) {
   const router = useRouter();
 
-  const { data: userInfo, isLoading, error } = api.user.me.useQuery(undefined, {
+  const {
+    data: userInfo,
+    isLoading,
+    error,
+  } = api.user.me.useQuery(undefined, {
     retry: 1,
-    staleTime: 5000, // Consider data fresh for 5 seconds (matches session cache)
-    refetchOnWindowFocus: false, // Prevent unnecessary refetches
+    staleTime: 5000,
+    refetchOnWindowFocus: false,
   });
 
   const { setTheme, theme } = useTheme();
@@ -34,7 +43,7 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/login"); // redirect to login page
+          router.push("/login");
         },
       },
     });
@@ -43,11 +52,13 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
   if (error) {
     return (
       <div
-        className={`flex gap-3 justify-start items-center w-full rounded overflow-hidden whitespace-nowrap ${mini ? "px-2 py-2" : "px-4 pt-2 pb-3"}`}
+        className={`flex w-full items-center justify-start gap-3 overflow-hidden rounded whitespace-nowrap ${mini ? "px-2 py-2" : "px-4 pt-2 pb-3"}`}
       >
-        <div className="text-red-500 text-sm shrink-0">⚠️</div>
+        <div className="shrink-0 text-sm text-red-500">⚠️</div>
         {!mini && (
-          <div className={`text-red-500 text-sm transition-opacity duration-300 ${showName ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+          <div
+            className={`text-sm text-red-500 transition-opacity duration-300 ${showName ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+          >
             {error.message || "Failed to load user profile"}
           </div>
         )}
@@ -59,11 +70,11 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div
-          className={`flex gap-3 justify-start items-center w-full rounded hover:cursor-pointer overflow-hidden whitespace-nowrap ${mini ? "px-2 py-2" : "px-3 py-2 pb-2"}`}
+          className={`flex w-full items-center justify-start gap-3 overflow-hidden rounded whitespace-nowrap hover:cursor-pointer ${mini ? "px-2 py-2" : "px-3 py-2 pb-2"}`}
         >
           <Avatar className="shrink-0">
             {isLoading ? (
-              <div className="flex items-center justify-center w-full h-full">
+              <div className="flex h-full w-full items-center justify-center">
                 <Loader2 className="h-4 w-4 animate-spin" />
               </div>
             ) : (
@@ -71,17 +82,17 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
                 {userInfo?.image ? (
                   <AvatarImage src={userInfo?.image} alt="User Avatar" />
                 ) : (
-                  <AvatarFallback>
-                    {"U"}
-                  </AvatarFallback>
+                  <AvatarFallback>{"U"}</AvatarFallback>
                 )}
               </>
             )}
           </Avatar>
           {mini ? null : (
-            <div className={`flex items-center gap-2 transition-opacity duration-300 ${showName ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-              <p className="font-medium text-md">
-                {isLoading ? "Loading..." : userInfo?.name ?? "User"}
+            <div
+              className={`flex items-center gap-2 transition-opacity duration-300 ${showName ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+            >
+              <p className="text-md font-medium">
+                {isLoading ? "Loading..." : (userInfo?.name ?? "User")}
               </p>
               {isLoading && <Loader2 className="h-3 w-3 animate-spin" />}
             </div>
@@ -93,19 +104,14 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <Link href="/profile">
-            <DropdownMenuItem>
-              Profile
-              {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-            </DropdownMenuItem>
+            <DropdownMenuItem>Profile</DropdownMenuItem>
           </Link>
           <Link href="/settings?tab=billing">
-            <DropdownMenuItem>
-              Billing
-            </DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Theme</DropdownMenuLabel>
-          <div className="flex gap-2 px-2 pb-2 ">
+          <div className="flex gap-2 px-2 pb-2">
             <Button
               size="sm"
               variant={theme === "light" ? "default" : "outline"}
@@ -125,10 +131,7 @@ export default function UserProfile({ mini, showName = false }: { mini?: boolean
           </div>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignOut}>
-          Log out
-          {/* <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> */}
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSignOut}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

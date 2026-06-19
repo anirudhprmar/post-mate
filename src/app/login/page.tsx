@@ -6,9 +6,16 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { motion } from "motion/react";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 
 function LoginContent() {
   const [loading, setLoading] = useState(false);
@@ -16,21 +23,34 @@ function LoginContent() {
   const returnTo = searchParams.get("returnTo");
 
   return (
-    <main className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background p-6 md:p-10">
+    <main className="bg-background relative flex min-h-svh flex-col items-center justify-center overflow-hidden p-6 md:p-10">
+      <Image
+      src={'/3430.jpg'}
+      width={1920}
+      height={1080}
+      alt="login background"
+      className="absolute inset-0 z-0 h-full w-full object-cover blur-md "
+      />
       {/* Background Decor */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]">
-        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-77.5 w-77.5 rounded-full bg-primary/20 opacity-20 blur-[100px]" />
-      </div>
+      {/* <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px] dark:bg-black">
+        <div className="bg-primary/20 absolute top-0 right-0 left-0 -z-10 m-auto h-77.5 w-77.5 rounded-full opacity-20 blur-[100px]" />
+      </div> */}
 
-      <header className="absolute top-6 left-6 md:top-10 md:left-10 z-20">
+      <div className="absolute top-6 left-6 z-20 md:top-10 md:left-10">
         <Link
           prefetch={true}
-          className="group inline-flex items-center gap-2 text-foreground/80 transition-colors hover:text-foreground"
+          className="group text-foreground/80 hover:text-foreground flex items-center gap-2 transition-colors"
           href="/"
         >
-          <span className="text-xl font-bold tracking-tight">post mate</span>
+          <Image
+            src="/pmlogo.png"
+            alt="logo"
+            width={42}
+            height={42}
+          />
+          <span className="text-xl font-bold tracking-tight">postmate</span>
         </Link>
-      </header>
+      </div>
 
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -38,9 +58,11 @@ function LoginContent() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="relative z-10 w-full max-w-sm"
       >
-        <Card className="border-border/50 bg-background/60 backdrop-blur-xl shadow-xl">
+        <Card className="border-border/50 bg-background/60 shadow-xl backdrop-blur-xl">
           <CardHeader className="space-y-1 pb-6 text-center">
-            <CardTitle className="text-2xl font-bold tracking-tight">Welcome back</CardTitle>
+            <CardTitle className="text-2xl font-bold tracking-tight">
+              Welcome back
+            </CardTitle>
             <CardDescription>
               Sign in to your account to continue
             </CardDescription>
@@ -49,7 +71,7 @@ function LoginContent() {
             <div className="grid gap-6">
               <Button
                 variant="outline"
-                className="relative h-11 w-full gap-2 border-border/50 bg-background/50 hover:bg-accent/50 transition-all active:scale-[0.98]"
+                className="border-border/50 bg-background/50 hover:bg-accent/50 relative h-11 w-full gap-2 transition-all active:scale-[0.98]"
                 disabled={loading}
                 onClick={async () => {
                   try {
@@ -76,7 +98,7 @@ function LoginContent() {
                 }}
               >
                 {loading ? (
-                   <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -109,19 +131,19 @@ function LoginContent() {
               </Button>
             </div>
           </CardContent>
-          <div className="border-t border-border/50 p-6 pt-0 text-center">
-            <p className="px-8 text-xs text-muted-foreground">
+          <div className="border-border/50 border-t p-6 pt-0 text-center">
+            <p className="text-muted-foreground px-8 text-xs">
               By clicking continue, you agree to our{" "}
               <Link
                 href="/terms-of-service"
-                className="underline underline-offset-4 hover:text-primary"
+                className="hover:text-primary underline underline-offset-4"
               >
                 Terms of Service
               </Link>{" "}
               and{" "}
               <Link
                 href="/privacy-policy"
-                className="underline underline-offset-4 hover:text-primary"
+                className="hover:text-primary underline underline-offset-4"
               >
                 Privacy Policy
               </Link>
@@ -138,8 +160,8 @@ export default function Login() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-screen w-full flex-col items-center justify-center bg-background">
-           <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <div className="bg-background flex h-screen w-full flex-col items-center justify-center">
+          <Loader2 className="text-primary h-8 w-8 animate-spin" />
         </div>
       }
     >

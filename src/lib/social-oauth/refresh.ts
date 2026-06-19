@@ -9,26 +9,30 @@ interface RefreshResult {
   expiresAt?: Date | null;
 }
 
-/**
- * Refresh a LinkedIn access token using the OAuth 2.0 refresh token.
- */
-async function refreshLinkedInToken(refreshToken: string): Promise<RefreshResult> {
-  const response = await fetch("https://www.linkedin.com/oauth/v2/accessToken", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+async function refreshLinkedInToken(
+  refreshToken: string,
+): Promise<RefreshResult> {
+  const response = await fetch(
+    "https://www.linkedin.com/oauth/v2/accessToken",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+        client_id: env.LINKEDIN_CLIENT_ID,
+        client_secret: env.LINKEDIN_CLIENT_SECRET,
+      }).toString(),
     },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-      client_id: env.LINKEDIN_CLIENT_ID,
-      client_secret: env.LINKEDIN_CLIENT_SECRET,
-    }).toString(),
-  });
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`LinkedIn token refresh failed: ${response.status} - ${errorText}`);
+    throw new Error(
+      `LinkedIn token refresh failed: ${response.status} - ${errorText}`,
+    );
   }
 
   const data = (await response.json()) as {
@@ -45,19 +49,18 @@ async function refreshLinkedInToken(refreshToken: string): Promise<RefreshResult
   };
 }
 
-/**
- * Refresh an Instagram long-lived access token.
- * Long-lived access tokens are valid for 60 days and can be refreshed
- * before they expire.
- */
-async function refreshInstagramToken(accessToken: string): Promise<RefreshResult> {
+async function refreshInstagramToken(
+  accessToken: string,
+): Promise<RefreshResult> {
   const response = await fetch(
-    `https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${accessToken}`
+    `https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${accessToken}`,
   );
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Instagram token refresh failed: ${response.status} - ${errorText}`);
+    throw new Error(
+      `Instagram token refresh failed: ${response.status} - ${errorText}`,
+    );
   }
 
   const data = (await response.json()) as {
@@ -71,10 +74,6 @@ async function refreshInstagramToken(accessToken: string): Promise<RefreshResult
   };
 }
 
-/**
- * Main function to refresh a connected account's token.
- * Updates the database record with the new token details.
- */
 export async function refreshAccountToken(accountId: string): Promise<boolean> {
   const account = await db.query.connectedAccount.findFirst({
     where: eq(connectedAccount.id, accountId),
@@ -99,7 +98,9 @@ export async function refreshAccountToken(accountId: string): Promise<boolean> {
       // X OAuth 1.0a tokens do not expire, nothing to refresh
       return true;
     } else {
-      console.warn(`[Token Refresh] Refresh not implemented for platform: ${account.platform}`);
+      console.warn(
+        `[Token Refresh] Refresh not implemented for platform: ${account.platform}`,
+      );
       return false;
     }
 
@@ -116,11 +117,16 @@ export async function refreshAccountToken(accountId: string): Promise<boolean> {
       })
       .where(eq(connectedAccount.id, accountId));
 
-    console.info(`[Token Refresh] Successfully refreshed token for account ${accountId} (${account.platform})`);
+    console.info(
+      `[Token Refresh] Successfully refreshed token for account ${accountId} (${account.platform})`,
+    );
     return true;
   } catch (error) {
-    console.error(`[Token Refresh] Failed to refresh token for account ${accountId} (${account.platform}):`, error);
-    
+    console.error(
+      `[Token Refresh] Failed to refresh token for account ${accountId} (${account.platform}):`,
+      error,
+    );
+
     // Set account status to expired/error on failure
     await db
       .update(connectedAccount)

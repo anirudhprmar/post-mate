@@ -8,12 +8,9 @@ import FooterCTA from "./_components/footer-cta";
 import Footer from "./_components/footer";
 import SupportedPlatforms from "./_components/supported-platforms";
 
-
 export default function Page() {
-
   return (
-    <div className="min-h-screen relative overflow-x-hidden bg-muted">
-
+    <div className="bg-muted relative min-h-screen overflow-x-hidden">
       <Container>
         <Navbar />
         <main>
@@ -26,8 +23,6 @@ export default function Page() {
           <Footer />
         </main>
       </Container>
-
-
     </div>
   );
 }

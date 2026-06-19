@@ -6,12 +6,6 @@ interface XPublishResult {
   platformPostId: string;
 }
 
-/**
- * Upload a single media item to X using the v1.1 media upload endpoint.
- * Uses chunked upload for all media types.
- *
- * @see https://developer.x.com/en/docs/x-api/v1/media/upload-media/api-reference/post-media-upload
- */
 async function uploadMediaToX(
   mediaUrl: string,
   mimeType: string,
@@ -20,14 +14,14 @@ async function uploadMediaToX(
 ): Promise<string> {
   const uploadUrl = "https://upload.x.com/1.1/media/upload.json";
 
-  // Download media from our storage
   const mediaResponse = await fetch(mediaUrl);
   if (!mediaResponse.ok) {
-    throw new Error(`Failed to download media from ${mediaUrl}: ${mediaResponse.statusText}`);
+    throw new Error(
+      `Failed to download media from ${mediaUrl}: ${mediaResponse.statusText}`,
+    );
   }
   const mediaBuffer = Buffer.from(await mediaResponse.arrayBuffer());
 
-  // ── INIT ──────────────────────────────────────────────────────────────
   const initParams: Record<string, string> = {
     command: "INIT",
     total_bytes: mediaBuffer.length.toString(),
@@ -54,13 +48,14 @@ async function uploadMediaToX(
   });
 
   if (!initRes.ok) {
-    throw new Error(`X media INIT failed (${initRes.status}): ${await initRes.text()}`);
+    throw new Error(
+      `X media INIT failed (${initRes.status}): ${await initRes.text()}`,
+    );
   }
 
   const initData = (await initRes.json()) as { media_id_string: string };
   const mediaId = initData.media_id_string;
 
-  // ── APPEND (chunked, 5MB per chunk) ───────────────────────────────────
   const chunkSize = 5 * 1024 * 1024;
   for (let i = 0; i * chunkSize < mediaBuffer.length; i++) {
     const chunk = mediaBuffer.subarray(i * chunkSize, (i + 1) * chunkSize);
@@ -72,7 +67,6 @@ async function uploadMediaToX(
       env.X_CONSUMER_SECRET,
       accessToken,
       accessSecret,
-      // OAuth params only — media_data goes in the multipart body
     );
 
     const formData = new FormData();
@@ -88,11 +82,12 @@ async function uploadMediaToX(
     });
 
     if (!appendRes.ok) {
-      throw new Error(`X media APPEND failed (${appendRes.status}): ${await appendRes.text()}`);
+      throw new Error(
+        `X media APPEND failed (${appendRes.status}): ${await appendRes.text()}`,
+      );
     }
   }
 
-  // ── FINALIZE ──────────────────────────────────────────────────────────
   const finalizeParams: Record<string, string> = {
     command: "FINALIZE",
     media_id: mediaId,
@@ -118,30 +113,38 @@ async function uploadMediaToX(
   });
 
   if (!finalizeRes.ok) {
-    throw new Error(`X media FINALIZE failed (${finalizeRes.status}): ${await finalizeRes.text()}`);
+    throw new Error(
+      `X media FINALIZE failed (${finalizeRes.status}): ${await finalizeRes.text()}`,
+    );
   }
 
   return mediaId;
 }
 
-/**
- * Publish a post to X using the v2 tweets endpoint with OAuth 1.0a auth.
- * Supports text-only and text+media posts.
- */
 export async function publishToX(
   content: string,
   accessToken: string,
   accessSecret: string,
-  media?: { url: string; key: string; type: "image" | "video"; mimeType?: string }[],
+  media?: {
+    url: string;
+    key: string;
+    type: "image" | "video";
+    mimeType?: string;
+  }[],
 ): Promise<XPublishResult> {
   const mediaIds: string[] = [];
 
-  // Upload media if present
   if (media && media.length > 0) {
     for (const item of media) {
       try {
-        const mimeType = item.mimeType ?? (item.type === "image" ? "image/jpeg" : "video/mp4");
-        const mediaId = await uploadMediaToX(item.url, mimeType, accessToken, accessSecret);
+        const mimeType =
+          item.mimeType ?? (item.type === "image" ? "image/jpeg" : "video/mp4");
+        const mediaId = await uploadMediaToX(
+          item.url,
+          mimeType,
+          accessToken,
+          accessSecret,
+        );
         mediaIds.push(mediaId);
       } catch (err) {
         console.error(`[X] Failed to upload media ${item.key}:`, err);
@@ -149,7 +152,6 @@ export async function publishToX(
     }
   }
 
-  // ── Post the tweet via v2 API ─────────────────────────────────────────
   const tweetUrl = "https://api.x.com/2/tweets";
 
   const tweetBody: Record<string, unknown> = { text: content };
@@ -183,7 +185,6 @@ export async function publishToX(
   const tweetData = (await tweetRes.json()) as { data: { id: string } };
   const tweetId = tweetData.data.id;
 
-  // ── Build published URL ───────────────────────────────────────────────
   let publishedUrl = `https://x.com/i/status/${tweetId}`;
 
   try {
@@ -208,7 +209,7 @@ export async function publishToX(
       }
     }
   } catch (e) {
-    console.error("[X] Failed to fetch username for URL", e);
+    console.error(" X Failed to fetch username for URL", e);
   }
 
   return {

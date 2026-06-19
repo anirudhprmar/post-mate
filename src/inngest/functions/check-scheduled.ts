@@ -3,12 +3,6 @@ import { inngest } from "~/lib/inngest";
 import { db } from "~/server/db";
 import { posts } from "~/server/db/schema";
 
-/**
- * Inngest cron function: Check for scheduled posts that are due.
- *
- * Runs every minute and triggers the "post/publish" event for any
- * posts whose scheduledFor time has passed and are still in "scheduled" status.
- */
 export const checkScheduledPosts = inngest.createFunction(
   {
     id: "post.check-scheduled",
@@ -16,7 +10,6 @@ export const checkScheduledPosts = inngest.createFunction(
     triggers: [{ cron: "* * * * *" }],
   },
   async ({ step }: { step: any }) => {
-    // Find all posts that are scheduled and due
     const duePosts = await step.run("find-due-posts", async () => {
       return db.query.posts.findMany({
         where: and(
@@ -30,7 +23,6 @@ export const checkScheduledPosts = inngest.createFunction(
       return { message: "No scheduled posts due", count: 0 };
     }
 
-    // Trigger a publish event for each due post
     const events = duePosts.map((post: any) => ({
       name: "post/publish" as const,
       data: { postId: post.id },

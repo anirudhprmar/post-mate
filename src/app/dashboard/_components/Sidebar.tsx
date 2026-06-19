@@ -6,24 +6,18 @@ import Link from "next/link";
 import {
   type LucideIcon,
   Settings,
-  Calendar,
-  Home,
-  Sparkles,
-  RocketIcon,
   Bell,
   PenTool,
-  Users,
-  Sprout,
-  Waypoints,
-  FileText,
-  Lightbulb,
   PlusIcon,
   CalendarDays,
-  Cable,
-  LinkIcon
+  LinkIcon,
+  FlaskConical,
+  Calendar,
+  Scroll,
+  ThumbsUp,
+  BarChart3,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { api } from "~/lib/api";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -32,8 +26,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "~/components/ui/dialog"
+} from "~/components/ui/dialog";
 import PostContent from "~/components/post-content";
+import Image from "next/image";
 
 interface NavItem {
   label: string;
@@ -48,24 +43,34 @@ const navItems: NavItem[] = [
     icon: CalendarDays,
   },
   {
-    label: "Ideas",
-    href: "/dashboard/ideas",
-    icon: Lightbulb,
+    label: "All Posts",
+    href: "/dashboard/all-posts",
+    icon: Scroll,
   },
   {
-    label: "Create",
-    href: "/dashboard/create",
-    icon: FileText,
+    label: "Scheduled",
+    href: "/dashboard/scheduled",
+    icon: Calendar,
   },
   {
-    label: "Inspiration",
-    href: "/dashboard/inspiration",
-    icon: Sparkles,
+    label: "Published",
+    href: "/dashboard/published",
+    icon: ThumbsUp,
   },
   {
     label: "Drafts",
     href: "/dashboard/drafts",
     icon: PenTool,
+  },
+  {
+    label: "Content Lab",
+    href: "/dashboard/create",
+    icon: FlaskConical,
+  },
+  {
+    label: "Analytics",
+    href: "/dashboard/analytics",
+    icon: BarChart3,
   },
   {
     label: "Connections",
@@ -77,18 +82,26 @@ const navItems: NavItem[] = [
 export default function DashboardSideBar() {
   const pathname = usePathname();
 
-
   return (
-    <div className="hidden min-[1024px]:block group w-64 border-r h-full bg-background">
+    <div className="group bg-background hidden h-full w-64 border-r min-[1024px]:block">
       <div className="flex h-full flex-col">
-        <div className="pl-4 pt-4 pb-2">
-          <p className="text-foreground font-bold text-xl">post mate</p>
+        <div className="flex items-center gap-2 pt-4 pb-2 pl-4">
+          <Image
+            src={"/pmlogo.png"}
+            alt="logo"
+            width={40}
+            height={40}
+            className="rounded-sm"
+          />
+          <p className="text-foreground text-xl font-bold">postmate</p>
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button size={'lg'} variant={'default'} className="m-2 rounded-sm"><PlusIcon className="h-4 w-4" /> Create Post</Button>
+            <Button size={"lg"} variant={"default"} className="m-2 rounded-sm">
+              <PlusIcon className="h-4 w-4" /> Create Post
+            </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] min-w-4xl h-150 flex flex-col">
+          <DialogContent className="flex h-150 min-w-4xl flex-col sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>Create Post</DialogTitle>
               <DialogDescription>
@@ -96,20 +109,21 @@ export default function DashboardSideBar() {
               </DialogDescription>
             </DialogHeader>
             <PostContent />
-
           </DialogContent>
         </Dialog>
-        <nav aria-label="Main Navigation" className="flex flex-col h-full justify-between w-full py-4">
-
+        <nav
+          aria-label="Main Navigation"
+          className="flex h-full w-full flex-col justify-between py-4"
+        >
           {/* Top Navigation */}
           <div className="w-full px-3">
-            <ul className="list-none pl-0 space-y-0.5">
+            <ul className="list-none space-y-0.5 pl-0">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     className={clsx(
-                      "flex items-center gap-3 w-full rounded-sm px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
+                      "flex w-full items-center gap-3 overflow-hidden rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap transition-all",
                       pathname === item.href
                         ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -124,15 +138,15 @@ export default function DashboardSideBar() {
           </div>
 
           {/* Bottom Section */}
-          <div className="flex flex-col w-full">
+          <div className="flex w-full flex-col">
             {/* Notifications + Settings */}
-            <div className="px-3 space-y-0.5">
+            <div className="space-y-0.5 px-3">
               <ul className="list-none pl-0">
                 <li>
                   <Link
                     href="/notifications"
                     className={clsx(
-                      "flex items-center w-full gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
+                      "flex w-full items-center gap-3 overflow-hidden rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap transition-all",
                       pathname === "/notifications"
                         ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -146,7 +160,7 @@ export default function DashboardSideBar() {
                   <Link
                     href="/settings"
                     className={clsx(
-                      "flex items-center w-full gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-all whitespace-nowrap overflow-hidden",
+                      "flex w-full items-center gap-3 overflow-hidden rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap transition-all",
                       pathname === "/settings"
                         ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -160,11 +174,10 @@ export default function DashboardSideBar() {
             </div>
 
             {/* Profile — aligned with nav items */}
-            <div className="mt-2 pt-2 px-3">
+            <div className="mt-2 px-3 pt-2">
               <UserProfile showName={true} />
             </div>
           </div>
-
         </nav>
       </div>
     </div>
