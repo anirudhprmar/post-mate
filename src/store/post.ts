@@ -19,9 +19,13 @@ interface PostState {
   scheduledDate: Date | undefined;
   setScheduledDate: (date: Date | undefined) => void;
   reset: () => void;
+  isInsta: boolean;
+  setIsInsta: (isInsta: boolean) => void;
 }
 
 export const usePostStore = create<PostState>((set) => ({
+  isInsta: false,
+  setIsInsta: (isInsta: boolean) => set({ isInsta }),
   content: "",
   setContent: (content) => set({ content }),
   selectedAccountIds: [],

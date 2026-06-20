@@ -12,7 +12,7 @@ export default function InsertMedia() {
 
   const handleVideoSelected = async (file: File) => {
     addMedia([file]);
-  };
+  }; 
 
   return (
     <InsertMediaUpload

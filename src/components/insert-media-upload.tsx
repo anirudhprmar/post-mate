@@ -20,6 +20,8 @@ export default function InsertMediaUpload({
   const images = media.filter((m) => m.type === "image");
   const videos = media.filter((m) => m.type === "video");
 
+  const isInsta = usePostStore((state) => state.isInsta);
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -58,7 +60,7 @@ export default function InsertMediaUpload({
                       Click to upload or drag and drop
                     </span>
                     <span className="text-sm text-gray-400">
-                      JPG, PNG, or GIF (max 800x400px)
+                      JPEG, JPG, or PNG (max 800x400px)
                     </span>
                   </>
                 ) : (
@@ -78,7 +80,7 @@ export default function InsertMediaUpload({
               <input
                 type="file"
                 ref={imageInputRef}
-                accept="image/jpeg"
+                accept={isInsta ? "image/jpeg" : "image/jpeg,image/jpg,image/png"}
                 onChange={handleImageChange}
                 className="hidden"
               />

@@ -20,6 +20,7 @@ import {
 } from "~/lib/platform-icons";
 import { uploadAllMedia } from "~/lib/upload-media";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 const platformIcons: Record<
   string,
@@ -37,6 +38,7 @@ export default function PostContent() {
   const { data: connectedAccounts = [], isLoading } =
     api.connectedAccount.getAll.useQuery();
   const content = usePostStore((state) => state.content);
+  const setIsInsta = usePostStore((state) => state.setIsInsta);
   const selectedAccountIds = usePostStore((state) => state.selectedAccountIds);
   const toggleAccount = usePostStore((state) => state.toggleAccount);
   const media = usePostStore((state) => state.media);
@@ -66,6 +68,7 @@ export default function PostContent() {
   const selectedAccounts = connectedAccounts.filter((ca) =>
     selectedAccountIds.includes(ca.id),
   );
+  
 
   const activePreviewId = selectedAccountIds.includes(
     userSelectedPreviewId as string,
@@ -91,11 +94,28 @@ export default function PostContent() {
       }
     }
 
-    try {
-      if (mode === "draft") {
-        const uploadedMedia = await uploadAllMedia(media, (input) =>
-          createUploadUrl.mutateAsync(input),
-        );
+    
+    if (mode === "draft") {
+      try {
+        let uploadedMedia;
+
+        if (media.length > 0) {
+          for (const account of selectedAccounts) {
+            if (account.platform === "instagram") {
+              const notJPEG = media.filter(
+                (item) => item.file.type !== "image/jpeg",
+              );
+              if (notJPEG.length > 0) {
+                setIsInsta(true);
+                toast.error("Instagram accepts only JPEG format images.");
+                break;
+              }
+            }
+          }
+          uploadedMedia = await uploadAllMedia(media, (input) =>
+            createUploadUrl.mutateAsync(input),
+          );
+        }
 
         for (const account of selectedAccounts) {
           await createDraft.mutateAsync({
@@ -105,15 +125,32 @@ export default function PostContent() {
           });
         }
         reset();
-        return;
+      } catch (err) {
+        setPublishError(
+          err instanceof Error ? err.message : "Something went wrong",
+        );
+      } finally {
+        setPublishingMode(null);
       }
+      return;
+    }
 
+    try {
       const post = await createPost.mutateAsync({
         content: content,
       });
       const postId = post.id;
 
       if (media.length > 0) {
+
+        for (const account of selectedAccounts) {
+          if(account.platform === "instagram"){
+            setIsInsta(true)
+            toast.error("Instagram accepts only JPEG format images.")
+            break;
+          }
+        }
+    
         const uploadedMedia = await uploadAllMedia(media, (input) =>
           createUploadUrl.mutateAsync(input),
         );
