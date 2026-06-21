@@ -20,7 +20,13 @@ export function PostEditor() {
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ bulletList: false, orderedList: false }),
+      StarterKit.configure({
+        bulletList: false,
+        orderedList: false,
+        bold: false,
+        italic: false,
+        strike: false,
+      }),
       Placeholder.configure({ placeholder: "What's on your mind?" }),
       CharacterCount.configure({ limit: LIMIT }),
       Emoji.configure({

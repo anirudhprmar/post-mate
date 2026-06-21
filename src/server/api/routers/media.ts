@@ -59,6 +59,7 @@ export const mediaRouter = createTRPCRouter({
             key: z.string(),
             type: z.enum(["image", "video"]),
             mimeType: z.string().optional(),
+            thumbnailUrl: z.string().optional(),
           }),
         ),
       }),

@@ -2,11 +2,7 @@
 
 import { useEditorState, type Editor } from "@tiptap/react";
 import {
-  Bold,
-  Underline as UnderlineIcon,
-  Strikethrough,
   Smile,
-  ItalicIcon,
   PlusIcon,
   List,
   ListOrdered,
@@ -22,10 +18,6 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   const activeMarks = useEditorState({
     editor,
     selector: (ctx) => ({
-      bold: ctx.editor?.isActive("bold") ?? false,
-      underline: ctx.editor?.isActive("underline") ?? false,
-      strike: ctx.editor?.isActive("strike") ?? false,
-      italic: ctx.editor?.isActive("italic") ?? false,
       bulletList: ctx.editor?.isActive("bulletList") ?? false,
       orderedList: ctx.editor?.isActive("orderedList") ?? false,
       wordCount: ctx.editor?.storage.characterCount.words() ?? 0,
@@ -33,26 +25,6 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   });
 
   const tools = [
-    {
-      icon: Bold,
-      action: () => editor?.chain().focus().toggleBold().run(),
-      active: activeMarks?.bold,
-    },
-    {
-      icon: UnderlineIcon,
-      action: () => editor?.chain().focus().toggleUnderline().run(),
-      active: activeMarks?.underline,
-    },
-    {
-      icon: Strikethrough,
-      action: () => editor?.chain().focus().toggleStrike().run(),
-      active: activeMarks?.strike,
-    },
-    {
-      icon: ItalicIcon,
-      action: () => editor?.chain().focus().toggleItalic().run(),
-      active: activeMarks?.italic,
-    },
     {
       icon: List,
       action: () => editor?.chain().focus().toggleBulletList().run(),
