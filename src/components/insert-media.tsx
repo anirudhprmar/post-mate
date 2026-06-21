@@ -6,18 +6,18 @@ import { usePostStore } from "~/store/post";
 export default function InsertMedia() {
   const addMedia = usePostStore((state) => state.addMedia);
 
-  const handleImageSelected = async (file: File) => {
-    addMedia([file]);
+  const handleImagesSelected = async (files: File[]) => {
+    addMedia(files);
   };
 
-  const handleVideoSelected = async (file: File) => {
-    addMedia([file]);
-  }; 
+  const handleVideosSelected = async (files: File[]) => {
+    addMedia(files);
+  };
 
   return (
     <InsertMediaUpload
-      onImageSelected={handleImageSelected}
-      onVideoSelected={handleVideoSelected}
+      onImagesSelected={handleImagesSelected}
+      onVideosSelected={handleVideosSelected}
     />
   );
 }

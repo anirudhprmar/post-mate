@@ -25,11 +25,11 @@ function LoginContent() {
   return (
     <main className="bg-background relative flex min-h-svh flex-col items-center justify-center overflow-hidden p-6 md:p-10">
       <Image
-      src={'/3430.jpg'}
-      width={1920}
-      height={1080}
-      alt="login background"
-      className="absolute inset-0 z-0 h-full w-full object-cover blur-md "
+        src={"/3430.jpg"}
+        width={1920}
+        height={1080}
+        alt="login background"
+        className="absolute inset-0 z-0 h-full w-full object-cover blur-md"
       />
       {/* Background Decor */}
       {/* <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px] dark:bg-black">
@@ -42,12 +42,7 @@ function LoginContent() {
           className="group text-foreground/80 hover:text-foreground flex items-center gap-2 transition-colors"
           href="/"
         >
-          <Image
-            src="/pmlogo.png"
-            alt="logo"
-            width={42}
-            height={42}
-          />
+          <Image src="/pmlogo.png" alt="logo" width={42} height={42} />
           <span className="text-xl font-bold tracking-tight">postmate</span>
         </Link>
       </div>

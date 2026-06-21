@@ -5,6 +5,7 @@ export interface MediaItem {
   file: File;
   previewUrl: string;
   type: "image" | "video";
+  thumbnail?: File;
 }
 
 interface PostState {

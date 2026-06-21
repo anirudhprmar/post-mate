@@ -16,6 +16,8 @@ import {
   Scroll,
   ThumbsUp,
   BarChart3,
+  Home,
+  Send,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "~/components/ui/button";
@@ -38,8 +40,13 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: "Calendar",
+    label: "Post",
     href: "/dashboard",
+    icon: Send,
+  },
+  {
+    label: "Calendar",
+    href: "/dashboard/calendar",
     icon: CalendarDays,
   },
   {
@@ -95,22 +102,6 @@ export default function DashboardSideBar() {
           />
           <p className="text-foreground text-xl font-bold">postmate</p>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button size={"lg"} variant={"default"} className="m-2 rounded-sm">
-              <PlusIcon className="h-4 w-4" /> Create Post
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="flex h-150 min-w-4xl flex-col sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Create Post</DialogTitle>
-              <DialogDescription>
-                What are you posting today ?
-              </DialogDescription>
-            </DialogHeader>
-            <PostContent />
-          </DialogContent>
-        </Dialog>
         <nav
           aria-label="Main Navigation"
           className="flex h-full w-full flex-col justify-between py-4"

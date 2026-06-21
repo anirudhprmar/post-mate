@@ -1,3 +1,5 @@
+import PostContent from "~/components/post-content";
+
 export default function Dashboard() {
-  return <div>calender</div>;
+  return <PostContent />;
 }

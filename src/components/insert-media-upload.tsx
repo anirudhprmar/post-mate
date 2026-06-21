@@ -6,13 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { usePostStore } from "~/store/post";
 
 interface InsertMediaUploadProps {
-  onImageSelected: (file: File) => Promise<void>;
-  onVideoSelected: (file: File) => Promise<void>;
+  onImagesSelected: (files: File[]) => Promise<void> | void;
+  onVideosSelected: (files: File[]) => Promise<void> | void;
 }
 
 export default function InsertMediaUpload({
-  onImageSelected,
-  onVideoSelected,
+  onImagesSelected,
+  onVideosSelected,
 }: InsertMediaUploadProps) {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
@@ -23,18 +23,18 @@ export default function InsertMediaUpload({
   const isInsta = usePostStore((state) => state.isInsta);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-    await onImageSelected(file);
+    await onImagesSelected(Array.from(files));
     if (imageInputRef.current) imageInputRef.current.value = "";
   };
 
   const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-    await onVideoSelected(file);
+    await onVideosSelected(Array.from(files));
     if (videoInputRef.current) videoInputRef.current.value = "";
   };
 
@@ -53,34 +53,22 @@ export default function InsertMediaUpload({
               onClick={() => imageInputRef.current?.click()}
             >
               <div className="flex flex-col items-center gap-2">
-                {images.length === 0 ? (
-                  <>
-                    <Image className="h-12 w-12 text-gray-400" />
-                    <span className="font-medium text-gray-500">
-                      Click to upload or drag and drop
-                    </span>
-                    <span className="text-sm text-gray-400">
-                      JPEG, JPG, or PNG (max 800x400px)
-                    </span>
-                  </>
-                ) : (
-                  <div className="flex w-full flex-wrap justify-center gap-2">
-                    {images.map((img) => (
-                      <img
-                        key={img.id}
-                        src={img.previewUrl}
-                        alt="Preview"
-                        className="max-h-32 rounded-md object-contain"
-                      />
-                    ))}
-                  </div>
-                )}
+                <Image className="h-10 w-10 text-gray-400" />
+                <span className="font-medium text-gray-500">
+                  Click to upload or drag and drop
+                </span>
+                <span className="text-sm text-gray-400">
+                  JPEG, JPG, or PNG (max 800x400px)
+                </span>
               </div>
 
               <input
                 type="file"
+                multiple
                 ref={imageInputRef}
-                accept={isInsta ? "image/jpeg" : "image/jpeg,image/jpg,image/png"}
+                accept={
+                  isInsta ? "image/jpeg" : "image/jpeg,image/jpg,image/png"
+                }
                 onChange={handleImageChange}
                 className="hidden"
               />
@@ -95,31 +83,19 @@ export default function InsertMediaUpload({
               onClick={() => videoInputRef.current?.click()}
             >
               <div className="flex flex-col items-center gap-2">
-                {videos.length === 0 ? (
-                  <>
-                    <Video className="h-12 w-12 text-gray-400" />
-                    <span className="font-medium text-gray-500">
-                      Click to upload or drag and drop
-                    </span>
-                    <span className="text-sm text-gray-400">
-                      MP4, MOV, or AVI (max 100MB)
-                    </span>
-                  </>
-                ) : (
-                  <div className="flex w-full flex-wrap justify-center gap-2">
-                    {videos.map((v) => (
-                      <video
-                        key={v.id}
-                        src={v.previewUrl}
-                        controls
-                        className="max-h-32 rounded-md object-contain"
-                      />
-                    ))}
-                  </div>
-                )}
+                <>
+                  <Video className="h-10 w-10 text-gray-400" />
+                  <span className="font-medium text-gray-500">
+                    Click to upload or drag and drop
+                  </span>
+                  <span className="text-sm text-gray-400">
+                    MP4, MOV, or AVI (max 100MB)
+                  </span>
+                </>
               </div>
               <input
                 type="file"
+                multiple
                 ref={videoInputRef}
                 accept="video/*"
                 onChange={handleVideoChange}

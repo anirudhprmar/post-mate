@@ -8,7 +8,6 @@ export interface PlatformOAuthConfig {
   scopes: string[];
   clientId: string;
   clientSecret: string;
-  usePKCE: boolean;
   parseProfile: (data: any) => {
     accountId: string;
     username: string;
@@ -26,7 +25,6 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
     scopes: ["openid", "profile", "w_member_social", "email"],
     clientId: env.LINKEDIN_CLIENT_ID,
     clientSecret: env.LINKEDIN_CLIENT_SECRET,
-    usePKCE: false,
     parseProfile: (data: any) => {
       const rawId = data.sub || "";
       // Strip "urn:li:person:" if present to get raw person ID
@@ -53,7 +51,6 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
     ],
     clientId: env.INSTA_CLIENT_ID,
     clientSecret: env.INSTA_CLIENT_SECRET,
-    usePKCE: false,
     parseProfile: (data: any) => {
       return {
         accountId: data.id,

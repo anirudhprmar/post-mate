@@ -5,7 +5,6 @@ import { connectedAccount } from "~/server/db/schema";
 import { getSession } from "~/server/better-auth/server";
 import { buildOAuthHeader } from "~/lib/social-oauth/x-oauth";
 import { PLATFORM_OAUTH_CONFIGS } from "~/lib/social-oauth/platforms";
-import { verifyState } from "~/lib/social-oauth/utils";
 
 const VALID_PLATFORMS = [
   "instagram",
@@ -47,12 +46,10 @@ export async function GET(
     );
   }
 
-  // ── X (Twitter) OAuth 1.0a Callback ──────────────────────────────────
   if (platform === "x") {
     const oauth_token = searchParams.get("oauth_token");
     const oauth_verifier = searchParams.get("oauth_verifier");
 
-    // Verify the request token matches what we stored
     const storedToken = request.cookies.get("x_oauth_token")?.value;
     if (!storedToken || storedToken !== oauth_token) {
       return NextResponse.redirect(
@@ -63,7 +60,6 @@ export async function GET(
       );
     }
 
-    // X OAuth 1.0a Step 3: Exchange for access token
     const tokenResponse = await fetch(
       `https://api.x.com/oauth/access_token?oauth_verifier=${oauth_verifier}&oauth_token=${oauth_token}`,
       { method: "POST" },
@@ -101,7 +97,6 @@ export async function GET(
       );
     }
 
-    // Fetch user profile (avatar) using raw fetch + OAuth 1.0a
     let avatarUrl: string | undefined;
     try {
       const profileUrl = "https://api.x.com/2/users/me";
@@ -131,7 +126,6 @@ export async function GET(
       console.error("[X OAuth] Failed to fetch profile:", e);
     }
 
-    // Upsert into connectedAccount
     await db
       .insert(connectedAccount)
       .values({
@@ -164,7 +158,6 @@ export async function GET(
         },
       });
 
-    // Clear cookies and redirect
     const redirectResponse = NextResponse.redirect(
       new URL("/dashboard/connect?connected=x", env.NEXT_PUBLIC_APP_URL),
     );
@@ -174,7 +167,6 @@ export async function GET(
     return redirectResponse;
   }
 
-  // ── Generic OAuth 2.0 Callback (LinkedIn, Instagram, etc.) ────────────
   if (!VALID_PLATFORMS.includes(platform as any)) {
     return NextResponse.redirect(
       new URL(
@@ -206,37 +198,8 @@ export async function GET(
     );
   }
 
-  // Verify state to prevent CSRF and ensure correct user
-  const stateUserId = verifyState(state);
-  if (!stateUserId || stateUserId !== session.user.id) {
-    console.error("[OAuth Callback] State verification failed", {
-      stateUserId,
-      sessionUserId: session.user.id,
-    });
-    return NextResponse.redirect(
-      new URL(
-        `/dashboard/connect?error=state_verification_failed`,
-        env.NEXT_PUBLIC_APP_URL,
-      ),
-    );
-  }
-
-  // Retrieve PKCE code verifier if config specifies it
   let codeVerifier: string | undefined;
-  if (config.usePKCE) {
-    codeVerifier = request.cookies.get(`${platform}_code_verifier`)?.value;
-    if (!codeVerifier) {
-      console.error(`[OAuth Callback] Missing code verifier for ${platform}`);
-      return NextResponse.redirect(
-        new URL(
-          `/dashboard/connect?error=missing_code_verifier`,
-          env.NEXT_PUBLIC_APP_URL,
-        ),
-      );
-    }
-  }
 
-  // Exchange authorization code for tokens
   const tokenRequestBody: Record<string, string> = {
     grant_type: "authorization_code",
     code,
@@ -367,10 +330,6 @@ export async function GET(
       env.NEXT_PUBLIC_APP_URL,
     ),
   );
-
-  if (config.usePKCE) {
-    redirectResponse.cookies.delete(`${platform}_code_verifier`);
-  }
 
   return redirectResponse;
 }
