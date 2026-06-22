@@ -14,13 +14,18 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 
+interface ThumbnailDialogProps {
+  mediaItem: MediaItem;
+  onClose: () => void;
+  onSave: (file: File, previewUrl: string) => void;
+}
+
 export default function MediaList() {
   const media = usePostStore((state) => state.media);
   const removeMedia = usePostStore((state) => state.removeMedia);
   const setThumbnail = usePostStore((state) => state.setThumbnail);
 
-  const [selectedVideoForThumbnail, setSelectedVideoForThumbnail] =
-    useState<MediaItem | null>(null);
+  const [selectedVideoForThumbnail, setSelectedVideoForThumbnail] = useState<MediaItem | null>(null);
 
   if (media.length === 0) return null;
 
@@ -59,19 +64,6 @@ export default function MediaList() {
                 >
                   {m.thumbnailPreviewUrl ? "edit thumb" : "add thumb"}
                 </button>
-                {m.thumbnailPreviewUrl && (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setThumbnail(m.id, undefined, undefined);
-                    }}
-                    className="absolute top-1 left-1 rounded-full bg-black/60 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100 hover:bg-black/80"
-                    title="Remove thumbnail"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                )}
               </div>
             )}
             <button
@@ -98,12 +90,6 @@ export default function MediaList() {
   );
 }
 
-interface ThumbnailDialogProps {
-  mediaItem: MediaItem;
-  onClose: () => void;
-  onSave: (file: File, previewUrl: string) => void;
-}
-
 function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [duration, setDuration] = useState(0);
@@ -113,11 +99,11 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
   );
   const [thumbnailBlob, setThumbnailBlob] = useState<Blob | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const handleLoadedMetadata = () => {
     if (videoRef.current) {
       setDuration(videoRef.current.duration || 0);
-      videoRef.current.currentTime = 0;
     }
   };
 
@@ -127,7 +113,8 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
 
     setIsGenerating(true);
     try {
-      const canvas = document.createElement("canvas");
+      const canvas = canvasRef.current;
+      if (!canvas) return;
       canvas.width = video.videoWidth || 640;
       canvas.height = video.videoHeight || 360;
       const ctx = canvas.getContext("2d");
@@ -154,10 +141,6 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
       setIsGenerating(false);
     }
   }, [mediaItem.thumbnailPreviewUrl]);
-
-  const handleSeeked = () => {
-    void captureFrame();
-  };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = parseFloat(e.target.value);
@@ -215,7 +198,7 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
               ref={videoRef}
               src={mediaItem.previewUrl}
               onLoadedMetadata={handleLoadedMetadata}
-              onSeeked={handleSeeked}
+              onSeeked={captureFrame}
               preload="auto"
               playsInline
               muted
@@ -228,7 +211,10 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
             )}
           </div>
 
-          <div className="bg-muted/40 rounded-xl border border-border p-3 flex flex-col gap-2">
+          <canvas ref={canvasRef} className="hidden"/>
+
+          <div 
+          className="bg-muted/40 rounded-xl border border-border p-3 flex flex-col gap-2">
             <div className="text-muted-foreground flex justify-between px-1 text-xs font-semibold">
               <span>{formatTime(currentTime)}</span>
               <span>{formatTime(duration)}</span>

@@ -45,7 +45,7 @@ export function Safari({
       {...props}
     >
       <Image
-        src="/3430.jpg"
+        src="https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBY0oxc3sNjH2LiBgdqWw9yDXvUkceml5t1ZuV"
         alt="bg"
         fill
         loading="eager"

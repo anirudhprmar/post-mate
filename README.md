@@ -1,9 +1,7 @@
 
 # TODO
 
-- [X]- add thumbnail dialog
-- [X]- update post-content component
-- [ ]- upload all media in public folder to upload thing
+- [X]- upload all media in public folder to upload thing
 - [ ]- use proper platform icons acc. to page
 - [ ]- add draft viewing page 
 - [ ]- platform word limit 
@@ -11,6 +9,7 @@
 - [ ]- add a calender to dashboard
 - [ ]- mobile sidebar
 - [ ]- improve preview
+- [ ]- update dashboard image in hero and also update features videos
 
 - [ ]- token refresh cron 
 - [ ]- work on posts and post analytics page (add postURL to db after successful publish)

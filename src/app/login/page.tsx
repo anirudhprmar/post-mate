@@ -42,7 +42,12 @@ function LoginContent() {
           className="group text-foreground/80 hover:text-foreground flex items-center gap-2 transition-colors"
           href="/"
         >
-          <Image src="/pmlogo.png" alt="logo" width={42} height={42} />
+          <Image
+            src="https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBl3FSS0sBQjgrwMc5HoZpy3dEeLPF9kvxOnV6"
+            alt="logo"
+            width={42}
+            height={42}
+          />
           <span className="text-xl font-bold tracking-tight">postmate</span>
         </Link>
       </div>

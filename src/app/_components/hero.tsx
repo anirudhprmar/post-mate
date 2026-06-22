@@ -34,12 +34,12 @@ export default function Hero() {
             iconSize={60}
             reverse
           >
-            <FacebookIcon />
-            <YouTubeIcon />
-            <InstagramIcon />
-            <LinkedInIcon />
-            <ThreadsIcon />
-            <XIcon />
+            <FacebookIcon size={50} />
+            <YouTubeIcon size={50} />
+            <InstagramIcon size={50} />
+            <LinkedInIcon size={50} />
+            <ThreadsIcon size={50} />
+            <XIcon size={50} />
           </OrbitingCircles>
         </div>
 

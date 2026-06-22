@@ -18,6 +18,8 @@ import {
   BarChart3,
   Home,
   Send,
+  Clock,
+  ClockCheck,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "~/components/ui/button";
@@ -57,7 +59,7 @@ const navItems: NavItem[] = [
   {
     label: "Scheduled",
     href: "/dashboard/scheduled",
-    icon: Calendar,
+    icon: ClockCheck,
   },
   {
     label: "Published",
@@ -94,7 +96,9 @@ export default function DashboardSideBar() {
       <div className="flex h-full flex-col">
         <div className="flex items-center gap-2 pt-4 pb-2 pl-4">
           <Image
-            src={"/pmlogo.png"}
+            src={
+              "https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBl3FSS0sBQjgrwMc5HoZpy3dEeLPF9kvxOnV6"
+            }
             alt="logo"
             width={40}
             height={40}
