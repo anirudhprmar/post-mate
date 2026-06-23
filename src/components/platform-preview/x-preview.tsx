@@ -123,7 +123,7 @@ export default function XPreview({
       <div className="mt-3">
         {formattedContent ? (
           <div
-            className="tiptap wrap-break-words text-[15px] leading-normal font-normal text-[#0f1419] dark:text-[#e7e9ea] [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
+            className="tiptap break-all text-[15px] leading-normal font-normal text-[#0f1419] dark:text-[#e7e9ea] [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
             dangerouslySetInnerHTML={{ __html: formattedContent }}
           />
         ) : (

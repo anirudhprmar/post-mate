@@ -178,7 +178,7 @@ export default function InstagramPreview({
           </span>
           {formattedContent ? (
             <span
-              className="tiptap wrap-break-words inline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_p]:inline"
+              className="tiptap break-all inline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_p]:inline"
               dangerouslySetInnerHTML={{ __html: formattedContent }}
             />
           ) : (

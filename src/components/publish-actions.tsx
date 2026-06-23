@@ -13,6 +13,11 @@ export default function PublishActions() {
   const selectedAccountIds = usePostStore((state) => state.selectedAccountIds);
   const scheduledDate = usePostStore((state) => state.scheduledDate);
   const setScheduledDate = usePostStore((state) => state.setScheduledDate);
+  const isOverLimit = usePostStore((state) => state.isOverLimit);
+  const content = usePostStore((state) => state.content);
+
+  // Strip HTML tags and check if there's any real text
+  const isEmpty = content.replace(/<[^>]+>/g, "").trim().length === 0;
 
   const { handlePublish, publishingMode } = usePublishPost();
 
@@ -24,7 +29,11 @@ export default function PublishActions() {
     <div className="flex w-full items-center justify-end gap-2">
       <Button
         variant={"secondary"}
-        disabled={publishingMode !== null}
+        disabled={publishingMode !== null || isOverLimit || isEmpty}
+        title={
+          isEmpty ? "Write something first" :
+          isOverLimit ? "Content exceeds platform character limit" : undefined
+        }
         onClick={() => handlePublish("draft")}
       >
         {publishingMode === "draft" ? (
@@ -37,7 +46,11 @@ export default function PublishActions() {
           <Button
             variant={"default"}
             disabled={
-              publishingMode !== null || selectedAccountIds.length === 0
+              publishingMode !== null || selectedAccountIds.length === 0 || isOverLimit || isEmpty
+            }
+            title={
+              isEmpty ? "Write something first" :
+              isOverLimit ? "Content exceeds platform character limit" : undefined
             }
           >
             {publishingMode === "schedule" ? (

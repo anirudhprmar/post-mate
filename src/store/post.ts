@@ -24,11 +24,15 @@ interface PostState {
   reset: () => void;
   isInsta: boolean;
   setIsInsta: (isInsta: boolean) => void;
+  isOverLimit: boolean;
+  setIsOverLimit: (over: boolean) => void;
 }
 
 export const usePostStore = create<PostState>((set) => ({
   isInsta: false,
   setIsInsta: (isInsta: boolean) => set({ isInsta }),
+  isOverLimit: false,
+  setIsOverLimit: (over: boolean) => set({ isOverLimit: over }),
   content: "",
   setContent: (content) => set({ content }),
   selectedAccountIds: [],

@@ -95,7 +95,7 @@ export default function LinkedInPreview({
       <div className="mt-3">
         {formattedContent ? (
           <div
-            className="tiptap wrap-break-words text-sm leading-relaxed font-normal text-[#191919] dark:text-[#f3f2f0] [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
+            className="tiptap break-all text-sm leading-relaxed font-normal text-[#191919] dark:text-[#f3f2f0] [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
             dangerouslySetInnerHTML={{ __html: formattedContent }}
           />
         ) : (

@@ -1,8 +1,7 @@
 
 # TODO
 
-- [ ]- platform word limit
-- [X]- enable all the prev disabled editor features and actually send html if that platform accepts it like linkedin 
+- [X]- platform word limit 
 - [ ]- add draft viewing page 
 - [ ]- add a calender to dashboard
 - [ ]- mobile sidebar
