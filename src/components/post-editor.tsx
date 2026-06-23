@@ -7,6 +7,7 @@ import CharacterCount from "@tiptap/extension-character-count";
 import Emoji, { gitHubEmojis } from "@tiptap/extension-emoji";
 import { BulletList, OrderedList } from "@tiptap/extension-list";
 import Typography from "@tiptap/extension-typography";
+import Underline from "@tiptap/extension-underline";
 import { TiptapEditor } from "./tiptap-editor";
 import { EditorToolbar } from "./editor-toolbar";
 import EmojiSuggestion from "~/lib/emoji-suggestions";
@@ -23,9 +24,6 @@ export function PostEditor() {
       StarterKit.configure({
         bulletList: false,
         orderedList: false,
-        bold: false,
-        italic: false,
-        strike: false,
       }),
       Placeholder.configure({ placeholder: "What's on your mind?" }),
       CharacterCount.configure({ limit: LIMIT }),
@@ -37,6 +35,7 @@ export function PostEditor() {
       BulletList,
       OrderedList,
       Typography,
+      Underline,
     ],
     content,
     onUpdate: ({ editor }) => {

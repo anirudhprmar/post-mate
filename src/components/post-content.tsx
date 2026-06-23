@@ -22,8 +22,7 @@ export default function PostContent() {
           </div>
         </div>
 
-        <div className="flex h-fit flex-col border-l p-2 pl-3">
-          <p className="mb-2 font-bold">Post Preview</p>
+        <div className="flex h-full flex-col border-l p-2 pl-3">
           <PostPreview />
         </div>
       </div>

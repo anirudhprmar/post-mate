@@ -6,6 +6,9 @@ import Image from "next/image";
 import { api } from "~/trpc/react";
 import { usePostStore } from "~/store/post";
 import PublishActions from "./publish-actions";
+import XPreview, { type PlatformPreviewProps } from "./platform-preview/x-preview";
+import LinkedInPreview from "./platform-preview/linkedin-preview";
+import InstagramPreview from "./platform-preview/insta-preview";
 
 export default function PostPreview() {
   const { data: connectedAccounts = [] } =
@@ -32,8 +35,24 @@ export default function PostPreview() {
     (a) => a.id === activePreviewId,
   );
 
+  const PreviewPlatforms: Record<string, React.ComponentType<PlatformPreviewProps>> = {
+    x: XPreview,
+    linkedin: LinkedInPreview,
+    instagram: InstagramPreview,
+  };
+
+  const platformKey = activePreviewAccount?.platform.toLowerCase();
+
+  const PreviewPlatform =
+    activePreviewAccount && platformKey ? PreviewPlatforms[platformKey] : null;
+
   return (
-    <div className="flex h-full w-full flex-col justify-between">
+    <div className="flex h-full w-full flex-col">
+      <div className="mb-2 flex justify-between gap-2">
+        <p className="font-bold w-full">Post Preview</p>
+        <PublishActions />
+      </div>
+
       <div className="flex flex-col gap-4">
         {selectedAccounts.length === 0 ? (
           <div className="bg-muted rounded-sm border border-dashed p-3 py-8 text-center">
@@ -62,6 +81,7 @@ export default function PostPreview() {
                       height={16}
                       className="h-4 w-4 rounded-full"
                       referrerPolicy="no-referrer"
+                      unoptimized
                     />
                   ) : (
                     <div className="bg-primary/10 flex h-4 w-4 items-center justify-center rounded-full">
@@ -73,80 +93,16 @@ export default function PostPreview() {
               ))}
             </div>
 
-            {activePreviewAccount && (
-              <div className="bg-card rounded-md border p-4 shadow-sm">
-                <div className="border-border/50 mb-3 flex items-center gap-3 border-b pb-3">
-                  {activePreviewAccount.avatarUrl ? (
-                    <Image
-                      src={activePreviewAccount.avatarUrl}
-                      alt={activePreviewAccount.username}
-                      width={32}
-                      height={32}
-                      className="h-8 w-8 rounded-full"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : (
-                    <div className="bg-primary/10 text-primary flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold">
-                      <User className="text-primary h-4 w-4" />
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-sm leading-none font-semibold">
-                      {activePreviewAccount.username}
-                    </p>
-                    <p className="text-muted-foreground mt-1 text-xs capitalize">
-                      {activePreviewAccount.platform}
-                    </p>
-                  </div>
-                </div>
-                <div
-                  className="tiptap wrap-break-words max-w-none text-sm whitespace-pre-wrap [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      content ||
-                      (media.length === 0
-                        ? '<span class="text-muted-foreground italic">Write something to preview...</span>'
-                        : ""),
-                  }}
-                />
-                {media.length > 0 && (
-                  <div
-                    className={`mt-4 grid h-full w-full gap-2 ${
-                      media.length === 1
-                        ? "grid-cols-1"
-                        : "grid-cols-1 md:grid-cols-2"
-                    }`}
-                  >
-                    {media.map((m) => (
-                      <div
-                        key={m.id}
-                        className="bg-muted relative h-full w-full overflow-hidden rounded-md sm:aspect-video"
-                      >
-                        {m.type === "image" ? (
-                          <img
-                            src={m.previewUrl}
-                            alt="Preview"
-                            className="h-full w-full object-contain"
-                          />
-                        ) : (
-                          <video
-                            src={m.previewUrl}
-                            poster={m.thumbnailPreviewUrl}
-                            controls
-                            className="h-full w-full object-fill"
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+            {activePreviewAccount && PreviewPlatform ? (
+              <PreviewPlatform
+                username={activePreviewAccount.username}
+                avatarUrl={activePreviewAccount.avatarUrl}
+                content={content}
+                media={media}
+              />
+            ) : null}
           </>
         )}
-      </div>
-      <div className="mt-4">
-        <PublishActions />
       </div>
     </div>
   );

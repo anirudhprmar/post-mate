@@ -6,6 +6,10 @@ import {
   PlusIcon,
   List,
   ListOrdered,
+  Bold,
+  Italic,
+  Strikethrough,
+  Underline as UnderlineIcon,
 } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { Button } from "./ui/button";
@@ -20,15 +24,44 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
     selector: (ctx) => ({
       bulletList: ctx.editor?.isActive("bulletList") ?? false,
       orderedList: ctx.editor?.isActive("orderedList") ?? false,
+      bold: ctx.editor?.isActive("bold") ?? false,
+      italic: ctx.editor?.isActive("italic") ?? false,
+      strike: ctx.editor?.isActive("strike") ?? false,
+      underline: ctx.editor?.isActive("underline") ?? false,
       wordCount: ctx.editor?.storage.characterCount.words() ?? 0,
     }),
   });
 
   const tools = [
     {
+      icon: Bold,
+      action: () => editor?.chain().focus().toggleBold().run(),
+      active: activeMarks?.bold,
+    },
+    {
+      icon: Italic,
+      action: () => editor?.chain().focus().toggleItalic().run(),
+      active: activeMarks?.italic,
+    },
+    {
+      icon: UnderlineIcon,
+      action: () => editor?.chain().focus().toggleUnderline().run(),
+      active: activeMarks?.underline,
+    },
+    {
+      icon: Strikethrough,
+      action: () => editor?.chain().focus().toggleStrike().run(),
+      active: activeMarks?.strike,
+    },
+    {
       icon: List,
       action: () => editor?.chain().focus().toggleBulletList().run(),
       active: activeMarks?.bulletList,
+    },
+    {
+      icon: ListOrdered,
+      action: () => editor?.chain().focus().toggleOrderedList().run(),
+      active: activeMarks?.orderedList,
     },
     {
       icon: Smile,
@@ -36,11 +69,6 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
         editor?.chain().focus().insertContent(":").run();
       },
       active: false, // emoji has no "active" state
-    },
-    {
-      icon: ListOrdered,
-      action: () => editor?.chain().focus().toggleOrderedList().run(),
-      active: activeMarks?.orderedList,
     },
   ];
 

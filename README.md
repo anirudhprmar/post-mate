@@ -1,15 +1,15 @@
 
 # TODO
 
-- [X]- upload all media in public folder to upload thing
-- [ ]- use proper platform icons acc. to page
+- [X]- improve preview
+- [ ]- platform word limit
+- [ ]- enable all the prev disabled editor features and actually send html if that platform accepts it like linkedin 
 - [ ]- add draft viewing page 
-- [ ]- platform word limit 
-- [ ]- instead of + post content button create a page to post for better UX
 - [ ]- add a calender to dashboard
 - [ ]- mobile sidebar
-- [ ]- improve preview
 - [ ]- update dashboard image in hero and also update features videos
+- [ ]- create all the remaining pages like create, calendar, analytics, settings
+
 
 - [ ]- token refresh cron 
 - [ ]- work on posts and post analytics page (add postURL to db after successful publish)

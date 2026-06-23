@@ -586,6 +586,7 @@
     vertical-align: middle;
   }
 
+
   * {
     @apply border-border outline-ring/50;
   }
@@ -601,4 +602,24 @@
   /* slight optical correction */
   margin: 0;
   max-width: unset;
+}
+
+.tiptap u {
+  text-decoration: underline;
+}
+
+.tiptap s,
+.tiptap del,
+.tiptap strike {
+  text-decoration: line-through;
+}
+
+.tiptap strong,
+.tiptap b {
+  font-weight: bold;
+}
+
+.tiptap em,
+.tiptap i {
+  font-style: italic;
 }
