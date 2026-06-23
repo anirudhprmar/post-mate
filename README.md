@@ -1,9 +1,8 @@
 
 # TODO
 
-- [X]- improve preview
 - [ ]- platform word limit
-- [ ]- enable all the prev disabled editor features and actually send html if that platform accepts it like linkedin 
+- [X]- enable all the prev disabled editor features and actually send html if that platform accepts it like linkedin 
 - [ ]- add draft viewing page 
 - [ ]- add a calender to dashboard
 - [ ]- mobile sidebar
