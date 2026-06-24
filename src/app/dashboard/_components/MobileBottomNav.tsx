@@ -120,7 +120,7 @@ export default function MobileBottomNav() {
             </SheetTrigger>
             <SheetContent
               side="bottom"
-              className="border-border/40 h-[auto] max-h-[85vh] rounded-t-[2.5rem] border-t pb-10"
+              className="border-border/40 h-auto max-h-[85vh] rounded-t-[2.5rem] border-t pb-10"
             >
               <SheetHeader className="pb-4">
                 <SheetTitle className="text-xl font-bold">Menu</SheetTitle>
