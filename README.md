@@ -1,12 +1,11 @@
 
 # TODO
 
-- [X]- platform word limit 
+- [ ]- create all the remaining pages like calendar, analytics, settings
 - [ ]- add draft viewing page 
 - [ ]- add a calender to dashboard
-- [ ]- mobile sidebar
+- [X]- mobile sidebar
 - [ ]- update dashboard image in hero and also update features videos
-- [ ]- create all the remaining pages like create, calendar, analytics, settings
 
 
 - [ ]- token refresh cron 

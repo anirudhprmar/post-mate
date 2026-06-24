@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import Image from "next/image";
+import { highlightMentionsAndHashtags } from "~/lib/helpers";
 
 export interface PlatformPreviewProps {
   username: string;
@@ -30,24 +31,9 @@ export default function XPreview({
     return `@${slug || "user"}`;
   }, [username]);
 
-  // Format content to highlight mentions and hashtags in X blue
   const formattedContent = useMemo(() => {
     if (!content) return "";
-    let html = content;
-
-    // Highlight mentions: @username (not inside attributes)
-    html = html.replace(
-      /(?<![a-zA-Z0-9_="/])@([a-zA-Z0-9_]+)/g,
-      '<span class="text-[#1d9bf0] hover:underline cursor-pointer">@$1</span>'
-    );
-
-    // Highlight hashtags: #hashtag (not inside attributes)
-    html = html.replace(
-      /(?<![a-zA-Z0-9_="/])#([a-zA-Z0-9_]+)/g,
-      '<span class="text-[#1d9bf0] hover:underline cursor-pointer">#$1</span>'
-    );
-
-    return html;
+    return highlightMentionsAndHashtags(content, "text-[#1d9bf0]");
   }, [content]);
 
   // Format current timestamp dynamically

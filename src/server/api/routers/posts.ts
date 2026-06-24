@@ -186,6 +186,35 @@ export function htmlToPlainText(html: string): string {
 }
 
 export const postRouter = createTRPCRouter({
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db.query.posts.findMany({
+      where: eq(posts.userId, ctx.session.user.id),
+      orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+      with: {
+        targets: {
+          with: {
+            connectedAccount: true,
+          },
+        },
+      },
+    });
+  }),
+
+  getById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.query.posts.findFirst({
+        where: eq(posts.id, input.id),
+        with: {
+          targets: {
+            with: {
+              connectedAccount: true,
+            },
+          },
+        },
+      });
+    }),
+
   createPost: protectedProcedure
     .input(
       z.object({

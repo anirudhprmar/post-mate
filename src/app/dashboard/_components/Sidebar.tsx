@@ -57,25 +57,15 @@ const navItems: NavItem[] = [
     icon: Scroll,
   },
   {
-    label: "Scheduled",
-    href: "/dashboard/scheduled",
-    icon: ClockCheck,
-  },
-  {
-    label: "Published",
-    href: "/dashboard/published",
-    icon: ThumbsUp,
-  },
-  {
     label: "Drafts",
     href: "/dashboard/drafts",
     icon: PenTool,
   },
-  {
-    label: "Content Lab",
-    href: "/dashboard/create",
-    icon: FlaskConical,
-  },
+  // {
+  //   label: "Content Lab",
+  //   href: "/dashboard/create",
+  //   icon: FlaskConical,
+  // },
   {
     label: "Analytics",
     href: "/dashboard/analytics",

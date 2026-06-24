@@ -4,26 +4,8 @@ import { User } from "lucide-react";
 import Image from "next/image";
 import { api } from "~/trpc/react";
 import { usePostStore } from "~/store/post";
-import {
-  XIcon,
-  LinkedInIcon,
-  FacebookIcon,
-  InstagramIcon,
-  ThreadsIcon,
-  YouTubeIcon,
-} from "~/lib/platform-icons";
+import { platformIcons } from "~/lib/platform-icons";
 
-const platformIcons: Record<
-  string,
-  React.FC<{ size?: number } & React.SVGProps<SVGSVGElement>>
-> = {
-  x: XIcon,
-  linkedin: LinkedInIcon,
-  facebook: FacebookIcon,
-  instagram: InstagramIcon,
-  threads: ThreadsIcon,
-  youtube: YouTubeIcon,
-};
 
 export default function AccountSelection() {
   const { data: connectedAccounts = [], isLoading } =

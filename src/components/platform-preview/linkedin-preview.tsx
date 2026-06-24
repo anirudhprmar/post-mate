@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import Image from "next/image";
 import { type PlatformPreviewProps } from "./x-preview";
 import { Repeat, ThumbsUp } from "lucide-react";
+import { highlightMentionsAndHashtags } from "~/lib/helpers";
 
 export default function LinkedInPreview({
   username,
@@ -11,24 +12,12 @@ export default function LinkedInPreview({
   content,
   media = [],
 }: PlatformPreviewProps) {
-  // Format content to highlight mentions and hashtags in LinkedIn blue (#0a66c2)
   const formattedContent = useMemo(() => {
     if (!content) return "";
-    let html = content;
-
-    // Highlight mentions: @username (not inside attributes)
-    html = html.replace(
-      /(?<![a-zA-Z0-9_="/])@([a-zA-Z0-9_]+)/g,
-      '<span class="text-[#0a66c2] dark:text-[#70b5f9] font-normal hover:underline cursor-pointer">@$1</span>'
+    return highlightMentionsAndHashtags(
+      content,
+      "text-[#0a66c2] dark:text-[#70b5f9] font-normal",
     );
-
-    // Highlight hashtags: #hashtag (not inside attributes)
-    html = html.replace(
-      /(?<![a-zA-Z0-9_="/])#([a-zA-Z0-9_]+)/g,
-      '<span class="text-[#0a66c2] dark:text-[#70b5f9] font-normal hover:underline cursor-pointer">#$1</span>'
-    );
-
-    return html;
   }, [content]);
 
   return (

@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import Image from "next/image";
 import { type PlatformPreviewProps } from "./x-preview";
+import { highlightMentionsAndHashtags } from "~/lib/helpers";
 
 export default function InstagramPreview({
   username,
@@ -10,25 +11,12 @@ export default function InstagramPreview({
   content,
   media = [],
 }: PlatformPreviewProps) {
-  // Format content (no special link coloring is usually needed on native Instagram client,
-  // but let's parse tags so they look like links)
   const formattedContent = useMemo(() => {
     if (!content) return "";
-    let html = content;
-
-    // Highlight mentions: @username
-    html = html.replace(
-      /(?<![a-zA-Z0-9_="/])@([a-zA-Z0-9_]+)/g,
-      '<span class="text-[#00376b] dark:text-[#e0f1ff] hover:underline cursor-pointer">@$1</span>'
+    return highlightMentionsAndHashtags(
+      content,
+      "text-[#00376b] dark:text-[#e0f1ff]",
     );
-
-    // Highlight hashtags: #hashtag
-    html = html.replace(
-      /(?<![a-zA-Z0-9_="/])#([a-zA-Z0-9_]+)/g,
-      '<span class="text-[#00376b] dark:text-[#e0f1ff] hover:underline cursor-pointer">#$1</span>'
-    );
-
-    return html;
   }, [content]);
 
   return (

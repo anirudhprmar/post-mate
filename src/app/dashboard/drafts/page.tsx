@@ -8,28 +8,9 @@ import { Badge } from "~/components/ui/badge";
 import { Clock, Plus, PenTool, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { api } from "~/trpc/react";
+import { timeAgo, getDraftStatusLabel } from "~/lib/helpers";
 
-function timeAgo(date: Date): string {
-  const now = new Date();
-  const diffMs = now.getTime() - new Date(date).getTime();
-  const mins = Math.floor(diffMs / 60_000);
-  if (mins < 1) return "Just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days === 1) return "Yesterday";
-  return `${days}d ago`;
-}
 
-function getStatusLabel(status: string) {
-  if (status === "all") return "All Status";
-  if (status === "writing") return "Draft";
-  if (status === "review") return "In Review";
-  if (status === "ready") return "Ready to Post";
-  if (status === "published") return "Published";
-  return status;
-}
 
 export default function DraftsPage() {
   const { data: drafts, isLoading } = api.draft.getAll.useQuery();
@@ -54,10 +35,10 @@ export default function DraftsPage() {
         <header className="flex flex-col items-start justify-between gap-4 px-2 sm:flex-row sm:items-center">
           <div>
             <h1 className="text-foreground/90 text-4xl leading-tight font-bold tracking-tight">
-              Your Drafts 📝
+              Drafts 
             </h1>
             <p className="text-muted-foreground mt-1 max-w-xl text-sm font-medium">
-              Manage your saved ideas, works in progress, and scheduled posts.
+              Manage your saved ideas and scheduled posts.
             </p>
           </div>
         </header>
@@ -94,7 +75,7 @@ export default function DraftsPage() {
                       : "bg-background/50 border-border/50 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                   }`}
                 >
-                  {getStatusLabel(s)}
+                  {getDraftStatusLabel(s)}
                 </button>
               ))}
             </div>
@@ -176,7 +157,7 @@ export default function DraftsPage() {
                                       }
                                       className="border-border/50 rounded-full px-3 py-1 text-[11px] font-semibold shadow-none"
                                     >
-                                      {getStatusLabel(draft.status)}
+                                      {getDraftStatusLabel(draft.status)}
                                     </Badge>
                                   </div>
                                 </Card>
