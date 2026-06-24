@@ -48,6 +48,15 @@ export const env = createEnv({
     NEXT_PUBLIC_CREATOR_YEARLY_TIER_SLUG: z.string(),
     NEXT_PUBLIC_PRO_YEARLY_TIER_SLUG: z.string(),
     NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG: z.string(),
+    NEXT_PUBLIC_POSTHOG_KEY:
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
+    NEXT_PUBLIC_POSTHOG_HOST:
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
+
   },
 
   /**
@@ -89,6 +98,9 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_PRO_YEARLY_TIER_SLUG,
     NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG:
       process.env.NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
