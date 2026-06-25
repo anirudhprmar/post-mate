@@ -32,6 +32,8 @@ export const env = createEnv({
     R2_ENDPOINT: z.string(),
     R2_BUCKET_NAME: z.string(),
     SENTRY_AUTH_TOKEN: z.string(),
+    YT_CLIENT_ID: z.string(),
+    YT_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -102,6 +104,8 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+    YT_CLIENT_ID: process.env.YT_CLIENT_ID,
+    YT_CLIENT_SECRET: process.env.YT_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -1,18 +1,17 @@
 
 # TODO
 
+- [X]- add support for blustky / threads / facebook / YT support later
 - [ ]- create all the remaining pages like analytics, settings, all posts and post analytics page 
 - [ ]- move scheduling from inngest to BullMQ with upstash redis
-- [ ]- add support for blustky / threads / facebook / YT support later
-- [X]- posthog and sentry
 
-
-- [ ]- token refresh cron 
-
-- [ ]- SEO
-- [ ]- payment integration
+- [ ]- SEO / GEO(llms.txt) and blogs
+- [ ]- payment integration with dodo
+- [ ]- use app.post-mate.xyz for internal flow 
+- [ ]- resend for mails
+- update colors and motion for landing page : update headline too (capture free audience)
 
 
 - [ ]- update dashboard image in hero with demo video
 - [ ]- Launch
-- [ ]- add comments to main post
+- [ ]- add comments to main post / auto reply 
