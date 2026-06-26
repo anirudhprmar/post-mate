@@ -111,11 +111,18 @@ export async function GET(
     "redirect_uri",
     `${env.NEXT_PUBLIC_APP_URL}/api/social/${platform}/callback`,
   );
-  const scopeSeparator = platform === "threads" ? " " : ",";
+  const scopeSeparator =
+    platform === "threads" || platform === "youtube" ? " " : ",";
   redirectUrl.searchParams.set("scope", config.scopes.join(scopeSeparator));
   if (platform === "instagram") {
     redirectUrl.searchParams.set("enable_fb_login", "0");
     redirectUrl.searchParams.set("force_authentication", "1");
+  }
+  if (platform === "youtube") {
+    // Required to get a refresh_token from Google; select_account lets users
+    // pick which Google account to connect when they have multiple.
+    redirectUrl.searchParams.set("access_type", "offline");
+    redirectUrl.searchParams.set("prompt", "select_account consent");
   }
 
   const state = crypto.randomBytes(16).toString("hex");

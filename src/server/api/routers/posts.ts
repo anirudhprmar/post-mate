@@ -8,6 +8,7 @@ import { publishToX } from "~/lib/publishers/x";
 import { publishToLinkedIn } from "~/lib/publishers/linkedin";
 import { publishToInsta } from "~/lib/publishers/instagram";
 import { publishToThreads } from "~/lib/publishers/threads";
+import { publishToYouTube } from "~/lib/publishers/yt";
 import { refreshAccountToken } from "~/lib/social-oauth/refresh";
 
 function toBold(char: string): string {
@@ -412,6 +413,25 @@ export const postRouter = createTRPCRouter({
                 publishedUrl = res.publishedUrl;
                 break;
               }
+              case "youtube": {
+                const videoItem = media.find((m) => m.type === "video");
+                if (!videoItem) {
+                  throw new Error("YouTube requires a video file");
+                }
+                const ytTitle = post.content
+                  .split("\n")[0]
+                  ?.trim()
+                  .slice(0, 100) || "Untitled Video";
+                const res = await publishToYouTube(
+                  ytTitle,
+                  post.content,
+                  account.accessToken,
+                  videoItem.url,
+                  videoItem.mimeType ?? "video/mp4",
+                );
+                publishedUrl = res.publishedUrl;
+                break;
+              }
               default:
                 throw new Error(`Unsupported platform: ${account.platform}`);
             }
@@ -476,4 +496,31 @@ export const postRouter = createTRPCRouter({
         retries: 3,
       });
     }),
+
+  retrySchedule: protectedProcedure
+    .input(z.object({ postId: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const post = await ctx.db.query.posts.findFirst({
+        where: eq(posts.id, input.postId),
+      });
+
+      if (!post) throw new Error("Post not found");
+      if (post.userId !== ctx.session.user.id) throw new Error("Unauthorized");
+      if (post.status === "published") {
+        throw new Error("Post is already published");
+      }
+
+      const delayMs = post.scheduledFor
+        ? post.scheduledFor.getTime() - Date.now()
+        : 0;
+      const delaySec = Math.max(Math.ceil(delayMs / 1000), 0);
+
+      await qstash.publishJSON({
+        url: `${env.NEXT_PUBLIC_APP_URL}/api/publish`,
+        body: { postId: input.postId },
+        delay: delaySec,
+        retries: 3,
+      });
+    }),
 });
+

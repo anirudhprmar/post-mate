@@ -86,11 +86,13 @@ export function usePublishPost() {
       return;
     }
 
+    let postId: string | null = null;
+
     try {
       const post = await createPost.mutateAsync({
         content: content,
       });
-      const postId = post.id;
+      postId = post.id;
 
       if (media.length > 0) {
         for (const account of selectedAccounts) {
@@ -123,7 +125,15 @@ export function usePublishPost() {
           connectedAccountId: account,
         });
       }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong");
+      setPublishingMode(null);
+      return;
+    }
 
+    // Separate try/catch for QStash so a delivery failure doesn't lose the post.
+    // The post + media are already persisted at this point.
+    try {
       await schedulePublish.mutateAsync({
         postId,
         scheduledAtMs: scheduledDate?.getTime(),
@@ -131,7 +141,13 @@ export function usePublishPost() {
       reset();
       toast.success("Post scheduled successfully.");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong");
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      // Post is saved but QStash couldn't queue it (e.g. loopback in dev).
+      // User can retry from the post detail page.
+      toast.error(
+        `Post saved but scheduling failed: ${msg}. You can retry from All Posts.`,
+        { duration: 8000 },
+      );
     } finally {
       setPublishingMode(null);
     }

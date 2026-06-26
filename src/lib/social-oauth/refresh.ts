@@ -74,6 +74,41 @@ async function refreshInstagramToken(
   };
 }
 
+async function refreshGoogleToken(
+  refreshToken: string,
+): Promise<RefreshResult> {
+  const response = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      client_id: env.YT_CLIENT_ID,
+      client_secret: env.YT_CLIENT_SECRET,
+    }).toString(),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      `Google token refresh failed: ${response.status} - ${errorText}`,
+    );
+  }
+
+  const data = (await response.json()) as {
+    access_token: string;
+    expires_in: number;
+    // Google does not always return a new refresh_token; keep the existing one.
+    refresh_token?: string;
+  };
+
+  return {
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token ?? refreshToken,
+    expiresAt: new Date(Date.now() + data.expires_in * 1000),
+  };
+}
+
 export async function refreshAccountToken(accountId: string): Promise<boolean> {
   const account = await db.query.connectedAccount.findFirst({
     where: eq(connectedAccount.id, accountId),
@@ -94,6 +129,11 @@ export async function refreshAccountToken(accountId: string): Promise<boolean> {
       result = await refreshLinkedInToken(account.refreshToken);
     } else if (account.platform === "instagram") {
       result = await refreshInstagramToken(account.accessToken);
+    } else if (account.platform === "youtube") {
+      if (!account.refreshToken) {
+        throw new Error("No refresh token available for YouTube account");
+      }
+      result = await refreshGoogleToken(account.refreshToken);
     } else if (account.platform === "x") {
       return true;
     } else {

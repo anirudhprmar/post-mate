@@ -124,22 +124,25 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
   // },
   youtube: {
     platformId: "youtube",
-    authorizationUrl: "https://accounts.google.com/o/oauth2/v3/auth",
+    authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth",
     tokenUrl: "https://oauth2.googleapis.com/token",
-    userInfoUrl: "https://www.googleapis.com/oauth2/v3/userinfo",
+    userInfoUrl:
+      "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true",
     scopes: [
-      "https://www.googleapis.com/auth/youtube.force-ssl",
       "https://www.googleapis.com/auth/youtube",
       "https://www.googleapis.com/auth/youtube.upload",
-      "https://www.googleapis.com/auth/youtube.readonly",
     ],
     clientId: env.YT_CLIENT_ID,
     clientSecret: env.YT_CLIENT_SECRET,
     parseProfile: (data: any) => {
+      const channel = data?.items?.[0];
       return {
-        accountId: data.id,
-        username: data.name || "YouTube User",
-        avatarUrl: data.picture || null,
+        accountId: channel?.id ?? "",
+        username: channel?.snippet?.title || "YouTube Channel",
+        avatarUrl:
+          channel?.snippet?.thumbnails?.default?.url ||
+          channel?.snippet?.thumbnails?.medium?.url ||
+          null,
         platformSpecificData: {},
       };
     },
