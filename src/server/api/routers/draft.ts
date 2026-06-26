@@ -48,7 +48,7 @@ export const draftRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        content: z.string().min(1),
+        content: z.string(),
         platform: platformEnum,
         status: z.enum(["draft", "published"]).default("draft"),
         media: mediaSchema.optional(),

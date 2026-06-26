@@ -59,17 +59,65 @@ export const auth = betterAuth({
           products: [
             {
               productId:
-                env.NEXT_PUBLIC_STARTER_ID ??
+                env.NEXT_PUBLIC_CREATOR_MONTHLY_TIER ??
                 (() => {
                   throw new Error(
-                    "NEXT_PUBLIC_STARTER_ID environment variable is required",
+                    "NEXT_PUBLIC_CREATOR_MONTHLY_TIER environment variable is required",
                   );
                 })(),
               slug:
-                env.NEXT_PUBLIC_STARTER_SLUG ??
+                env.NEXT_PUBLIC_CREATOR_MONTHLY_TIER_SLUG ??
                 (() => {
                   throw new Error(
-                    "NEXT_PUBLIC_STARTER_SLUG environment variable is required",
+                    "NEXT_PUBLIC_CREATOR_MONTHLY_TIER_SLUG environment variable is required",
+                  );
+                })(),
+            },
+            {
+              productId:
+                env.NEXT_PUBLIC_CREATOR_YEARLY_TIER ??
+                (() => {
+                  throw new Error(
+                    "NEXT_PUBLIC_CREATOR_YEARLY_TIER environment variable is required",
+                  );
+                })(),
+              slug:
+                env.NEXT_PUBLIC_CREATOR_YEARLY_TIER_SLUG ??
+                (() => {
+                  throw new Error(
+                    "NEXT_PUBLIC_CREATOR_YEARLY_TIER_SLUG environment variable is required",
+                  );
+                })(),
+            },
+            {
+              productId:
+                env.NEXT_PUBLIC_PRO_YEARLY_TIER ??
+                (() => {
+                  throw new Error(
+                    "NEXT_PUBLIC_PRO_YEARLY_TIER environment variable is required",
+                  );
+                })(),
+              slug:
+                env.NEXT_PUBLIC_PRO_YEARLY_TIER_SLUG ??
+                (() => {
+                  throw new Error(
+                    "NEXT_PUBLIC_PRO_YEARLY_TIER_SLUG environment variable is required",
+                  );
+                })(),
+            },
+            {
+              productId:
+                env.NEXT_PUBLIC_PRO_MONTHLY_TIER ??
+                (() => {
+                  throw new Error(
+                    "NEXT_PUBLIC_PRO_MONTHLY_TIER environment variable is required",
+                  );
+                })(),
+              slug:
+                env.NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG ??
+                (() => {
+                  throw new Error(
+                    "NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG environment variable is required",
                   );
                 })(),
             },
@@ -96,7 +144,6 @@ export const auth = betterAuth({
               type === "subscription.updated"
             ) {
               try {
-                // STEP 1: Extract user ID from customer data
                 const userId = data.customer?.externalId;
                 if (!userId || !data.checkoutId) {
                   console.warn("No user or checkout found", {
@@ -105,7 +152,6 @@ export const auth = betterAuth({
                   });
                   return;
                 }
-                // STEP 2: Build subscription data
                 const subscriptionData = {
                   id: data.id,
                   createdAt: new Date(data.createdAt),
@@ -140,7 +186,6 @@ export const auth = betterAuth({
                   userId: userId,
                 };
 
-                // STEP 3: Use Drizzle's onConflictDoUpdate for proper upsert
                 await db
                   .insert(subscription)
                   .values(subscriptionData)
@@ -177,7 +222,6 @@ export const auth = betterAuth({
                   "💥 Error processing subscription webhook:",
                   error,
                 );
-                // Don't throw - let webhook succeed to avoid retries
               }
             }
           },

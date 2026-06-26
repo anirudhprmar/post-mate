@@ -2,17 +2,18 @@
 
 import clsx from "clsx";
 import {
-  UserIcon,
-  ListTodo,
   MoreHorizontal,
   Settings,
   Bell,
   PenTool,
-  Sparkles,
+  Send,
+  CalendarDays,
+  Scroll,
+  BarChart3,
+  LinkIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { api } from "~/lib/api";
 import {
   Sheet,
   SheetContent,
@@ -26,28 +27,40 @@ import UserProfile from "~/components/user-profile";
 
 const navItems = [
   {
-    label: "Today",
-    href: "/profile",
-    icon: UserIcon,
+    label: "Post",
+    href: "/dashboard",
+    icon: Send,
   },
   {
-    label: "Tasks",
-    href: "/tasks",
-    icon: ListTodo,
+    label: "Calendar",
+    href: "/dashboard/calendar",
+    icon: CalendarDays,
   },
   {
-    label: "Drafts",
-    href: "/dashboard/drafts",
-    icon: PenTool,
+    label: "All Posts",
+    href: "/dashboard/all-posts",
+    icon: Scroll,
   },
   {
-    label: "Inspiration",
-    href: "/dashboard/inspiration",
-    icon: Sparkles,
+    label: "Analytics",
+    href: "/dashboard/analytics",
+    icon: BarChart3,
   },
 ];
 
 const moreMenuItems = [
+  {
+    label: "Drafts",
+    href: "/dashboard/drafts",
+    icon: PenTool,
+    description: "Your saved drafts",
+  },
+  {
+    label: "Connections",
+    href: "/dashboard/connect",
+    icon: LinkIcon,
+    description: "Manage your connections",
+  },
   {
     label: "Notifications",
     href: "/notifications",
@@ -66,7 +79,6 @@ export default function MobileBottomNav() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMoreOpen, setIsMoreOpen] = React.useState(false);
-  // const { data: unreadCount } = api.notification.getUnreadCount.useQuery();
 
   const handleMoreItemClick = (href: string) => {
     setIsMoreOpen(false);
@@ -108,7 +120,7 @@ export default function MobileBottomNav() {
             </SheetTrigger>
             <SheetContent
               side="bottom"
-              className="border-border/40 h-[auto] max-h-[85vh] rounded-t-[2.5rem] border-t pb-10"
+              className="border-border/40 h-auto max-h-[85vh] rounded-t-[2.5rem] border-t pb-10"
             >
               <SheetHeader className="pb-4">
                 <SheetTitle className="text-xl font-bold">Menu</SheetTitle>
@@ -145,20 +157,10 @@ export default function MobileBottomNav() {
                         )}
                       >
                         <item.icon className="h-6 w-6" />
-                        {/* {item.label === "Notifications" && !!unreadCount && unreadCount > 0 && (
-                          <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[11px] text-primary-foreground font-bold border-2 border-background">
-                            {unreadCount}
-                          </span>
-                        )} */}
                       </div>
                       <div className="flex-1 text-left">
                         <div className="flex items-center justify-between">
                           <p className="font-semibold">{item.label}</p>
-                          {/* {item.label === "Notifications" && !!unreadCount && unreadCount > 0 && (
-                            <span className="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">
-                              {unreadCount} new
-                            </span>
-                          )} */}
                         </div>
                         <p className="text-muted-foreground text-sm">
                           {item.description}

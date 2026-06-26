@@ -15,7 +15,6 @@ export const subscriptionRouter = createTRPCRouter({
       return { hasSubscription: false as const };
     }
 
-    // Get the most recent active subscription
     const activeSubscription = userSubscriptions
       .filter((sub) => sub.status === "active")
       .sort(
@@ -24,7 +23,6 @@ export const subscriptionRouter = createTRPCRouter({
       )[0];
 
     if (activeSubscription) {
-      // Validate that the subscription has valid dates
       if (
         !activeSubscription.currentPeriodStart ||
         !activeSubscription.currentPeriodEnd
@@ -72,7 +70,6 @@ export const subscriptionRouter = createTRPCRouter({
       };
     }
 
-    // Fallback: no active subscription, check for latest subscription (canceled/expired)
     const latestSubscription = userSubscriptions.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -148,7 +145,6 @@ export const subscriptionRouter = createTRPCRouter({
 
     const now = new Date();
 
-    // Active and not canceled
     if (
       activeSubscription.status === "active" &&
       !activeSubscription.cancelAtPeriodEnd
@@ -156,7 +152,6 @@ export const subscriptionRouter = createTRPCRouter({
       return true;
     }
 
-    // In grace period (active but will cancel at period end)
     if (
       activeSubscription.status === "active" &&
       activeSubscription.cancelAtPeriodEnd &&

@@ -17,6 +17,7 @@ import { type RefObject } from "react";
 // import { env } from "~/env";
 // import { api } from "~/lib/api";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { env } from "~/env";
 
 interface PurchaseDetails {
   hasPurchased: boolean;
@@ -70,17 +71,17 @@ export default function PricingTable({
     }
   };
 
-  const CREATOR_MONTHLY_TIER = "price_1S7t052L9078725B75504508";
-  const CREATOR_MONTHLY_SLUG = "creator";
+  const CREATOR_MONTHLY_TIER = env.NEXT_PUBLIC_CREATOR_MONTHLY_TIER;
+  const CREATOR_MONTHLY_SLUG = env.NEXT_PUBLIC_CREATOR_MONTHLY_TIER_SLUG;
 
-  const CREATOR_YEARLY_TIER = "price_1S7t052L9078725B75504508";
-  const CREATOR_YEARLY_SLUG = "creator";
+  const CREATOR_YEARLY_TIER = env.NEXT_PUBLIC_CREATOR_YEARLY_TIER;
+  const CREATOR_YEARLY_SLUG = env.NEXT_PUBLIC_CREATOR_YEARLY_TIER_SLUG;
 
-  const PRO_MONTHLY_TIER = "price_1S7t052L9078725B75504508";
-  const PRO_MONTHLY_SLUG = "pro";
+  const PRO_MONTHLY_TIER = env.NEXT_PUBLIC_PRO_MONTHLY_TIER;
+  const PRO_MONTHLY_SLUG = env.NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG;
 
-  const PRO_YEARLY_TIER = "price_1S7t052L9078725B75504508";
-  const PRO_YEARLY_SLUG = "pro";
+  const PRO_YEARLY_TIER = env.NEXT_PUBLIC_PRO_YEARLY_TIER;
+  const PRO_YEARLY_SLUG = env.NEXT_PUBLIC_PRO_YEARLY_TIER_SLUG;
 
   if (
     !CREATOR_MONTHLY_TIER ||

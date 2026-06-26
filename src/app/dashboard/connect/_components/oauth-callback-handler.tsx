@@ -12,7 +12,6 @@ export function OAuthCallbackHandler() {
 
   const utils = api.useUtils();
 
-  // ── Handle custom OAuth flow (server-side save, just show toast) ─────
   const connected = searchParams.get("connected");
   useEffect(() => {
     if (!connected || processed.current) return;
@@ -36,7 +35,6 @@ export function OAuthCallbackHandler() {
     router.replace(url.pathname + (url.search || ""));
   }, [connected, utils, router]);
 
-  // ── Handle error from OAuth flow ────────────────────────────────────
   const error = searchParams.get("error");
   useEffect(() => {
     if (!error) return;

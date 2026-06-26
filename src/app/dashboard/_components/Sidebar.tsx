@@ -16,6 +16,10 @@ import {
   Scroll,
   ThumbsUp,
   BarChart3,
+  Home,
+  Send,
+  Clock,
+  ClockCheck,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "~/components/ui/button";
@@ -38,8 +42,13 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: "Calendar",
+    label: "Post",
     href: "/dashboard",
+    icon: Send,
+  },
+  {
+    label: "Calendar",
+    href: "/dashboard/calendar",
     icon: CalendarDays,
   },
   {
@@ -48,25 +57,15 @@ const navItems: NavItem[] = [
     icon: Scroll,
   },
   {
-    label: "Scheduled",
-    href: "/dashboard/scheduled",
-    icon: Calendar,
-  },
-  {
-    label: "Published",
-    href: "/dashboard/published",
-    icon: ThumbsUp,
-  },
-  {
     label: "Drafts",
     href: "/dashboard/drafts",
     icon: PenTool,
   },
-  {
-    label: "Content Lab",
-    href: "/dashboard/create",
-    icon: FlaskConical,
-  },
+  // {
+  //   label: "Content Lab",
+  //   href: "/dashboard/create",
+  //   icon: FlaskConical,
+  // },
   {
     label: "Analytics",
     href: "/dashboard/analytics",
@@ -87,7 +86,9 @@ export default function DashboardSideBar() {
       <div className="flex h-full flex-col">
         <div className="flex items-center gap-2 pt-4 pb-2 pl-4">
           <Image
-            src={"/pmlogo.png"}
+            src={
+              "https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBl3FSS0sBQjgrwMc5HoZpy3dEeLPF9kvxOnV6"
+            }
             alt="logo"
             width={40}
             height={40}
@@ -95,22 +96,6 @@ export default function DashboardSideBar() {
           />
           <p className="text-foreground text-xl font-bold">postmate</p>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button size={"lg"} variant={"default"} className="m-2 rounded-sm">
-              <PlusIcon className="h-4 w-4" /> Create Post
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="flex h-150 min-w-4xl flex-col sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Create Post</DialogTitle>
-              <DialogDescription>
-                What are you posting today ?
-              </DialogDescription>
-            </DialogHeader>
-            <PostContent />
-          </DialogContent>
-        </Dialog>
         <nav
           aria-label="Main Navigation"
           className="flex h-full w-full flex-col justify-between py-4"

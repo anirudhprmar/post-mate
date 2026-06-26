@@ -17,6 +17,8 @@ const s3Client = new S3Client({
     accessKeyId: env.R2_ACCESS_KEY_ID,
     secretAccessKey: env.R2_SECRET_ACCESS_KEY,
   },
+  requestChecksumCalculation: "WHEN_REQUIRED",
+  responseChecksumValidation: "WHEN_REQUIRED",
 });
 
 export const mediaRouter = createTRPCRouter({
@@ -57,6 +59,7 @@ export const mediaRouter = createTRPCRouter({
             key: z.string(),
             type: z.enum(["image", "video"]),
             mimeType: z.string().optional(),
+            thumbnailUrl: z.string().optional(),
           }),
         ),
       }),

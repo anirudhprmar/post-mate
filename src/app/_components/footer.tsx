@@ -121,7 +121,14 @@ export default function Footer() {
             <div className="flex max-w-xs flex-col gap-5">
               {/* Logo */}
               <div className="flex items-center gap-2.5">
-                <Image src={"/pmlogo.png"} alt="logo" width={50} height={50} />
+                <Image
+                  src={
+                    "https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBl3FSS0sBQjgrwMc5HoZpy3dEeLPF9kvxOnV6"
+                  }
+                  alt="logo"
+                  width={50}
+                  height={50}
+                />
                 <span className="text-lg font-bold tracking-tight">
                   post mate
                 </span>

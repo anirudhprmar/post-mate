@@ -156,3 +156,15 @@ export function YouTubeIcon({
     </svg>
   );
 }
+
+export const platformIcons: Record<
+  string,
+  React.FC<{ size?: number } & React.SVGProps<SVGSVGElement>>
+> = {
+  x: XIcon,
+  linkedin: LinkedInIcon,
+  instagram: InstagramIcon,
+  facebook: FacebookIcon,
+  threads: ThreadsIcon,
+  youtube: YouTubeIcon,
+};

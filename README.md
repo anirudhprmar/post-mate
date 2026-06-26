@@ -1,26 +1,17 @@
 
 # TODO
 
-insta supports jpeg videos
-also update mediaitem interface to include thumbnail for videos
-remove usePKCE
-remove hardcoded polar plans : PRO_YEARLY_TIER etc
-upload all media in public folder to upload thing
-use proper platform icons acc. to page
-add draft viewing page 
-
-- [ ]- platform word limit 
-- [ ]- add a calender to dashboard
-- [ ]- mobile sidebar
-
-- [ ]- token refresh cron 
-- [ ]- work on posts and post analytics page (add postURL to db after successful publish)
-
-- [ ]- SEO
-- [ ]- payment integration
-
 - [ ]- add support for blustky / threads / facebook / YT support later
-- [ ]- move scheduling from inngest to BullMQ with redis
+- [ ]- create all the remaining pages like analytics, settings, all posts and post analytics page 
+- [X]- move scheduling from inngest to QStash
 
+- [ ]- SEO / GEO(llms.txt) and blogs
+- [ ]- payment integration with dodo
+- [ ]- use app.post-mate.xyz for internal flow 
+- [ ]- resend for mails
+- update colors and motion for landing page : update headline too (capture free audience)
+
+
+- [ ]- update dashboard image in hero with demo video
 - [ ]- Launch
-- [ ]- add comments to main post
+- [ ]- add comments to main post / auto reply 

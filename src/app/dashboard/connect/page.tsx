@@ -41,7 +41,7 @@ const PLATFORM_CONFIGS: Omit<Platform, "connected" | "accounts">[] = [
   {
     id: "x",
     name: "X",
-    icon: <XIcon  size={30}/>,
+    icon: <XIcon size={30} />,
     brandColor: "#888888",
     iconBgColor: "rgba(255, 255, 255, 0.07)",
     iconColor: "#d4d4d8",
@@ -91,7 +91,6 @@ function ConnectPageContent() {
 
   return (
     <div className="max-w-5xl p-6">
-
       <div className="mb-6">
         <h1 className="text-foreground text-2xl font-bold">
           Connected Accounts

@@ -5,6 +5,8 @@ export interface MediaItem {
   file: File;
   previewUrl: string;
   type: "image" | "video";
+  thumbnail?: File;
+  thumbnailPreviewUrl?: string;
 }
 
 interface PostState {
@@ -16,12 +18,25 @@ interface PostState {
   addMedia: (files: File[]) => void;
   removeMedia: (id: string) => void;
   clearMedia: () => void;
+  setThumbnail: (
+    id: string,
+    thumbnail: File | undefined,
+    thumbnailPreviewUrl?: string,
+  ) => void;
   scheduledDate: Date | undefined;
   setScheduledDate: (date: Date | undefined) => void;
   reset: () => void;
+  isInsta: boolean;
+  setIsInsta: (isInsta: boolean) => void;
+  isOverLimit: boolean;
+  setIsOverLimit: (over: boolean) => void;
 }
 
 export const usePostStore = create<PostState>((set) => ({
+  isInsta: false,
+  setIsInsta: (isInsta: boolean) => set({ isInsta }),
+  isOverLimit: false,
+  setIsOverLimit: (over: boolean) => set({ isOverLimit: over }),
   content: "",
   setContent: (content) => set({ content }),
   selectedAccountIds: [],
@@ -51,17 +66,36 @@ export const usePostStore = create<PostState>((set) => ({
       const itemToRemove = state.media.find((m) => m.id === id);
       if (itemToRemove) {
         URL.revokeObjectURL(itemToRemove.previewUrl);
+        if (itemToRemove.thumbnailPreviewUrl) {
+          URL.revokeObjectURL(itemToRemove.thumbnailPreviewUrl);
+        }
       }
       return { media: state.media.filter((m) => m.id !== id) };
     }),
   clearMedia: () =>
     set((state) => {
-      state.media.forEach((m) => URL.revokeObjectURL(m.previewUrl));
+      state.media.forEach((m) => {
+        URL.revokeObjectURL(m.previewUrl);
+        if (m.thumbnailPreviewUrl) {
+          URL.revokeObjectURL(m.thumbnailPreviewUrl);
+        }
+      });
       return { media: [] };
     }),
+  setThumbnail: (id, thumbnail, thumbnailPreviewUrl) =>
+    set((state) => ({
+      media: state.media.map((m) =>
+        m.id === id ? { ...m, thumbnail, thumbnailPreviewUrl } : m,
+      ),
+    })),
   reset: () =>
     set((state) => {
-      state.media.forEach((m) => URL.revokeObjectURL(m.previewUrl));
+      state.media.forEach((m) => {
+        URL.revokeObjectURL(m.previewUrl);
+        if (m.thumbnailPreviewUrl) {
+          URL.revokeObjectURL(m.thumbnailPreviewUrl);
+        }
+      });
       return {
         content: "",
         selectedAccountIds: [],

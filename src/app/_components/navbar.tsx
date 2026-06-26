@@ -25,7 +25,14 @@ export default function Navbar() {
       <nav className="bg-muted relative flex h-20 w-full items-center justify-between border-b border-dashed px-5">
         <div>
           <Link href="/" className="flex items-center">
-            <Image src={"/pmlogo.png"} alt="logo" width={50} height={50} />
+            <Image
+              src={
+                "https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBl3FSS0sBQjgrwMc5HoZpy3dEeLPF9kvxOnV6"
+              }
+              alt="logo"
+              width={50}
+              height={50}
+            />
             <p className="text-foreground text-xl font-bold tracking-tight select-none">
               Postmate
             </p>
