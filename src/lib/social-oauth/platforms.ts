@@ -91,8 +91,8 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
       "pages_show_list",
       "pages_read_engagement",
       "pages_manage_posts",
-      "pages_manage_engagement",
-      "publish_video",
+      // Required for pages linked to Meta Business Suite; /me/accounts is empty without it
+      "business_management",
     ],
     clientId: env.FB_CLIENT_ID,
     clientSecret: env.FB_CLIENT_SECRET,
@@ -105,23 +105,6 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
       };
     },
   },
-  // bluesky: {
-  //   platformId: "bluesky",
-  //   authorizationUrl: "https://bsky.social/oauth/authorize",
-  //   tokenUrl: "https://bsky.social/oauth/token",
-  //   userInfoUrl: "https://bsky.social/xrpc/app.bsky.actor.getProfile",
-  //   scopes: ["atproto", "transition.generic"],
-  //   clientId: env.BLUESKY_CLIENT_ID,
-  //   clientSecret: env.BLUESKY_CLIENT_SECRET,
-  //   parseProfile: (data: any) => {
-  //     return {
-  //       accountId: data.did || data.handle,
-  //       username: data.handle,
-  //       avatarUrl: data.avatar || null,
-  //       platformSpecificData: { did: data.did },
-  //     };
-  //   },
-  // },
   youtube: {
     platformId: "youtube",
     authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth",

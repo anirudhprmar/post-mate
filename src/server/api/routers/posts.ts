@@ -9,6 +9,7 @@ import { publishToLinkedIn } from "~/lib/publishers/linkedin";
 import { publishToInsta } from "~/lib/publishers/instagram";
 import { publishToThreads } from "~/lib/publishers/threads";
 import { publishToYouTube } from "~/lib/publishers/yt";
+import { publishToFacebook } from "~/lib/publishers/fb";
 import { refreshAccountToken } from "~/lib/social-oauth/refresh";
 
 function toBold(char: string): string {
@@ -428,6 +429,25 @@ export const postRouter = createTRPCRouter({
                   account.accessToken,
                   videoItem.url,
                   videoItem.mimeType ?? "video/mp4",
+                );
+                publishedUrl = res.publishedUrl;
+                break;
+              }
+              case "facebook": {
+                const pd = account.platformSpecificData as {
+                  pageAccessToken?: string;
+                  pageId?: string;
+                } | null;
+                const pageAccessToken =
+                  pd?.pageAccessToken ?? account.accessToken;
+                const pageId = pd?.pageId ?? account.accountId;
+                if (!pageAccessToken || !pageId)
+                  throw new Error("Missing page access token or page ID for Facebook");
+                const res = await publishToFacebook(
+                  post.content,
+                  pageAccessToken,
+                  pageId,
+                  media.length > 0 ? media : undefined,
                 );
                 publishedUrl = res.publishedUrl;
                 break;

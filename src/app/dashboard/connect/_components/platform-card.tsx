@@ -168,13 +168,13 @@ export function PlatformCard({ platform }: { platform: Platform }) {
               onClick={async () => {
                 const provider = id;
 
-                // Supported platforms with custom OAuth flows
                 const SUPPORTED_CUSTOM_OAUTH = new Set([
-                  "x",
+                  // "x",
                   "linkedin",
                   "instagram",
                   "threads",
-                  "youtube"
+                  "youtube",
+                  "facebook"
                 ]);
                 if (SUPPORTED_CUSTOM_OAUTH.has(provider)) {
                   setLoading(true);

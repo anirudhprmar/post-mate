@@ -113,7 +113,11 @@ export async function GET(
   );
   const scopeSeparator =
     platform === "threads" || platform === "youtube" ? " " : ",";
-  redirectUrl.searchParams.set("scope", config.scopes.join(scopeSeparator));
+
+  if (platform === "facebook") {
+    redirectUrl.searchParams.set("scope", config.scopes.join(scopeSeparator));
+  } 
+
   if (platform === "instagram") {
     redirectUrl.searchParams.set("enable_fb_login", "0");
     redirectUrl.searchParams.set("force_authentication", "1");
