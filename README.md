@@ -1,9 +1,10 @@
 # TODO
 
-- [X]- add support for facebook 
+- [ ]- fix yt publishing issue
 - [ ]- resend for mails
 - [ ]- SEO / GEO(llms.txt) and blogs
 - [ ]- per platform different caption and description
+- [ ]- handle removing an account / deauthorize
 - [ ]- create all the remaining pages like analytics, settings, all posts and post analytics page 
 
 - [ ]- create launch video
