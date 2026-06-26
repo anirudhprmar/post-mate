@@ -58,11 +58,7 @@ export default function PostDetailSheet({
           <div className="flex items-center gap-2">
             <Badge
               variant={
-                cfg.badge as
-                  | "default"
-                  | "secondary"
-                  | "outline"
-                  | "destructive"
+                cfg.badge as "default" | "secondary" | "outline" | "destructive"
               }
               className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold"
             >
@@ -78,7 +74,6 @@ export default function PostDetailSheet({
         </SheetHeader>
 
         <div className="space-y-5 px-4">
-
           {/* Content */}
           <div className="bg-muted/30 border-border/40 rounded-2xl border p-4">
             <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -91,7 +86,7 @@ export default function PostDetailSheet({
           {/* Platforms */}
           {platforms.length > 0 && (
             <div>
-              <p className="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wider">
+              <p className="text-muted-foreground mb-2 text-xs font-medium tracking-wider uppercase">
                 Platforms
               </p>
               <div className="flex flex-wrap gap-2">

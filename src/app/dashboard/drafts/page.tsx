@@ -10,8 +10,6 @@ import Link from "next/link";
 import { api } from "~/trpc/react";
 import { timeAgo, getDraftStatusLabel } from "~/lib/helpers";
 
-
-
 export default function DraftsPage() {
   const { data: drafts, isLoading } = api.draft.getAll.useQuery();
   const [statusFilter, setStatusFilter] = useState("all");
@@ -35,7 +33,7 @@ export default function DraftsPage() {
         <header className="flex flex-col items-start justify-between gap-4 px-2 sm:flex-row sm:items-center">
           <div>
             <h1 className="text-foreground/90 text-4xl leading-tight font-bold tracking-tight">
-              Drafts 
+              Drafts
             </h1>
             <p className="text-muted-foreground mt-1 max-w-xl text-sm font-medium">
               Manage your saved ideas and scheduled posts.

@@ -144,7 +144,6 @@ export const auth = betterAuth({
               type === "subscription.updated"
             ) {
               try {
-                // STEP 1: Extract user ID from customer data
                 const userId = data.customer?.externalId;
                 if (!userId || !data.checkoutId) {
                   console.warn("No user or checkout found", {
@@ -153,7 +152,6 @@ export const auth = betterAuth({
                   });
                   return;
                 }
-                // STEP 2: Build subscription data
                 const subscriptionData = {
                   id: data.id,
                   createdAt: new Date(data.createdAt),
@@ -188,7 +186,6 @@ export const auth = betterAuth({
                   userId: userId,
                 };
 
-                // STEP 3: Use Drizzle's onConflictDoUpdate for proper upsert
                 await db
                   .insert(subscription)
                   .values(subscriptionData)
@@ -225,7 +222,6 @@ export const auth = betterAuth({
                   "💥 Error processing subscription webhook:",
                   error,
                 );
-                // Don't throw - let webhook succeed to avoid retries
               }
             }
           },

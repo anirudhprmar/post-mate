@@ -6,7 +6,6 @@ import { api } from "~/trpc/react";
 import { usePostStore } from "~/store/post";
 import { platformIcons } from "~/lib/platform-icons";
 
-
 export default function AccountSelection() {
   const { data: connectedAccounts = [], isLoading } =
     api.connectedAccount.getAll.useQuery();
@@ -20,7 +19,9 @@ export default function AccountSelection() {
         {isLoading ? (
           <div className="bg-muted h-8 w-24 animate-pulse rounded-full"></div>
         ) : connectedAccounts.length === 0 ? (
-          <p className="text-muted-foreground text-sm">No accounts connected.</p>
+          <p className="text-muted-foreground text-sm">
+            No accounts connected.
+          </p>
         ) : (
           connectedAccounts.map((account) => {
             const isSelected = selectedAccountIds.includes(account.id);

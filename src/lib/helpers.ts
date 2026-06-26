@@ -21,7 +21,6 @@ export function timeAgo(date: Date | string): string {
   return `${days}d ago`;
 }
 
-
 export function getDraftStatusLabel(status: string): string {
   if (status === "all") return "All Status";
   if (status === "published") return "Published";
@@ -42,7 +41,11 @@ export const POST_STATUS_CONFIG: Record<PostStatus, StatusConfigEntry> = {
   publishing: { label: "Publishing…", icon: Loader2, badge: "outline" },
   published: { label: "Published", icon: SendHorizonal, badge: "default" },
   failed: { label: "Failed", icon: AlertTriangle, badge: "destructive" },
-  partially_failed: { label: "Partial", icon: AlertTriangle, badge: "destructive" },
+  partially_failed: {
+    label: "Partial",
+    icon: AlertTriangle,
+    badge: "destructive",
+  },
 };
 
 export function highlightMentionsAndHashtags(

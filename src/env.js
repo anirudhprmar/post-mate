@@ -34,6 +34,9 @@ export const env = createEnv({
     SENTRY_AUTH_TOKEN: z.string(),
     YT_CLIENT_ID: z.string(),
     YT_CLIENT_SECRET: z.string(),
+    QSTASH_TOKEN: z.string(),
+    QSTASH_CURRENT_SIGNING_KEY: z.string(),
+    QSTASH_NEXT_SIGNING_KEY: z.string(),
   },
 
   /**
@@ -59,7 +62,6 @@ export const env = createEnv({
       process.env.NODE_ENV === "production"
         ? z.string()
         : z.string().optional(),
-
   },
 
   /**
@@ -106,6 +108,9 @@ export const env = createEnv({
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     YT_CLIENT_ID: process.env.YT_CLIENT_ID,
     YT_CLIENT_SECRET: process.env.YT_CLIENT_SECRET,
+    QSTASH_TOKEN: process.env.QSTASH_TOKEN,
+    QSTASH_CURRENT_SIGNING_KEY: process.env.QSTASH_CURRENT_SIGNING_KEY,
+    QSTASH_NEXT_SIGNING_KEY: process.env.QSTASH_NEXT_SIGNING_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -31,8 +31,11 @@ export default function PublishActions() {
         variant={"secondary"}
         disabled={publishingMode !== null || isOverLimit || isEmpty}
         title={
-          isEmpty ? "Write something first" :
-          isOverLimit ? "Content exceeds platform character limit" : undefined
+          isEmpty
+            ? "Write something first"
+            : isOverLimit
+              ? "Content exceeds platform character limit"
+              : undefined
         }
         onClick={() => handlePublish("draft")}
       >
@@ -46,11 +49,17 @@ export default function PublishActions() {
           <Button
             variant={"default"}
             disabled={
-              publishingMode !== null || selectedAccountIds.length === 0 || isOverLimit || isEmpty
+              publishingMode !== null ||
+              selectedAccountIds.length === 0 ||
+              isOverLimit ||
+              isEmpty
             }
             title={
-              isEmpty ? "Write something first" :
-              isOverLimit ? "Content exceeds platform character limit" : undefined
+              isEmpty
+                ? "Write something first"
+                : isOverLimit
+                  ? "Content exceeds platform character limit"
+                  : undefined
             }
           >
             {publishingMode === "schedule" ? (
@@ -116,10 +125,7 @@ export default function PublishActions() {
                       setScheduleMinute(val);
                       if (scheduledDate) {
                         const d = new Date(scheduledDate);
-                        d.setHours(
-                          parseInt(scheduleHour),
-                          parseInt(val) || 0,
-                        );
+                        d.setHours(parseInt(scheduleHour), parseInt(val) || 0);
                         setScheduledDate(d);
                       }
                     }}

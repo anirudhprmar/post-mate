@@ -25,7 +25,8 @@ export default function MediaList() {
   const removeMedia = usePostStore((state) => state.removeMedia);
   const setThumbnail = usePostStore((state) => state.setThumbnail);
 
-  const [selectedVideoForThumbnail, setSelectedVideoForThumbnail] = useState<MediaItem | null>(null);
+  const [selectedVideoForThumbnail, setSelectedVideoForThumbnail] =
+    useState<MediaItem | null>(null);
 
   if (media.length === 0) return null;
 
@@ -120,19 +121,23 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
       const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const url = URL.createObjectURL(blob);
-            setThumbnailPreview((prev) => {
-              if (prev && prev !== mediaItem.thumbnailPreviewUrl) {
-                URL.revokeObjectURL(prev);
-              }
-              return url;
-            });
-            setThumbnailBlob(blob);
-          }
-          setIsGenerating(false);
-        }, "image/jpeg", 0.9);
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              setThumbnailPreview((prev) => {
+                if (prev && prev !== mediaItem.thumbnailPreviewUrl) {
+                  URL.revokeObjectURL(prev);
+                }
+                return url;
+              });
+              setThumbnailBlob(blob);
+            }
+            setIsGenerating(false);
+          },
+          "image/jpeg",
+          0.9,
+        );
       } else {
         setIsGenerating(false);
       }
@@ -181,7 +186,7 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
         if (!open) onClose();
       }}
     >
-      <DialogContent className="bg-card border-border sm:max-w-xl rounded-2xl border p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-card border-border max-h-[90vh] overflow-y-auto rounded-2xl border p-6 shadow-2xl sm:max-w-xl">
         <DialogHeader>
           <DialogTitle className="text-foreground text-xl font-bold tracking-tight">
             Set Video Thumbnail
@@ -192,8 +197,8 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="my-2 flex flex-col gap-6 ">
-          <div className="relative aspect-video w-full flex items-center justify-center overflow-hidden rounded-xl border border-border bg-black shadow-inner">
+        <div className="my-2 flex flex-col gap-6">
+          <div className="border-border relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl border bg-black shadow-inner">
             <video
               ref={videoRef}
               src={mediaItem.previewUrl}
@@ -211,10 +216,9 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
             )}
           </div>
 
-          <canvas ref={canvasRef} className="hidden"/>
+          <canvas ref={canvasRef} className="hidden" />
 
-          <div 
-          className="bg-muted/40 rounded-xl border border-border p-3 flex flex-col gap-2">
+          <div className="bg-muted/40 border-border flex flex-col gap-2 rounded-xl border p-3">
             <div className="text-muted-foreground flex justify-between px-1 text-xs font-semibold">
               <span>{formatTime(currentTime)}</span>
               <span>{formatTime(duration)}</span>
@@ -226,16 +230,16 @@ function ThumbnailDialog({ mediaItem, onClose, onSave }: ThumbnailDialogProps) {
               step={0.1}
               value={currentTime}
               onChange={handleSliderChange}
-              className="accent-primary h-2 w-full cursor-pointer rounded-lg bg-border"
+              className="accent-primary bg-border h-2 w-full cursor-pointer rounded-lg"
             />
           </div>
 
           {thumbnailPreview && (
             <div className="flex flex-col gap-2">
-              <span className="text-muted-foreground text-xs font-bold uppercase tracking-wider">
+              <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
                 Thumbnail Preview:
               </span>
-              <div className="relative aspect-video w-32 overflow-hidden rounded-lg border border-border shadow-md">
+              <div className="border-border relative aspect-video w-32 overflow-hidden rounded-lg border shadow-md">
                 <img
                   src={thumbnailPreview}
                   alt="Captured Thumbnail"

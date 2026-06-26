@@ -32,7 +32,8 @@ export function PostEditor() {
   const setIsOverLimit = usePostStore((state) => state.setIsOverLimit);
   const selectedAccountIds = usePostStore((state) => state.selectedAccountIds);
 
-  const { data: connectedAccounts = [] } = api.connectedAccount.getAll.useQuery();
+  const { data: connectedAccounts = [] } =
+    api.connectedAccount.getAll.useQuery();
 
   // Derive the strictest limit from selected accounts
   const activeLimit = useMemo(() => {

@@ -95,7 +95,6 @@ export async function refreshAccountToken(accountId: string): Promise<boolean> {
     } else if (account.platform === "instagram") {
       result = await refreshInstagramToken(account.accessToken);
     } else if (account.platform === "x") {
-      // X OAuth 1.0a tokens do not expire, nothing to refresh
       return true;
     } else {
       console.warn(
@@ -104,7 +103,6 @@ export async function refreshAccountToken(accountId: string): Promise<boolean> {
       return false;
     }
 
-    // Update the database
     await db
       .update(connectedAccount)
       .set({
@@ -127,7 +125,6 @@ export async function refreshAccountToken(accountId: string): Promise<boolean> {
       error,
     );
 
-    // Set account status to expired/error on failure
     await db
       .update(connectedAccount)
       .set({

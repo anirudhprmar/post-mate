@@ -31,8 +31,7 @@ export function EditorToolbar({ editor, limit }: EditorToolbarProps) {
       underline: ctx.editor?.isActive("underline") ?? false,
       // Use plain-text length (includes \n for paragraph breaks) to match
       // how platforms like X count characters.
-      charCount:
-        ctx.editor?.getText({ blockSeparator: "\n" }).length ?? 0,
+      charCount: ctx.editor?.getText({ blockSeparator: "\n" }).length ?? 0,
       wordCount: ctx.editor?.storage.characterCount.words() ?? 0,
     }),
   });
@@ -176,7 +175,9 @@ export function EditorToolbar({ editor, limit }: EditorToolbarProps) {
 
             {/* Numeric countdown (only show when close or over) */}
             {usedPct >= 0.75 && (
-              <span className={cn("text-xs font-medium tabular-nums", counterColor)}>
+              <span
+                className={cn("text-xs font-medium tabular-nums", counterColor)}
+              >
                 {remaining}
               </span>
             )}

@@ -18,7 +18,11 @@ interface PostState {
   addMedia: (files: File[]) => void;
   removeMedia: (id: string) => void;
   clearMedia: () => void;
-  setThumbnail: (id: string, thumbnail: File | undefined, thumbnailPreviewUrl?: string) => void;
+  setThumbnail: (
+    id: string,
+    thumbnail: File | undefined,
+    thumbnailPreviewUrl?: string,
+  ) => void;
   scheduledDate: Date | undefined;
   setScheduledDate: (date: Date | undefined) => void;
   reset: () => void;

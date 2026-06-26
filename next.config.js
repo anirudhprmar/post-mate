@@ -3,8 +3,7 @@
  * for Docker builds.
  */
 import "./src/env.js";
-import { withSentryConfig } from "@sentry/nextjs"
-
+import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -61,7 +60,6 @@ const config = {
 };
 
 export default withSentryConfig(config, {
-
   org: "anixcorp",
   project: "postmate",
 

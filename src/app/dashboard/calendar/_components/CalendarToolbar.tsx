@@ -8,7 +8,11 @@ import {
   CalendarDays,
   LayoutGrid,
 } from "lucide-react";
-import { formatMonthYear, formatWeekRange, startOfWeek } from "./calendar-helpers";
+import {
+  formatMonthYear,
+  formatWeekRange,
+  startOfWeek,
+} from "./calendar-helpers";
 import type { ViewMode } from "./calendar-types";
 
 interface CalendarToolbarProps {
@@ -38,7 +42,7 @@ export default function CalendarToolbar({
         <Button
           variant="outline"
           size="icon"
-          className="h-9 w-9 rounded-full border-border/50"
+          className="border-border/50 h-9 w-9 rounded-full"
           onClick={() => onNavigate(-1)}
         >
           <ChevronLeft className="h-4 w-4" />
@@ -49,7 +53,7 @@ export default function CalendarToolbar({
         <Button
           variant="outline"
           size="icon"
-          className="h-9 w-9 rounded-full border-border/50"
+          className="border-border/50 h-9 w-9 rounded-full"
           onClick={() => onNavigate(1)}
         >
           <ChevronRight className="h-4 w-4" />

@@ -1,8 +1,13 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { posts, post_targets } from "~/server/db/schema";
-import { inngest } from "~/lib/inngest";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import { posts, post_targets, connectedAccount } from "~/server/db/schema";
+import { qstash } from "~/lib/qstash";
+import { env } from "~/env";
+import { publishToX } from "~/lib/publishers/x";
+import { publishToLinkedIn } from "~/lib/publishers/linkedin";
+import { publishToInsta } from "~/lib/publishers/instagram";
+import { refreshAccountToken } from "~/lib/social-oauth/refresh";
 
 function toBold(char: string): string {
   const code = char.codePointAt(0);
@@ -140,7 +145,11 @@ export function htmlToPlainText(html: string): string {
           state.italic = Math.max(0, state.italic - 1);
         } else if (tagName === "u") {
           state.underline = Math.max(0, state.underline - 1);
-        } else if (tagName === "s" || tagName === "del" || tagName === "strike") {
+        } else if (
+          tagName === "s" ||
+          tagName === "del" ||
+          tagName === "strike"
+        ) {
           state.strike = Math.max(0, state.strike - 1);
         } else if (tagName === "p" || tagName === "li") {
           result += "\n";
@@ -154,7 +163,11 @@ export function htmlToPlainText(html: string): string {
             state.italic++;
           } else if (tagName === "u") {
             state.underline++;
-          } else if (tagName === "s" || tagName === "del" || tagName === "strike") {
+          } else if (
+            tagName === "s" ||
+            tagName === "del" ||
+            tagName === "strike"
+          ) {
             state.strike++;
           }
         }
@@ -276,7 +289,7 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  publishNow: protectedProcedure
+  publishNow: publicProcedure
     .input(
       z.object({
         postId: z.string(),
@@ -291,26 +304,165 @@ export const postRouter = createTRPCRouter({
         throw new Error("Post not found");
       }
 
+      if (post.status === "published") {
+        return { success: true, postId: input.postId, message: "Already published" };
+      }
+
       const targets = await ctx.db.query.post_targets.findMany({
         where: eq(post_targets.postId, input.postId),
+        with: { connectedAccount: true },
       });
 
       if (targets.length === 0) {
         throw new Error("No connected accounts selected for this post");
       }
 
-      await inngest.send({
-        name: "post/publish",
-        data: { postId: input.postId },
-      });
+      await ctx.db
+        .update(posts)
+        .set({ status: "publishing" })
+        .where(eq(posts.id, input.postId));
+
+      type PostMedia = {
+        url: string;
+        key: string;
+        type: "image" | "video";
+        mimeType?: string;
+        thumbnailUrl?: string;
+      };
+      const media = (post.media as PostMedia[] | null) ?? [];
+
+      const results = await Promise.allSettled(
+        targets.map(async (target) => {
+          const account = target.connectedAccount;
+          await ctx.db
+            .update(post_targets)
+            .set({ status: "publishing" })
+            .where(eq(post_targets.id, target.id));
+
+          if (account.platform !== "x" && account.expiresAt) {
+            const twoHoursFromNow = new Date(Date.now() + 2 * 60 * 60 * 1000);
+            if (account.expiresAt <= twoHoursFromNow) {
+              await refreshAccountToken(account.id);
+              const refreshed = await ctx.db.query.connectedAccount.findFirst({
+                where: eq(connectedAccount.id, account.id),
+              });
+              if (refreshed) Object.assign(account, refreshed);
+            }
+          }
+
+          try {
+            let publishedUrl: string;
+            switch (account.platform) {
+              case "x": {
+                const pd = account.platformSpecificData as {
+                  oauthTokenSecret?: string;
+                } | null;
+                if (!pd?.oauthTokenSecret)
+                  throw new Error("Missing OAuth token secret for X");
+                const res = await publishToX(
+                  post.content,
+                  account.accessToken,
+                  pd.oauthTokenSecret,
+                  media.length > 0 ? media : undefined,
+                );
+                publishedUrl = res.publishedUrl;
+                break;
+              }
+              case "linkedin": {
+                const res = await publishToLinkedIn(
+                  post.content,
+                  account.accessToken,
+                  account.accountId,
+                  media.length > 0 ? media : undefined,
+                );
+                publishedUrl = res.publishedUrl;
+                break;
+              }
+              case "instagram": {
+                if (media.length === 0)
+                  throw new Error("Instagram requires at least one image or video");
+                let mediaType: "REELS" | "CAROUSEL" | "STORIES" | "IMAGE";
+                if (media.length > 1) mediaType = "CAROUSEL";
+                else if (media[0]?.type === "video") mediaType = "REELS";
+                else mediaType = "IMAGE";
+                const res = await publishToInsta(
+                  mediaType,
+                  post.content,
+                  account.accessToken,
+                  account.accountId,
+                  media.map((m) => ({
+                    url: m.url,
+                    key: m.key,
+                    type: m.type,
+                    mimeType: m.mimeType,
+                    coverUrl: m.thumbnailUrl,
+                  })),
+                );
+                publishedUrl = res.publishedUrl;
+                break;
+              }
+              default:
+                throw new Error(`Unsupported platform: ${account.platform}`);
+            }
+            await ctx.db
+              .update(post_targets)
+              .set({ status: "published", publishedUrl, postedAt: new Date() })
+              .where(eq(post_targets.id, target.id));
+            return {
+              targetId: target.id,
+              platform: account.platform,
+              status: "published" as const,
+              publishedUrl,
+            };
+          } catch (error) {
+            const msg = error instanceof Error ? error.message : "Unknown error";
+            await ctx.db
+              .update(post_targets)
+              .set({ status: "failed", errorMessage: msg })
+              .where(eq(post_targets.id, target.id));
+            return {
+              targetId: target.id,
+              platform: account.platform,
+              status: "failed" as const,
+              error: msg,
+            };
+          }
+        }),
+      );
+
+      const outcomes = results.map((r) =>
+        r.status === "fulfilled" ? r.value : { status: "failed" as const },
+      );
+      const allPublished = outcomes.every((o) => o.status === "published");
+      const allFailed = outcomes.every((o) => o.status === "failed");
+      const finalStatus = allPublished
+        ? "published"
+        : allFailed
+          ? "failed"
+          : "partially_failed";
 
       await ctx.db
         .update(posts)
         .set({
-          status: "publishing",
+          status: finalStatus,
+          publishedAt: finalStatus !== "failed" ? new Date() : undefined,
         })
         .where(eq(posts.id, input.postId));
 
-      return { success: true, postId: input.postId };
+      return { success: true, postId: input.postId, finalStatus };
+    }),
+
+  schedulePublish: protectedProcedure
+    .input(z.object({ postId: z.string(), scheduledAtMs: z.number().optional() }))
+    .mutation(async ({ input }) => {
+      const now = Date.now();
+      const delayMs = input.scheduledAtMs ? input.scheduledAtMs - now : 0;
+      const delaySec = Math.max(Math.ceil(delayMs / 1000), 0);
+      await qstash.publishJSON({
+        url: `${env.NEXT_PUBLIC_APP_URL}/api/publish`,
+        body: { postId: input.postId },
+        delay: delaySec,
+        retries: 3,
+      });
     }),
 });

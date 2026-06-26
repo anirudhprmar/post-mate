@@ -26,6 +26,7 @@ export function usePublishPost() {
   const confirmUpload = api.media.confirmUpload.useMutation();
   const confirmStatus = api.post.confirmStatus.useMutation();
   const schedule = api.post.schedule.useMutation();
+  const schedulePublish = api.post.schedulePublish.useMutation();
 
   const selectedAccounts = connectedAccounts.filter((ca) =>
     selectedAccountIds.includes(ca.id),
@@ -122,6 +123,11 @@ export function usePublishPost() {
           connectedAccountId: account,
         });
       }
+
+      await schedulePublish.mutateAsync({
+        postId,
+        scheduledAtMs: scheduledDate?.getTime(),
+      });
       reset();
       toast.success("Post scheduled successfully.");
     } catch (err) {

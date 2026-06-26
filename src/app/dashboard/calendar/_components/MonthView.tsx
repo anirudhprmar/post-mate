@@ -41,11 +41,11 @@ export default function MonthView({
   return (
     <div className="flex flex-col">
       {/* Weekday headers */}
-      <div className="grid grid-cols-7 border-b border-border/40">
+      <div className="border-border/40 grid grid-cols-7 border-b">
         {WEEKDAYS.map((d) => (
           <div
             key={d}
-            className="py-2 text-center text-[11px] font-semibold uppercase tracking-wider text-muted-foreground"
+            className="text-muted-foreground py-2 text-center text-[11px] font-semibold tracking-wider uppercase"
           >
             {d}
           </div>
@@ -66,7 +66,7 @@ export default function MonthView({
             <div
               key={i}
               className={clsx(
-                "min-h-[90px] border-b border-r border-border/40 p-1.5 transition-colors",
+                "border-border/40 min-h-[90px] border-r border-b p-1.5 transition-colors",
                 !isCurrentMonth && "bg-muted/10",
               )}
             >
@@ -89,10 +89,14 @@ export default function MonthView({
               {/* Posts */}
               <div className="space-y-0.5">
                 {dayPosts.slice(0, 3).map((p) => (
-                  <PostPill key={p.id} post={p} onClick={() => onSelectPost(p)} />
+                  <PostPill
+                    key={p.id}
+                    post={p}
+                    onClick={() => onSelectPost(p)}
+                  />
                 ))}
                 {dayPosts.length > 3 && (
-                  <p className="px-2 text-[10px] text-muted-foreground">
+                  <p className="text-muted-foreground px-2 text-[10px]">
                     +{dayPosts.length - 3} more
                   </p>
                 )}

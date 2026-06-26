@@ -1,9 +1,9 @@
 
 # TODO
 
-- [X]- add support for blustky / threads / facebook / YT support later
+- [ ]- add support for blustky / threads / facebook / YT support later
 - [ ]- create all the remaining pages like analytics, settings, all posts and post analytics page 
-- [ ]- move scheduling from inngest to BullMQ with upstash redis
+- [X]- move scheduling from inngest to QStash
 
 - [ ]- SEO / GEO(llms.txt) and blogs
 - [ ]- payment integration with dodo

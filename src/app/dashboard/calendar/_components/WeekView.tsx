@@ -2,7 +2,12 @@
 
 import clsx from "clsx";
 import PostPill from "./PostPill";
-import { WEEKDAYS, startOfWeek, isSameDay, getPostDate } from "./calendar-helpers";
+import {
+  WEEKDAYS,
+  startOfWeek,
+  isSameDay,
+  getPostDate,
+} from "./calendar-helpers";
 import type { CalendarPost } from "./calendar-types";
 
 interface WeekViewProps {
@@ -28,12 +33,12 @@ export default function WeekView({
   return (
     <div>
       {/* Header row */}
-      <div className="grid grid-cols-7 border-b border-border/40">
+      <div className="border-border/40 grid grid-cols-7 border-b">
         {days.map((day, i) => {
           const isToday = isSameDay(day, today);
           return (
             <div key={i} className="py-3 text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="text-muted-foreground text-[10px] font-semibold tracking-wider uppercase">
                 {WEEKDAYS[i]}
               </p>
               <span
@@ -52,7 +57,7 @@ export default function WeekView({
       </div>
 
       {/* Posts columns */}
-      <div className="grid min-h-[220px] grid-cols-7 divide-x divide-border/40">
+      <div className="divide-border/40 grid min-h-[220px] grid-cols-7 divide-x">
         {days.map((day, i) => {
           const dayPosts = posts.filter((p) => {
             const d = getPostDate(p);
@@ -66,7 +71,9 @@ export default function WeekView({
               ))}
               {dayPosts.length === 0 && (
                 <div className="flex h-full min-h-[160px] items-center justify-center">
-                  <span className="text-[10px] text-muted-foreground/30">—</span>
+                  <span className="text-muted-foreground/30 text-[10px]">
+                    —
+                  </span>
                 </div>
               )}
             </div>

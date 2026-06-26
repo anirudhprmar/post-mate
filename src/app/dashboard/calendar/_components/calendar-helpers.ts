@@ -3,7 +3,6 @@ import type { CalendarPost } from "./calendar-types";
 export { POST_STATUS_CONFIG } from "~/lib/helpers";
 export type { PostStatus } from "~/lib/types";
 
-
 export const STATUS_DOT: Record<string, string> = {
   draft: "bg-muted-foreground/40",
   scheduled: "bg-blue-500",
@@ -22,9 +21,15 @@ export const STATUS_PILL: Record<string, string> = {
   partially_failed: "bg-destructive/10 text-destructive/80",
 };
 
-
-export const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
-
+export const WEEKDAYS = [
+  "Sun",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+] as const;
 
 export function getPostDate(post: CalendarPost): Date | null {
   if (post.scheduledFor) return new Date(post.scheduledFor);

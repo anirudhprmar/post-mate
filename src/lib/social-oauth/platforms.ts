@@ -59,7 +59,7 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
       };
     },
   },
-  threads:{
+  threads: {
     platformId: "threads",
     authorizationUrl: "https://www.threads.net/oauth/authorize",
     tokenUrl: "https://api.threads.net/oauth/access_token",
@@ -81,7 +81,7 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
       };
     },
   },
-  facebook:{},
+  facebook: {},
   bluesky: {
     platformId: "bsky",
     authorizationUrl: "https://bsky.social/oauth/authorize",
@@ -121,5 +121,4 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
       };
     },
   },
-
 };

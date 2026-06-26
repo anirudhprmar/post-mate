@@ -6,7 +6,9 @@ import Image from "next/image";
 import { api } from "~/trpc/react";
 import { usePostStore } from "~/store/post";
 import PublishActions from "./publish-actions";
-import XPreview, { type PlatformPreviewProps } from "./platform-preview/x-preview";
+import XPreview, {
+  type PlatformPreviewProps,
+} from "./platform-preview/x-preview";
 import LinkedInPreview from "./platform-preview/linkedin-preview";
 import InstagramPreview from "./platform-preview/insta-preview";
 
@@ -35,7 +37,10 @@ export default function PostPreview() {
     (a) => a.id === activePreviewId,
   );
 
-  const PreviewPlatforms: Record<string, React.ComponentType<PlatformPreviewProps>> = {
+  const PreviewPlatforms: Record<
+    string,
+    React.ComponentType<PlatformPreviewProps>
+  > = {
     x: XPreview,
     linkedin: LinkedInPreview,
     instagram: InstagramPreview,
@@ -49,7 +54,7 @@ export default function PostPreview() {
   return (
     <div className="flex h-full w-full flex-col">
       <div className="mb-2 flex justify-between gap-2">
-        <p className="font-bold w-full">Post Preview</p>
+        <p className="w-full font-bold">Post Preview</p>
         <PublishActions />
       </div>
 

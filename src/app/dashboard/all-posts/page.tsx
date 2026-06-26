@@ -5,18 +5,11 @@ import { api } from "~/trpc/react";
 import { Card } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-import {
-  Scroll,
-  Clock,
-  CalendarCheck2,
-  Loader2,
-  Plus,
-} from "lucide-react";
+import { Scroll, Clock, CalendarCheck2, Loader2, Plus } from "lucide-react";
 import Link from "next/link";
 import { platformIcons } from "~/lib/platform-icons";
 import { timeAgo, POST_STATUS_CONFIG } from "~/lib/helpers";
 import type { PostStatus } from "~/lib/types";
-
 
 const STATUS_TABS = [
   "all",
@@ -26,7 +19,6 @@ const STATUS_TABS = [
   "failed",
 ] as const;
 type StatusTab = (typeof STATUS_TABS)[number];
-
 
 export default function AllPostsPage() {
   const { data: posts, isLoading } = api.post.getAll.useQuery();
@@ -50,7 +42,7 @@ export default function AllPostsPage() {
         {/* Header */}
         <header className="flex flex-col items-start justify-between gap-4 px-2 sm:flex-row sm:items-center">
           <div>
-            <h1 className="text-foreground/90 text-4xl font-bold leading-tight tracking-tight">
+            <h1 className="text-foreground/90 text-4xl leading-tight font-bold tracking-tight">
               All Posts
             </h1>
             <p className="text-muted-foreground mt-1 max-w-xl text-sm font-medium">
@@ -58,7 +50,7 @@ export default function AllPostsPage() {
             </p>
           </div>
           <Link href="/dashboard">
-            <Button className="rounded-full gap-2 shrink-0">
+            <Button className="shrink-0 gap-2 rounded-full">
               <Plus className="h-4 w-4" />
               New Post
             </Button>
@@ -77,12 +69,14 @@ export default function AllPostsPage() {
                   : "bg-background/50 border-border/50 text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               }`}
             >
-              {s === "all" ? "All" : POST_STATUS_CONFIG[s as PostStatus]?.label ?? s}
+              {s === "all"
+                ? "All"
+                : (POST_STATUS_CONFIG[s as PostStatus]?.label ?? s)}
             </button>
           ))}
 
           {/* Total count chip */}
-          <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+          <span className="text-muted-foreground ml-auto shrink-0 text-xs">
             {filtered.length} post{filtered.length !== 1 ? "s" : ""}
           </span>
         </div>
@@ -141,7 +135,7 @@ export default function AllPostsPage() {
                   {/* Footer row */}
                   <div className="mt-5 flex items-center justify-between gap-2">
                     {/* Platform icons + time */}
-                    <div className="flex items-center gap-2 text-muted-foreground text-xs">
+                    <div className="text-muted-foreground flex items-center gap-2 text-xs">
                       {/* Platform icons */}
                       {uniquePlatforms.length > 0 ? (
                         <div className="flex -space-x-1">
@@ -183,7 +177,13 @@ export default function AllPostsPage() {
 
                     {/* Status badge */}
                     <Badge
-                      variant={cfg.badge as "default" | "secondary" | "outline" | "destructive"}
+                      variant={
+                        cfg.badge as
+                          | "default"
+                          | "secondary"
+                          | "outline"
+                          | "destructive"
+                      }
                       className="flex shrink-0 items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold shadow-none"
                     >
                       <StatusIcon
