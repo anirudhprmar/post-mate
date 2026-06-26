@@ -62,8 +62,8 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
   threads: {
     platformId: "threads",
     authorizationUrl: "https://www.threads.net/oauth/authorize",
-    tokenUrl: "https://api.threads.net/oauth/access_token",
-    userInfoUrl: "https://api.threads.net/me?fields=id,username",
+    tokenUrl: "https://graph.threads.net/oauth/access_token",
+    userInfoUrl: "https://graph.threads.net/v1.0/me?fields=id,username",
     scopes: [
       "threads_basic",
       "threads_content_publish",
@@ -75,30 +75,53 @@ export const PLATFORM_OAUTH_CONFIGS: Record<string, PlatformOAuthConfig> = {
     parseProfile: (data: any) => {
       return {
         accountId: data.id,
-        username: data.username || "Instagram User",
+        username: data.username || "Threads User",
         avatarUrl: null,
         platformSpecificData: {},
       };
     },
   },
-  facebook: {},
-  bluesky: {
-    platformId: "bsky",
-    authorizationUrl: "https://bsky.social/oauth/authorize",
-    tokenUrl: "https://bsky.social/oauth/access_token",
-    userInfoUrl: "https://bsky.social/xrpc/com.atproto.identity.lookup",
-    scopes: ["identity", "threadgate", "tweetgate", "feedgen"],
-    clientId: env.BLUESKY_CLIENT_ID,
-    clientSecret: env.BLUESKY_CLIENT_SECRET,
+  facebook: {
+    platformId: "facebook",
+    authorizationUrl: "https://www.facebook.com/v21.0/dialog/oauth",
+    tokenUrl: "https://graph.facebook.com/v21.0/oauth/access_token",
+    userInfoUrl:
+      "https://graph.facebook.com/me?fields=id,name,picture.type(large)",
+    scopes: [
+      "pages_show_list",
+      "pages_read_engagement",
+      "pages_manage_posts",
+      "pages_manage_engagement",
+      "publish_video",
+    ],
+    clientId: env.FB_CLIENT_ID,
+    clientSecret: env.FB_CLIENT_SECRET,
     parseProfile: (data: any) => {
       return {
-        accountId: data.handle,
-        username: data.handle,
-        avatarUrl: data.avatar || null,
+        accountId: data.id,
+        username: data.name || "Facebook User",
+        avatarUrl: data.picture?.data?.url || null,
         platformSpecificData: {},
       };
     },
   },
+  // bluesky: {
+  //   platformId: "bluesky",
+  //   authorizationUrl: "https://bsky.social/oauth/authorize",
+  //   tokenUrl: "https://bsky.social/oauth/token",
+  //   userInfoUrl: "https://bsky.social/xrpc/app.bsky.actor.getProfile",
+  //   scopes: ["atproto", "transition.generic"],
+  //   clientId: env.BLUESKY_CLIENT_ID,
+  //   clientSecret: env.BLUESKY_CLIENT_SECRET,
+  //   parseProfile: (data: any) => {
+  //     return {
+  //       accountId: data.did || data.handle,
+  //       username: data.handle,
+  //       avatarUrl: data.avatar || null,
+  //       platformSpecificData: { did: data.did },
+  //     };
+  //   },
+  // },
   youtube: {
     platformId: "youtube",
     authorizationUrl: "https://accounts.google.com/o/oauth2/v3/auth",

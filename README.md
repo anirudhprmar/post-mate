@@ -1,17 +1,23 @@
-
 # TODO
 
-- [ ]- add support for blustky / threads / facebook / YT support later
+- [ ]- add support for blustky / facebook / YT support later
 - [ ]- create all the remaining pages like analytics, settings, all posts and post analytics page 
-- [X]- move scheduling from inngest to QStash
-
+- [ ]- if shcule fails the image upload several times have to prevent it
 - [ ]- SEO / GEO(llms.txt) and blogs
 - [ ]- payment integration with dodo
 - [ ]- use app.post-mate.xyz for internal flow 
 - [ ]- resend for mails
-- update colors and motion for landing page : update headline too (capture free audience)
-
-
+- [ ]- create launch video
+- [ ]- give free trial to friends
+- [ ]- use that as testemonials 
+- [ ]- update landing page
+- [ ]- update colors and motion for landing page : update headline too (capture free audience)
+- [ ]- update dashboard image in hero and also update features videos
 - [ ]- update dashboard image in hero with demo video
-- [ ]- Launch
-- [ ]- add comments to main post / auto reply 
+
+____
+
+future features:
+
+- add comments to main post / auto reply 
+- create lab

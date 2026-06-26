@@ -7,6 +7,7 @@ import { env } from "~/env";
 import { publishToX } from "~/lib/publishers/x";
 import { publishToLinkedIn } from "~/lib/publishers/linkedin";
 import { publishToInsta } from "~/lib/publishers/instagram";
+import { publishToThreads } from "~/lib/publishers/threads";
 import { refreshAccountToken } from "~/lib/social-oauth/refresh";
 
 function toBold(char: string): string {
@@ -397,6 +398,16 @@ export const postRouter = createTRPCRouter({
                     mimeType: m.mimeType,
                     coverUrl: m.thumbnailUrl,
                   })),
+                );
+                publishedUrl = res.publishedUrl;
+                break;
+              }
+              case "threads": {
+                const res = await publishToThreads(
+                  post.content,
+                  account.accessToken,
+                  account.accountId,
+                  media.length > 0 ? media : undefined,
                 );
                 publishedUrl = res.publishedUrl;
                 break;

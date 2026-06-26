@@ -173,6 +173,7 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                   "x",
                   "linkedin",
                   "instagram",
+                  "threads"
                 ]);
                 if (SUPPORTED_CUSTOM_OAUTH.has(provider)) {
                   setLoading(true);

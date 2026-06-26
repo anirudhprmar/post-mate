@@ -189,10 +189,21 @@ export async function GET(
   const code = searchParams.get("code");
   const state = searchParams.get("state");
 
+  const storedState = request.cookies.get(`${platform}_oauth_state`)?.value;
+
   if (!code || !state) {
     return NextResponse.redirect(
       new URL(
         `/dashboard/connect?error=missing_code_or_state`,
+        env.NEXT_PUBLIC_APP_URL,
+      ),
+    );
+  }
+
+  if (!storedState || storedState !== state) {
+    return NextResponse.redirect(
+      new URL(
+        `/dashboard/connect?error=state_mismatch`,
         env.NEXT_PUBLIC_APP_URL,
       ),
     );
@@ -239,14 +250,37 @@ export async function GET(
     access_token: string;
     expires_in?: number;
     refresh_token?: string;
-    refresh_token_expires_in?: number;
   };
 
-  const accessToken = tokenData.access_token;
-  const refreshToken = tokenData.refresh_token || null;
-  const expiresAt = tokenData.expires_in
+  let accessToken = tokenData.access_token;
+  let expiresAt = tokenData.expires_in
     ? new Date(Date.now() + tokenData.expires_in * 1000)
     : null;
+  const refreshToken = tokenData.refresh_token || null;
+
+  if (platform === "threads") {
+    const llUrl = new URL("https://graph.threads.net/access_token");
+    llUrl.searchParams.set("grant_type", "th_exchange_token");
+    llUrl.searchParams.set("client_secret", config.clientSecret);
+    llUrl.searchParams.set("access_token", accessToken);
+
+    const llRes = await fetch(llUrl.toString());
+    if (llRes.ok) {
+      const llData = (await llRes.json()) as {
+        access_token: string;
+        expires_in?: number;
+      };
+      accessToken = llData.access_token;
+      expiresAt = llData.expires_in
+        ? new Date(Date.now() + llData.expires_in * 1000)
+        : null;
+    } else {
+      console.error(
+        "[Threads] Long-lived token exchange failed:",
+        await llRes.text(),
+      );
+    }
+  }
 
   if (!accessToken) {
     return NextResponse.redirect(
@@ -330,6 +364,8 @@ export async function GET(
       env.NEXT_PUBLIC_APP_URL,
     ),
   );
+
+  redirectResponse.cookies.delete(`${platform}_oauth_state`);
 
   return redirectResponse;
 }
