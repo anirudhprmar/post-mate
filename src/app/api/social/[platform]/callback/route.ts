@@ -5,6 +5,7 @@ import { connectedAccount } from "~/server/db/schema";
 import { getSession } from "~/server/better-auth/server";
 import { buildOAuthHeader } from "~/lib/social-oauth/x-oauth";
 import { PLATFORM_OAUTH_CONFIGS } from "~/lib/social-oauth/platforms";
+import { fetchFacebookPages } from "~/lib/social-oauth/facebook-pages";
 
 const VALID_PLATFORMS = [
   "instagram",
@@ -189,10 +190,21 @@ export async function GET(
   const code = searchParams.get("code");
   const state = searchParams.get("state");
 
+  const storedState = request.cookies.get(`${platform}_oauth_state`)?.value;
+
   if (!code || !state) {
     return NextResponse.redirect(
       new URL(
         `/dashboard/connect?error=missing_code_or_state`,
+        env.NEXT_PUBLIC_APP_URL,
+      ),
+    );
+  }
+
+  if (!storedState || storedState !== state) {
+    return NextResponse.redirect(
+      new URL(
+        `/dashboard/connect?error=state_mismatch`,
         env.NEXT_PUBLIC_APP_URL,
       ),
     );
@@ -239,14 +251,37 @@ export async function GET(
     access_token: string;
     expires_in?: number;
     refresh_token?: string;
-    refresh_token_expires_in?: number;
   };
 
-  const accessToken = tokenData.access_token;
-  const refreshToken = tokenData.refresh_token || null;
-  const expiresAt = tokenData.expires_in
+  let accessToken = tokenData.access_token;
+  let expiresAt = tokenData.expires_in
     ? new Date(Date.now() + tokenData.expires_in * 1000)
     : null;
+  const refreshToken = tokenData.refresh_token || null;
+
+  if (platform === "threads") {
+    const llUrl = new URL("https://graph.threads.net/access_token");
+    llUrl.searchParams.set("grant_type", "th_exchange_token");
+    llUrl.searchParams.set("client_secret", config.clientSecret);
+    llUrl.searchParams.set("access_token", accessToken);
+
+    const llRes = await fetch(llUrl.toString());
+    if (llRes.ok) {
+      const llData = (await llRes.json()) as {
+        access_token: string;
+        expires_in?: number;
+      };
+      accessToken = llData.access_token;
+      expiresAt = llData.expires_in
+        ? new Date(Date.now() + llData.expires_in * 1000)
+        : null;
+    } else {
+      console.error(
+        "[Threads] Long-lived token exchange failed:",
+        await llRes.text(),
+      );
+    }
+  }
 
   if (!accessToken) {
     return NextResponse.redirect(
@@ -260,10 +295,15 @@ export async function GET(
   // Fetch user profile info
   let profileData: any;
   try {
-    const profileResponse = await fetch(config.userInfoUrl, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+    const profileUrl =
+      platform === "facebook"
+        ? `${config.userInfoUrl}&access_token=${encodeURIComponent(accessToken)}`
+        : config.userInfoUrl;
+    const profileResponse = await fetch(profileUrl, {
+      headers:
+        platform === "facebook"
+          ? undefined
+          : { Authorization: `Bearer ${accessToken}` },
     });
 
     if (!profileResponse.ok) {
@@ -288,19 +328,126 @@ export async function GET(
 
   const parsedProfile = config.parseProfile(profileData);
 
+  let finalPlatformSpecificData: Record<string, any> =
+    parsedProfile.platformSpecificData ?? {};
+  let finalAccountId = parsedProfile.accountId;
+  let finalUsername = parsedProfile.username;
+  let finalAvatarUrl = parsedProfile.avatarUrl;
+
+  if (platform === "facebook") {
+    try {
+      let pages = await fetchFacebookPages(
+        accessToken,
+        config.clientId,
+        config.clientSecret,
+      );
+
+      let fbUserToken = accessToken;
+      const llRes = await fetch(
+        `https://graph.facebook.com/v25.0/oauth/access_token?${new URLSearchParams({
+          grant_type: "fb_exchange_token",
+          client_id: config.clientId,
+          client_secret: config.clientSecret,
+          fb_exchange_token: accessToken,
+        }).toString()}`,
+      );
+      if (llRes.ok) {
+        const llData = (await llRes.json()) as {
+          access_token: string;
+          expires_in?: number;
+        };
+        fbUserToken = llData.access_token;
+        if (llData.expires_in) {
+          expiresAt = new Date(Date.now() + llData.expires_in * 1000);
+        }
+
+        if (pages.length === 0) {
+          pages = await fetchFacebookPages(
+            fbUserToken,
+            config.clientId,
+            config.clientSecret,
+          );
+        }
+      } else {
+        console.warn(
+          "[Facebook] Long-lived token exchange failed:",
+          await llRes.text(),
+        );
+      }
+
+      if (pages.length === 0) {
+        console.warn("[Facebook] No pages found for user.");
+        return NextResponse.redirect(
+          new URL(
+            `/dashboard/connect?error=facebook_no_pages`,
+            env.NEXT_PUBLIC_APP_URL,
+          ),
+        );
+      }
+
+      const firstPageId = pages[0]!.id;
+      const pageRes = await fetch(
+        `https://graph.facebook.com/v25.0/${firstPageId}?${new URLSearchParams({
+          fields: "access_token,name",
+          access_token: fbUserToken,
+        }).toString()}`,
+      );
+      const pageData = (await pageRes.json()) as {
+        id?: string;
+        name?: string;
+        access_token?: string;
+        error?: { message: string };
+      };
+
+      const page =
+        pageRes.ok && pageData.access_token
+          ? {
+              id: pageData.id ?? firstPageId,
+              name: pageData.name ?? pages[0]!.name,
+              access_token: pageData.access_token,
+            }
+          : pages[0]!;
+
+      finalAccountId = page.id;
+      finalUsername = page.name;
+      finalPlatformSpecificData = {
+        pageId: page.id,
+        pageName: page.name,
+        pageAccessToken: page.access_token,
+        userFbId: parsedProfile.accountId,
+        allPages: pages.map((p) => ({
+          id: p.id,
+          name: p.name,
+          accessToken: p.access_token,
+        })),
+      };
+      accessToken = page.access_token;
+      expiresAt = null;
+    } catch (e) {
+      console.error("[Facebook] Error during page token fetch:", e);
+      return NextResponse.redirect(
+        new URL(
+          `/dashboard/connect?error=facebook_pages_fetch_failed`,
+          env.NEXT_PUBLIC_APP_URL,
+        ),
+      );
+    }
+  }
+
+
   // Upsert into connectedAccount database table
   await db
     .insert(connectedAccount)
     .values({
       userId: session.user.id,
       platform: platform as PlatformType,
-      accountId: parsedProfile.accountId,
-      username: parsedProfile.username,
-      avatarUrl: parsedProfile.avatarUrl ?? null,
+      accountId: finalAccountId,
+      username: finalUsername,
+      avatarUrl: finalAvatarUrl ?? null,
       accessToken,
       refreshToken,
       expiresAt,
-      platformSpecificData: parsedProfile.platformSpecificData ?? {},
+      platformSpecificData: finalPlatformSpecificData,
       status: "active",
       lastRefreshed: new Date(),
     })
@@ -311,12 +458,12 @@ export async function GET(
         connectedAccount.accountId,
       ],
       set: {
-        username: parsedProfile.username,
-        avatarUrl: parsedProfile.avatarUrl ?? null,
+        username: finalUsername,
+        avatarUrl: finalAvatarUrl ?? null,
         accessToken,
         refreshToken: refreshToken ?? connectedAccount.refreshToken,
         expiresAt: expiresAt ?? connectedAccount.expiresAt,
-        platformSpecificData: parsedProfile.platformSpecificData ?? {},
+        platformSpecificData: finalPlatformSpecificData,
         status: "active",
         lastRefreshed: new Date(),
         updatedAt: new Date(),
@@ -331,5 +478,8 @@ export async function GET(
     ),
   );
 
+  redirectResponse.cookies.delete(`${platform}_oauth_state`);
+
   return redirectResponse;
 }
+

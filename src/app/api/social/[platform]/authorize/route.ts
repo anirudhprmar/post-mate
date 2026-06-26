@@ -111,25 +111,36 @@ export async function GET(
     "redirect_uri",
     `${env.NEXT_PUBLIC_APP_URL}/api/social/${platform}/callback`,
   );
-  redirectUrl.searchParams.set("scope", config.scopes.join(","));
+  const scopeSeparator =
+    platform === "threads" || platform === "youtube" ? " " : ",";
+
+  if (platform === "facebook") {
+    redirectUrl.searchParams.set("scope", config.scopes.join(scopeSeparator));
+  } 
+
   if (platform === "instagram") {
     redirectUrl.searchParams.set("enable_fb_login", "0");
     redirectUrl.searchParams.set("force_authentication", "1");
   }
+  if (platform === "youtube") {
+    // Required to get a refresh_token from Google; select_account lets users
+    // pick which Google account to connect when they have multiple.
+    redirectUrl.searchParams.set("access_type", "offline");
+    redirectUrl.searchParams.set("prompt", "select_account consent");
+  }
 
-  let codeVerifier: string | undefined;
+  const state = crypto.randomBytes(16).toString("hex");
+  redirectUrl.searchParams.set("state", state);
 
   const response = NextResponse.redirect(redirectUrl.toString());
 
-  if (codeVerifier) {
-    response.cookies.set(`${platform}_code_verifier`, codeVerifier, {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 10,
-      path: "/",
-    });
-  }
+  response.cookies.set(`${platform}_oauth_state`, state, {
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 10,
+    path: "/",
+  });
 
   return response;
 }

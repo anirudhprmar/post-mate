@@ -51,12 +51,22 @@ const config = {
         hostname: "pbs.twimg.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "yt3.ggpht.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "scontent.fidr4-2.fna.fbcdn.net",
+        pathname: "/**",
+      },
     ],
     // Optimize images for production
     formats: ["image/avif", "image/webp"],
   },
 
-  allowedDevOrigins: [],
+  allowedDevOrigins: ["a237-2405-201-3007-a8ac-c06f-20a8-af36-5063.ngrok-free.app"],
 };
 
 export default withSentryConfig(config, {
