@@ -97,7 +97,6 @@ async function fetchPageById(
   };
 }
 
-
 export async function fetchFacebookPages(
   userToken: string,
   appId: string,
@@ -108,11 +107,7 @@ export async function fetchFacebookPages(
     return fromAccounts;
   }
 
-  const pageIds = await fetchPageIdsFromDebugToken(
-    userToken,
-    appId,
-    appSecret,
-  );
+  const pageIds = await fetchPageIdsFromDebugToken(userToken, appId, appSecret);
   if (pageIds.length === 0) {
     return [];
   }

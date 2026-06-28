@@ -9,17 +9,33 @@ interface SubscriptionEmailProps {
 function getStatusMessage(status: SubscriptionEmailProps["status"]) {
   switch (status) {
     case "created":
-      return { heading: "Welcome to Postmate!", body: "Your subscription has been created successfully." };
+      return {
+        heading: "Welcome to Postmate!",
+        body: "Your subscription has been created successfully.",
+      };
     case "active":
-      return { heading: "Subscription Active", body: "Your subscription is now active." };
+      return {
+        heading: "Subscription Active",
+        body: "Your subscription is now active.",
+      };
     case "canceled":
-      return { heading: "Subscription Canceled", body: "Your subscription has been canceled." };
+      return {
+        heading: "Subscription Canceled",
+        body: "Your subscription has been canceled.",
+      };
     case "updated":
-      return { heading: "Subscription Updated", body: "Your subscription has been updated." };
+      return {
+        heading: "Subscription Updated",
+        body: "Your subscription has been updated.",
+      };
   }
 }
 
-export function SubscriptionEmail({ name, planName, status }: SubscriptionEmailProps) {
+export function SubscriptionEmail({
+  name,
+  planName,
+  status,
+}: SubscriptionEmailProps) {
   const msg = getStatusMessage(status);
 
   return (

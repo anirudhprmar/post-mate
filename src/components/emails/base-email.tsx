@@ -9,12 +9,16 @@ export function BaseEmail({ children, title, previewText }: BaseEmailProps) {
     <html>
       <head>
         <meta charSet="utf-8" />
-        {previewText && (
-          <meta name="preview" content={previewText} />
-        )}
+        {previewText && <meta name="preview" content={previewText} />}
         <title>{title ?? "Postmate"}</title>
       </head>
-      <body style={{ fontFamily: "Arial, sans-serif", padding: 40, backgroundColor: "#f5f5f5" }}>
+      <body
+        style={{
+          fontFamily: "Arial, sans-serif",
+          padding: 40,
+          backgroundColor: "#f5f5f5",
+        }}
+      >
         <div
           style={{
             maxWidth: 600,

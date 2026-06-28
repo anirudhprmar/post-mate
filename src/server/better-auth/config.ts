@@ -227,9 +227,11 @@ export const auth = betterAuth({
 
                 if (subscriber?.email) {
                   const emailStatus = (
-                    type === "subscription.created" || type === "subscription.active"
+                    type === "subscription.created" ||
+                    type === "subscription.active"
                       ? "created"
-                      : type === "subscription.canceled" || type === "subscription.revoked"
+                      : type === "subscription.canceled" ||
+                          type === "subscription.revoked"
                         ? "canceled"
                         : "updated"
                   ) as "created" | "active" | "canceled" | "updated";

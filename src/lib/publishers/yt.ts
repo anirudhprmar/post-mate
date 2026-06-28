@@ -1,12 +1,11 @@
-
-const YT_UPLOAD_API ="https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status";
+const YT_UPLOAD_API =
+  "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status";
 const YT_VIDEOS_API = "https://www.googleapis.com/youtube/v3/videos";
 
 interface YtPublishResult {
   publishedUrl: string;
   platformPostId: string;
 }
-
 
 async function initiateResumableUpload(
   accessToken: string,
@@ -165,29 +164,26 @@ async function updateVideoStatus(
   title: string,
   description: string,
 ): Promise<void> {
-  const res = await fetch(
-    `${YT_VIDEOS_API}?part=snippet,status`,
-    {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      body: JSON.stringify({
-        id: videoId,
-        snippet: {
-          title: title || "Untitled Video",
-          description: description || "",
-          categoryId: "22",
-        },
-        status: {
-          privacyStatus: "public",
-          selfDeclaredMadeForKids: false,
-          madeForKids: false,
-        },
-      }),
+  const res = await fetch(`${YT_VIDEOS_API}?part=snippet,status`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json; charset=UTF-8",
     },
-  );
+    body: JSON.stringify({
+      id: videoId,
+      snippet: {
+        title: title || "Untitled Video",
+        description: description || "",
+        categoryId: "22",
+      },
+      status: {
+        privacyStatus: "public",
+        selfDeclaredMadeForKids: false,
+        madeForKids: false,
+      },
+    }),
+  });
 
   if (!res.ok) {
     const errorText = await res.text();

@@ -200,23 +200,18 @@ async function publishContainer(
   accessToken: string,
   containerId: string,
 ): Promise<string> {
-  const res = await fetch(
-    `${THREADS_API}/${threadsUserId}/threads_publish`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ creation_id: containerId }),
+  const res = await fetch(`${THREADS_API}/${threadsUserId}/threads_publish`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({ creation_id: containerId }),
+  });
 
   if (!res.ok) {
     const errorText = await res.text();
-    throw new Error(
-      `[Threads] Publish failed (${res.status}): ${errorText}`,
-    );
+    throw new Error(`[Threads] Publish failed (${res.status}): ${errorText}`);
   }
 
   const { id } = (await res.json()) as { id: string };

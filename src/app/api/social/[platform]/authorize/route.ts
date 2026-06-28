@@ -116,7 +116,7 @@ export async function GET(
 
   if (platform === "facebook") {
     redirectUrl.searchParams.set("scope", config.scopes.join(scopeSeparator));
-  } 
+  }
 
   if (platform === "instagram") {
     redirectUrl.searchParams.set("enable_fb_login", "0");

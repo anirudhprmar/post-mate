@@ -1,6 +1,10 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { posts, post_targets, connectedAccount } from "~/server/db/schema";
 import { qstash } from "~/lib/qstash";
 import { env } from "~/env";
@@ -308,7 +312,11 @@ export const postRouter = createTRPCRouter({
       }
 
       if (post.status === "published") {
-        return { success: true, postId: input.postId, message: "Already published" };
+        return {
+          success: true,
+          postId: input.postId,
+          message: "Already published",
+        };
       }
 
       const targets = await ctx.db.query.post_targets.findMany({
@@ -383,7 +391,9 @@ export const postRouter = createTRPCRouter({
               }
               case "instagram": {
                 if (media.length === 0)
-                  throw new Error("Instagram requires at least one image or video");
+                  throw new Error(
+                    "Instagram requires at least one image or video",
+                  );
                 let mediaType: "REELS" | "CAROUSEL" | "STORIES" | "IMAGE";
                 if (media.length > 1) mediaType = "CAROUSEL";
                 else if (media[0]?.type === "video") mediaType = "REELS";
@@ -419,10 +429,9 @@ export const postRouter = createTRPCRouter({
                 if (!videoItem) {
                   throw new Error("YouTube requires a video file");
                 }
-                const ytTitle = post.content
-                  .split("\n")[0]
-                  ?.trim()
-                  .slice(0, 100) || "Untitled Video";
+                const ytTitle =
+                  post.content.split("\n")[0]?.trim().slice(0, 100) ||
+                  "Untitled Video";
                 const res = await publishToYouTube(
                   ytTitle,
                   post.content,
@@ -442,7 +451,9 @@ export const postRouter = createTRPCRouter({
                   pd?.pageAccessToken ?? account.accessToken;
                 const pageId = pd?.pageId ?? account.accountId;
                 if (!pageAccessToken || !pageId)
-                  throw new Error("Missing page access token or page ID for Facebook");
+                  throw new Error(
+                    "Missing page access token or page ID for Facebook",
+                  );
                 const res = await publishToFacebook(
                   post.content,
                   pageAccessToken,
@@ -466,7 +477,8 @@ export const postRouter = createTRPCRouter({
               publishedUrl,
             };
           } catch (error) {
-            const msg = error instanceof Error ? error.message : "Unknown error";
+            const msg =
+              error instanceof Error ? error.message : "Unknown error";
             await ctx.db
               .update(post_targets)
               .set({ status: "failed", errorMessage: msg })
@@ -504,7 +516,9 @@ export const postRouter = createTRPCRouter({
     }),
 
   schedulePublish: protectedProcedure
-    .input(z.object({ postId: z.string(), scheduledAtMs: z.number().optional() }))
+    .input(
+      z.object({ postId: z.string(), scheduledAtMs: z.number().optional() }),
+    )
     .mutation(async ({ input }) => {
       const now = Date.now();
       const delayMs = input.scheduledAtMs ? input.scheduledAtMs - now : 0;
@@ -543,4 +557,3 @@ export const postRouter = createTRPCRouter({
       });
     }),
 });
-

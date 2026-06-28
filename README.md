@@ -1,9 +1,9 @@
 # TODO
 
-- [X]- resend for mails
-- [ ]- SEO / GEO(llms.txt) and blogs
-- [ ]- create all the remaining pages like analytics, settings, all posts and post analytics page 
+- [X]- SEO / GEO(llms.txt) and blogs
 - [ ]- create launch video with remotion
+ 
+- [ ]- create all the remaining pages like analytics, settings, all posts and post analytics page 
 
 - [ ]- fix yt publishing issue
 - [ ]- per platform different caption and description
