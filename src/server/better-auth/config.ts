@@ -1,10 +1,13 @@
 import "server-only";
 
+import { eq } from "drizzle-orm";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { polar, checkout, portal, webhooks } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
+import { sendEmail } from "~/server/email";
+import { SubscriptionEmail } from "~/components/emails/subscription-email";
 import {
   account,
   subscription,
@@ -217,6 +220,32 @@ export const auth = betterAuth({
                       userId: subscriptionData.userId,
                     },
                   });
+                const [subscriber] = await db
+                  .select({ name: user.name, email: user.email })
+                  .from(user)
+                  .where(eq(user.id, userId));
+
+                if (subscriber?.email) {
+                  const emailStatus = (
+                    type === "subscription.created" ||
+                    type === "subscription.active"
+                      ? "created"
+                      : type === "subscription.canceled" ||
+                          type === "subscription.revoked"
+                        ? "canceled"
+                        : "updated"
+                  ) as "created" | "active" | "canceled" | "updated";
+
+                  void sendEmail({
+                    to: subscriber.email,
+                    subject: `Subscription ${emailStatus === "created" ? "Confirmed" : emailStatus === "canceled" ? "Canceled" : "Updated"} - Postmate`,
+                    react: SubscriptionEmail({
+                      name: subscriber.name,
+                      planName: `${data.productId}`,
+                      status: emailStatus,
+                    }),
+                  });
+                }
               } catch (error) {
                 console.error(
                   "💥 Error processing subscription webhook:",

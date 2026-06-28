@@ -1,5 +1,5 @@
 "use client";
-import { DashboardView } from "./dashboard-view";
+import { DashboardView } from "../../app/_components/dashboard-view";
 import { Button } from "~/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import { OrbitingCircles } from "~/components/ui/orbiting-circles";

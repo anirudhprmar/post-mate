@@ -9,6 +9,15 @@ import { Toaster } from "~/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
+import {
+  OG_DESCRIPTION,
+  OG_IMAGE_PATH,
+  OG_TITLE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  URLs,
+} from "~/lib/constants";
 
 const notoSerifHeading = Noto_Serif({
   subsets: ["latin"],
@@ -18,53 +27,32 @@ const notoSerifHeading = Noto_Serif({
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://post-mate.xyz/"),
+  metadataBase: new URL(URLs.site),
+  applicationName: SITE_NAME,
+  title: { template: `%s | ${SITE_NAME}`, default: SITE_TITLE },
+  description: SITE_DESCRIPTION,
   alternates: {
     canonical: "/",
   },
-  keywords: [
-    "post mate",
-    "social media scheduling",
-    "content ideas",
-    "cross-platform posting",
-    "postmate",
-  ],
-  title: {
-    default:
-      "post mate - best tool for creators who want to grow on social media.",
-    template: "%s | Postmate",
+  icons: {
+    icon: [{ url: "/favicon/favicon.svg?v=4", type: "image/svg+xml" }],
+    apple: "/favicon/apple-touch-icon.png",
   },
-  description:
-    "Create platform-specific posts from one idea, then schedule and publish to all your accounts from one place.",
+  manifest: "/favicon/site.webmanifest",
   openGraph: {
-    title: "post mate - create once. post everywhere.",
-    description:
-      "Create platform-specific posts from one idea, then schedule and publish to all your accounts from one place.",
-    url: "https://postmate-one.vercel.app//",
-    siteName: "post mate",
-    images: [
-      {
-        url: "https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtB3vjqCHGgq6FWGHUkduvRsIBiP9EKXaJ3lhQf",
-        width: 1200,
-        height: 630,
-        alt: "post mate - create once. post everywhere.",
-      },
-    ],
-    locale: "en_US",
     type: "website",
+    url: URLs.site,
+    siteName: SITE_NAME,
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    images: [{ url: OG_IMAGE_PATH, width: 1200, height: 600, alt: OG_TITLE }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "post mate - create once. post everywhere.",
-    description:
-      "Create platform-specific posts, then schedule and publish to all your accounts from one place.",
-    images: [
-      "https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBTSJgAXFbH1BrACYXOZGLfDva5Pd26RIseog7",
-    ],
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    images: [OG_IMAGE_PATH],
   },
-  // verification: {
-  //   google: ""
-  // },
 };
 
 export default function RootLayout({

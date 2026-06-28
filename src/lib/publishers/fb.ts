@@ -235,12 +235,7 @@ export async function publishToFacebook(
   const videoMedia = media?.filter((m) => m.type === "video") ?? [];
 
   if (videoMedia.length > 0) {
-    return publishVideoToPage(
-      content,
-      pageAccessToken,
-      pageId,
-      videoMedia[0]!,
-    );
+    return publishVideoToPage(content, pageAccessToken, pageId, videoMedia[0]!);
   }
 
   if (imageMedia.length === 1) {

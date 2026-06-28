@@ -1,11 +1,11 @@
 import Container from "./_components/container";
-import Navbar from "./_components/navbar";
-import Hero from "./_components/hero";
-import Features from "./_components/features";
-import Pricing from "./_components/pricing";
-import FAQ from "./_components/faq";
-import FooterCTA from "./_components/footer-cta";
-import Footer from "./_components/footer";
+import Navbar from "../components/landing/navbar";
+import Hero from "../components/landing/hero";
+import Features from "../components/landing/features";
+import Pricing from "../components/landing/pricing";
+import FAQ from "../components/landing/faq";
+import FooterCTA from "../components/landing/footer-cta";
+import Footer from "../components/landing/footer";
 import SupportedPlatforms from "./_components/supported-platforms";
 
 export default function Page() {

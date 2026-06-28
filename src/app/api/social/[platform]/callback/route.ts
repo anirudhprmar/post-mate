@@ -344,12 +344,14 @@ export async function GET(
 
       let fbUserToken = accessToken;
       const llRes = await fetch(
-        `https://graph.facebook.com/v25.0/oauth/access_token?${new URLSearchParams({
-          grant_type: "fb_exchange_token",
-          client_id: config.clientId,
-          client_secret: config.clientSecret,
-          fb_exchange_token: accessToken,
-        }).toString()}`,
+        `https://graph.facebook.com/v25.0/oauth/access_token?${new URLSearchParams(
+          {
+            grant_type: "fb_exchange_token",
+            client_id: config.clientId,
+            client_secret: config.clientSecret,
+            fb_exchange_token: accessToken,
+          },
+        ).toString()}`,
       );
       if (llRes.ok) {
         const llData = (await llRes.json()) as {
@@ -434,7 +436,6 @@ export async function GET(
     }
   }
 
-
   // Upsert into connectedAccount database table
   await db
     .insert(connectedAccount)
@@ -482,4 +483,3 @@ export async function GET(
 
   return redirectResponse;
 }
-
