@@ -1,6 +1,6 @@
 # TODO
 
-- [X]- all posts : show the media too. and update darfts to get delete 
+- [X]- all posts : show the media too
 
 - [ ]- create launch video with remotion
 - [ ]- payment integration with dodo

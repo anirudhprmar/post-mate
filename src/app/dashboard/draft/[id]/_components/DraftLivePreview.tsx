@@ -5,6 +5,7 @@ import { User } from "lucide-react";
 import { Card } from "~/components/ui/card";
 import { platformIcons } from "~/lib/platform-icons";
 import { type DraftMediaItem } from "~/lib/types";
+import { getMediaUrl } from "~/lib/helpers";
 
 import XPreview from "~/components/platform-preview/x-preview";
 import LinkedInPreview from "~/components/platform-preview/linkedin-preview";
@@ -33,7 +34,9 @@ export default function DraftLivePreview({
 
   const previewMediaItems = mediaList.map((item) => ({
     id: item.id,
-    previewUrl: item.file ? item.previewUrl! : item.url!,
+    previewUrl: item.file
+      ? item.previewUrl!
+      : getMediaUrl(item.url ?? "", item.key),
     type: item.type,
   }));
 

@@ -3,6 +3,7 @@
 import { X } from "lucide-react";
 import InsertMediaUpload from "~/components/insert-media-upload";
 import { type DraftMediaItem } from "~/lib/types";
+import { getMediaUrl, getThumbnailUrl } from "~/lib/helpers";
 
 interface DraftMediaSectionProps {
   mediaList: DraftMediaItem[];
@@ -37,7 +38,9 @@ export default function DraftMediaSection({
               >
                 {m.type === "image" ? (
                   <img
-                    src={m.file ? m.previewUrl : m.url}
+                    src={
+                      m.file ? m.previewUrl : getMediaUrl(m.url ?? "", m.key)
+                    }
                     alt="Media"
                     className="h-full w-full object-cover"
                   />
@@ -45,13 +48,17 @@ export default function DraftMediaSection({
                   <div className="relative flex h-full w-full items-center justify-center">
                     {m.thumbnailUrl ? (
                       <img
-                        src={m.thumbnailUrl}
+                        src={getThumbnailUrl(m.thumbnailUrl)}
                         alt="Thumbnail"
                         className="h-full w-full object-cover"
                       />
                     ) : (
                       <video
-                        src={m.file ? m.previewUrl : m.url}
+                        src={
+                          m.file
+                            ? m.previewUrl
+                            : getMediaUrl(m.url ?? "", m.key)
+                        }
                         className="h-full w-full object-cover"
                       />
                     )}

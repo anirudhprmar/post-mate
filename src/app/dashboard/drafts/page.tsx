@@ -8,7 +8,12 @@ import { Badge } from "~/components/ui/badge";
 import { Clock, Plus, PenTool, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { api } from "~/trpc/react";
-import { timeAgo, getDraftStatusLabel } from "~/lib/helpers";
+import {
+  timeAgo,
+  getDraftStatusLabel,
+  getMediaUrl,
+  getThumbnailUrl,
+} from "~/lib/helpers";
 
 export default function DraftsPage() {
   const { data: drafts, isLoading } = api.draft.getAll.useQuery();
@@ -117,9 +122,63 @@ export default function DraftsPage() {
                                 <Card className="border-border/40 group bg-background/40 hover:bg-background/60 hover:shadow-foreground/5 flex min-h-[160px] cursor-pointer flex-col justify-between rounded-3xl p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                                   <div className="space-y-4">
                                     <div className="flex items-start justify-between gap-4">
-                                      <p className="group-hover:text-primary line-clamp-2 text-lg leading-relaxed font-semibold transition-colors md:line-clamp-3">
-                                        {draft.content}
-                                      </p>
+                                      <div className="space-y-2">
+                                        <p className="group-hover:text-primary line-clamp-2 text-lg leading-relaxed font-semibold transition-colors md:line-clamp-3">
+                                          {draft.content}
+                                        </p>
+                                        {draft.media &&
+                                          (draft.media as any[]).length > 0 && (
+                                            <div className="flex flex-wrap gap-1.5 overflow-hidden">
+                                              {(draft.media as any[])
+                                                .slice(0, 4)
+                                                .map((item, idx) => (
+                                                  <div
+                                                    key={idx}
+                                                    className="border-border/30 bg-muted/20 relative h-fit w-fit shrink-0 overflow-hidden rounded-xl border"
+                                                  >
+                                                    {item.type === "image" ? (
+                                                      <img
+                                                        src={getMediaUrl(
+                                                          item.url,
+                                                          item.key,
+                                                        )}
+                                                        alt="Media"
+                                                        className="h-full w-full object-cover"
+                                                      />
+                                                    ) : (
+                                                      <div className="relative flex h-full w-full items-center justify-center">
+                                                        {item.thumbnailUrl ? (
+                                                          <img
+                                                            src={getThumbnailUrl(
+                                                              item.thumbnailUrl,
+                                                            )}
+                                                            alt="Thumbnail"
+                                                            className="h-full w-full object-cover"
+                                                          />
+                                                        ) : (
+                                                          <video
+                                                            src={getMediaUrl(
+                                                              item.url,
+                                                              item.key,
+                                                            )}
+                                                            className="h-full w-full object-cover"
+                                                          />
+                                                        )}
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                ))}
+                                              {(draft.media as any[]).length >
+                                                4 && (
+                                                <div className="bg-muted border-border/30 text-muted-foreground flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border text-xs font-bold">
+                                                  +
+                                                  {(draft.media as any[])
+                                                    .length - 4}
+                                                </div>
+                                              )}
+                                            </div>
+                                          )}
+                                      </div>
                                       <div className="flex shrink-0 gap-2">
                                         <Button
                                           variant="ghost"
