@@ -5,6 +5,7 @@ import { subscriptionRouter } from "~/server/api/routers/subscription";
 import { userRouter } from "./routers/user";
 import { mediaRouter } from "./routers/media";
 import { postRouter } from "./routers/posts";
+import { orgsRouter } from "./routers/orgs";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   subscription: subscriptionRouter,
   media: mediaRouter,
   post: postRouter,
+  orgs: orgsRouter,
 });
 
 // export type definition of API

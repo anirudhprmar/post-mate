@@ -8,30 +8,13 @@ import {
   Settings,
   Bell,
   PenTool,
-  PlusIcon,
   CalendarDays,
   LinkIcon,
-  FlaskConical,
-  Calendar,
   Scroll,
-  ThumbsUp,
   BarChart3,
-  Home,
   Send,
-  Clock,
-  ClockCheck,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { Button } from "~/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
-import PostContent from "~/components/post-content";
 import Image from "next/image";
 
 interface NavItem {
@@ -66,11 +49,11 @@ const navItems: NavItem[] = [
   //   href: "/dashboard/create",
   //   icon: FlaskConical,
   // },
-  {
-    label: "Analytics",
-    href: "/dashboard/analytics",
-    icon: BarChart3,
-  },
+  // {
+  //   label: "Analytics",
+  //   href: "/dashboard/analytics",
+  //   icon: BarChart3,
+  // },
   {
     label: "Connections",
     href: "/dashboard/connect",
@@ -129,10 +112,10 @@ export default function DashboardSideBar() {
               <ul className="list-none pl-0">
                 <li>
                   <Link
-                    href="/notifications"
+                    href="/dashboard/notifications"
                     className={clsx(
                       "flex w-full items-center gap-3 overflow-hidden rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap transition-all",
-                      pathname === "/notifications"
+                      pathname === "/dashboard/notifications"
                         ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
                     )}
@@ -143,10 +126,10 @@ export default function DashboardSideBar() {
                 </li>
                 <li>
                   <Link
-                    href="/settings"
+                    href="/dashboard/settings"
                     className={clsx(
                       "flex w-full items-center gap-3 overflow-hidden rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap transition-all",
-                      pathname === "/settings"
+                      pathname === "/dashboard/settings"
                         ? "bg-primary/10 text-primary hover:bg-primary/20"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
                     )}
