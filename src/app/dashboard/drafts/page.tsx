@@ -111,7 +111,7 @@ export default function DraftsPage() {
                             {filteredDrafts.map((draft) => (
                               <Link
                                 key={draft.id}
-                                href={`/dashboard/post/${draft.id}`}
+                                href={`/dashboard/draft/${draft.id}`}
                                 className="block"
                               >
                                 <Card className="border-border/40 group bg-background/40 hover:bg-background/60 hover:shadow-foreground/5 flex min-h-[160px] cursor-pointer flex-col justify-between rounded-3xl p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
@@ -177,7 +177,7 @@ export default function DraftsPage() {
                                 : tabPlatform}{" "}
                               yet. Ready to start writing?
                             </p>
-                            <Link href="/dashboard/post/new" className="mt-6">
+                            <Link href="/dashboard" className="mt-6">
                               <Button
                                 variant="outline"
                                 className="hover:bg-muted/50 border-border/50 rounded-full shadow-sm"

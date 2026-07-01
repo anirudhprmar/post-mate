@@ -1,8 +1,6 @@
 # TODO
 
-- [X]- create all the remaining pages like settings, all posts : read, 
-
-update: org and members ui and update userprofile options then all posts : show the media too. and update darfts to get delete 
+- [X]- all posts : show the media too. and update darfts to get delete 
 
 - [ ]- create launch video with remotion
 - [ ]- payment integration with dodo

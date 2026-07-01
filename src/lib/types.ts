@@ -15,3 +15,14 @@ export type PostStatus =
   | "partially_failed";
 
 export type DraftStatus = "draft" | "published";
+
+export interface DraftMediaItem {
+  id: string;
+  url?: string;
+  key?: string;
+  type: "image" | "video";
+  mimeType?: string;
+  thumbnailUrl?: string;
+  file?: File;
+  previewUrl?: string;
+}
