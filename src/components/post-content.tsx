@@ -5,6 +5,7 @@ import MediaList from "./media-list";
 import { PostEditor } from "./post-editor";
 import PostPreview from "./post-preview";
 import InsertMedia from "./insert-media";
+import CaptionEditor from "./caption-editor";
 
 export default function PostContent() {
   return (
@@ -19,6 +20,7 @@ export default function PostContent() {
               <MediaList />
               <PostEditor />
             </div>
+            <CaptionEditor />
           </div>
         </div>
 

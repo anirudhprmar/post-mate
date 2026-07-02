@@ -11,6 +11,9 @@ import XPreview, {
 } from "./platform-preview/x-preview";
 import LinkedInPreview from "./platform-preview/linkedin-preview";
 import InstagramPreview from "./platform-preview/insta-preview";
+import FacebookPreview from "./platform-preview/facebook-preview";
+import ThreadsPreview from "./platform-preview/threads-preview";
+import YouTubePreview from "./platform-preview/youtube-preview";
 
 export default function PostPreview() {
   const { data: connectedAccounts = [] } =
@@ -44,6 +47,9 @@ export default function PostPreview() {
     x: XPreview,
     linkedin: LinkedInPreview,
     instagram: InstagramPreview,
+    facebook: FacebookPreview,
+    threads: ThreadsPreview,
+    youtube: YouTubePreview,
   };
 
   const platformKey = activePreviewAccount?.platform.toLowerCase();

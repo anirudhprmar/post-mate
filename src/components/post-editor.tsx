@@ -18,6 +18,7 @@ import { useEffect, useMemo } from "react";
 export const PLATFORM_LIMITS: Record<string, number> = {
   instagram: 2000,
   x: 280,
+  x_premium: 25000,
   facebook: 63206,
   linkedin: 3000,
   youtube: 5000,

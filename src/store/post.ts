@@ -9,6 +9,8 @@ export interface MediaItem {
   thumbnailPreviewUrl?: string;
 }
 
+export type InstagramPostType = "image" | "reel" | "story";
+
 interface PostState {
   content: string;
   setContent: (content: string) => void;
@@ -30,6 +32,19 @@ interface PostState {
   setIsInsta: (isInsta: boolean) => void;
   isOverLimit: boolean;
   setIsOverLimit: (over: boolean) => void;
+
+  // Per-platform caption overrides (accountId → HTML string)
+  platformCaptions: Record<string, string>;
+  setPlatformCaption: (accountId: string, caption: string) => void;
+  clearPlatformCaptions: () => void;
+
+  // X premium toggle per account (accountId → boolean)
+  xPremium: Record<string, boolean>;
+  setXPremium: (accountId: string, isPremium: boolean) => void;
+
+  // Instagram post type per account (accountId → type)
+  instagramPostType: Record<string, InstagramPostType>;
+  setInstagramPostType: (accountId: string, type: InstagramPostType) => void;
 }
 
 export const usePostStore = create<PostState>((set) => ({
@@ -88,6 +103,32 @@ export const usePostStore = create<PostState>((set) => ({
         m.id === id ? { ...m, thumbnail, thumbnailPreviewUrl } : m,
       ),
     })),
+
+  // Per-platform captions
+  platformCaptions: {},
+  setPlatformCaption: (accountId, caption) =>
+    set((state) => ({
+      platformCaptions: { ...state.platformCaptions, [accountId]: caption },
+    })),
+  clearPlatformCaptions: () => set({ platformCaptions: {} }),
+
+  // X premium
+  xPremium: {},
+  setXPremium: (accountId, isPremium) =>
+    set((state) => ({
+      xPremium: { ...state.xPremium, [accountId]: isPremium },
+    })),
+
+  // Instagram post type
+  instagramPostType: {},
+  setInstagramPostType: (accountId, type) =>
+    set((state) => ({
+      instagramPostType: {
+        ...state.instagramPostType,
+        [accountId]: type,
+      },
+    })),
+
   reset: () =>
     set((state) => {
       state.media.forEach((m) => {
@@ -101,6 +142,9 @@ export const usePostStore = create<PostState>((set) => ({
         selectedAccountIds: [],
         media: [],
         scheduledDate: undefined,
+        platformCaptions: {},
+        xPremium: {},
+        instagramPostType: {},
       };
     }),
 }));
