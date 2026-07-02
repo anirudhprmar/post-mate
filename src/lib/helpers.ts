@@ -68,3 +68,25 @@ export function highlightMentionsAndHashtags(
 
   return result;
 }
+
+export function getMediaUrl(url: string, key?: string) {
+  if (key) {
+    return `/api/media?key=${encodeURIComponent(key)}`;
+  }
+  return url;
+}
+
+export function getThumbnailUrl(url?: string) {
+  if (!url) return "";
+  try {
+    if (url.startsWith("http")) {
+      const match = url.match(/([^/]+\/thumb-[^?#]+)/);
+      if (match?.[1]) {
+        return `/api/media?key=${encodeURIComponent(match[1])}`;
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return url;
+}

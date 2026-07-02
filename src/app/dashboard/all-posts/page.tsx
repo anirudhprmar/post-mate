@@ -8,7 +8,12 @@ import { Button } from "~/components/ui/button";
 import { Scroll, Clock, CalendarCheck2, Loader2, Plus } from "lucide-react";
 import Link from "next/link";
 import { platformIcons } from "~/lib/platform-icons";
-import { timeAgo, POST_STATUS_CONFIG } from "~/lib/helpers";
+import {
+  timeAgo,
+  POST_STATUS_CONFIG,
+  getMediaUrl,
+  getThumbnailUrl,
+} from "~/lib/helpers";
 import type { PostStatus } from "~/lib/types";
 
 const STATUS_TABS = [
@@ -124,13 +129,53 @@ export default function AllPostsPage() {
                   className="border-border/40 group bg-background/40 hover:bg-background/60 hover:shadow-foreground/5 flex min-h-[168px] cursor-pointer flex-col justify-between rounded-3xl p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   {/* Content preview */}
-                  <p className="group-hover:text-primary line-clamp-3 text-sm leading-relaxed font-medium transition-colors">
-                    {post.content || (
-                      <span className="text-muted-foreground italic">
-                        No content
-                      </span>
+                  <div className="space-y-3">
+                    <p className="group-hover:text-primary line-clamp-3 text-sm leading-relaxed font-medium transition-colors">
+                      {post.content || (
+                        <span className="text-muted-foreground italic">
+                          No content
+                        </span>
+                      )}
+                    </p>
+                    {post.media && (post.media as any[]).length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 overflow-hidden">
+                        {(post.media as any[]).slice(0, 4).map((item, idx) => (
+                          <div
+                            key={idx}
+                            className="border-border/30 bg-muted/20 relative h-fit w-fit shrink-0 overflow-hidden rounded-xl border"
+                          >
+                            {item.type === "image" ? (
+                              <img
+                                src={getMediaUrl(item.url, item.key)}
+                                alt="Media"
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <div className="relative flex h-full w-full items-center justify-center">
+                                {item.thumbnailUrl ? (
+                                  <img
+                                    src={getThumbnailUrl(item.thumbnailUrl)}
+                                    alt="Thumbnail"
+                                    className="h-full w-full object-cover"
+                                  />
+                                ) : (
+                                  <video
+                                    src={getMediaUrl(item.url, item.key)}
+                                    className="h-full w-full object-cover"
+                                  />
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                        {(post.media as any[]).length > 4 && (
+                          <div className="bg-muted border-border/30 text-muted-foreground flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border text-xs font-bold">
+                            +{(post.media as any[]).length - 4}
+                          </div>
+                        )}
+                      </div>
                     )}
-                  </p>
+                  </div>
 
                   {/* Footer row */}
                   <div className="mt-5 flex items-center justify-between gap-2">

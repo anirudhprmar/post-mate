@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { authClient } from "~/server/better-auth/client";
-import { Loader2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -106,7 +106,7 @@ export default function UserProfile({
           <Link href="/profile">
             <DropdownMenuItem>Profile</DropdownMenuItem>
           </Link>
-          <Link href="/settings?tab=billing">
+          <Link href="/dashboard/payment">
             <DropdownMenuItem>Billing</DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />

@@ -14,9 +14,13 @@ import {
   session,
   user,
   verification,
+  organization as orgTable,
+  member,
+  invitation,
 } from "~/server/db/schema";
 import { env } from "~/env";
 import { db } from "~/server/db";
+import { organization } from "better-auth/plugins";
 
 function safeParseDate(value: string | Date | null | undefined): Date | null {
   if (!value) return null;
@@ -44,6 +48,9 @@ export const auth = betterAuth({
       account,
       verification,
       subscription,
+      organization: orgTable,
+      member,
+      invitation,
     },
   }),
   socialProviders: {
@@ -54,6 +61,7 @@ export const auth = betterAuth({
     },
   },
   plugins: [
+    organization(),
     polar({
       client: polarClient,
       createCustomerOnSignUp: true,
