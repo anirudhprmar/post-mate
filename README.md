@@ -1,8 +1,6 @@
 # TODO
 
-- [X]- per platform different caption and description (ask for instagram : reel/story/image ?? and post preview for remaining platforms)
-
-- [ ]- handle removing an account / deauthorize
+- [X]- handle removing an account / deauthorize
 
 - [ ]- update colors and motion for landing page : update headline too (capture free audience)
 

@@ -1,13 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Loader2,
-  Plus,
-  RefreshCcwDot,
-  RefreshCcwIcon,
-  Trash,
-} from "lucide-react";
+import { Loader2, Plus, RefreshCcwIcon, Trash } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { cn } from "~/lib/utils";
 
@@ -26,8 +20,19 @@ import {
   SheetHeader,
   SheetTitle,
 } from "~/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
+import { api } from "~/trpc/react";
 
 export interface Account {
   id: string;
@@ -53,6 +58,18 @@ export function PlatformCard({ platform }: { platform: Platform }) {
   const [hovered, setHovered] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Account | null>(null);
+
+  const utils = api.useUtils();
+  const deleteMutation = api.connectedAccount.delete.useMutation({
+    onSuccess: (deleted) => {
+      toast.success(`Removed ${deleted?.username ?? "account"} from ${name}`);
+      void utils.connectedAccount.getAll.invalidate();
+    },
+    onError: (err) => {
+      toast.error(err.message || "Failed to remove account");
+    },
+  });
 
   const {
     id,
@@ -67,6 +84,12 @@ export function PlatformCard({ platform }: { platform: Platform }) {
   } = platform;
 
   const visibleAvatars = accounts.slice(0, 3);
+
+  const handleDelete = () => {
+    if (!deleteTarget) return;
+    deleteMutation.mutate({ id: deleteTarget.id });
+    setDeleteTarget(null);
+  };
 
   return (
     <>
@@ -234,11 +257,29 @@ export function PlatformCard({ platform }: { platform: Platform }) {
                         `@account_${account.initials.toLowerCase()}`}
                     </span>
                     <div className="flex justify-between gap-2">
-                      <Button className="h-7 w-7 rounded-full" variant="ghost">
+                      <Button
+                        className="h-7 w-7 rounded-full"
+                        variant="ghost"
+                        onClick={() => {
+                          setLoading(true);
+                          window.location.href = `/api/social/${id}/authorize`;
+                        }}
+                        title="Re-authorize"
+                      >
                         <RefreshCcwIcon />
                       </Button>
-                      <Button className="h-7 w-7 rounded-full" variant="ghost">
-                        <Trash />
+                      <Button
+                        className="text-destructive hover:text-destructive h-7 w-7 rounded-full"
+                        variant="ghost"
+                        disabled={deleteMutation.isPending}
+                        onClick={() => setDeleteTarget(account)}
+                        title="Remove account"
+                      >
+                        {deleteMutation.isPending ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Trash />
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -249,6 +290,34 @@ export function PlatformCard({ platform }: { platform: Platform }) {
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove account?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will disconnect{" "}
+              <span className="text-foreground font-medium">
+                {deleteTarget?.username ?? "this account"}
+              </span>{" "}
+              from {name}. You won&apos;t be able to publish to this account
+              until you reconnect it.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={handleDelete}>
+              Remove
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
