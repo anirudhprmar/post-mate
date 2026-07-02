@@ -1,6 +1,6 @@
 # TODO
 
-- [ ]- payment integration with dodo
+- [X]- payment integration with dodo (trial and discounts)
 - [ ]- use app.post-mate.xyz for internal flow 
 
 - [ ]- per platform different caption and description (ask for instagram : reel/story/image ?? and post preview for remaining platforms)
@@ -21,3 +21,4 @@ future features:
 - analytics feature
 - add comments to main post / auto reply 
 - create lab
+- affiliate program

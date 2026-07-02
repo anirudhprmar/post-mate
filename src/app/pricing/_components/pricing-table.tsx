@@ -45,17 +45,23 @@ export default function PricingTable({
   const isAuthenticated = initialIsAuthenticated;
   const purchaseDetails = initialPurchaseDetails;
 
-  const handleCheckout = async (productId: string, slug: string) => {
+  const handleCheckout = async (slug: string) => {
     if (isAuthenticated === false) {
       router.push("/login");
       return;
     }
 
     try {
-      await authClient.checkout({
-        products: [productId],
-        slug: slug,
-      });
+      const { data: session, error } =
+        await authClient.dodopayments.checkoutSession({ slug });
+      if (error) {
+        console.error("Checkout failed:", error);
+        toast.error("Oops, something went wrong");
+        return;
+      }
+      if (session?.url) {
+        window.location.href = session.url;
+      }
     } catch (error) {
       console.error("Checkout failed:", error);
       toast.error("Oops, something went wrong");
@@ -64,7 +70,16 @@ export default function PricingTable({
 
   const handleManagePurchase = async () => {
     try {
-      await authClient.customer.portal();
+      const { data: customerPortal, error } =
+        await authClient.dodopayments.customer.portal();
+      if (error) {
+        console.error("Failed to open customer portal:", error);
+        toast.error("Failed to open purchase management");
+        return;
+      }
+      if (customerPortal?.url) {
+        window.location.href = customerPortal.url;
+      }
     } catch (error) {
       console.error("Failed to open customer portal:", error);
       toast.error("Failed to open purchase management");
@@ -206,12 +221,7 @@ export default function PricingTable({
                     <Button
                       className="w-full"
                       size={"lg"}
-                      onClick={() =>
-                        handleCheckout(
-                          CREATOR_MONTHLY_TIER,
-                          CREATOR_MONTHLY_SLUG,
-                        )
-                      }
+                      onClick={() => handleCheckout(CREATOR_MONTHLY_SLUG)}
                     >
                       {isAuthenticated === false
                         ? "Sign In to Purchase"
@@ -281,9 +291,7 @@ export default function PricingTable({
                     <Button
                       className="w-full"
                       size={"lg"}
-                      onClick={() =>
-                        handleCheckout(PRO_MONTHLY_TIER, PRO_MONTHLY_SLUG)
-                      }
+                      onClick={() => handleCheckout(PRO_MONTHLY_SLUG)}
                     >
                       {isAuthenticated === false
                         ? "Sign In to Purchase"
@@ -363,9 +371,7 @@ export default function PricingTable({
                     <Button
                       className="w-full"
                       size={"lg"}
-                      onClick={() =>
-                        handleCheckout(CREATOR_YEARLY_TIER, CREATOR_YEARLY_SLUG)
-                      }
+                      onClick={() => handleCheckout(CREATOR_YEARLY_SLUG)}
                     >
                       {isAuthenticated === false
                         ? "Sign In to Purchase"
@@ -438,9 +444,7 @@ export default function PricingTable({
                     <Button
                       className="w-full"
                       size={"lg"}
-                      onClick={() =>
-                        handleCheckout(PRO_YEARLY_TIER, PRO_YEARLY_SLUG)
-                      }
+                      onClick={() => handleCheckout(PRO_YEARLY_SLUG)}
                     >
                       {isAuthenticated === false
                         ? "Sign In to Purchase"

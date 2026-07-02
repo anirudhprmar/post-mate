@@ -16,7 +16,7 @@ export const subscriptionRouter = createTRPCRouter({
     }
 
     const activeSubscription = userSubscriptions
-      .filter((sub) => sub.status === "active")
+      .filter((sub) => sub.status === "active" || sub.status === "on_hold")
       .sort(
         (a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -89,7 +89,9 @@ export const subscriptionRouter = createTRPCRouter({
 
       const now = new Date();
       const isExpired = new Date(latestSubscription.currentPeriodEnd) < now;
-      const isCanceled = latestSubscription.status === "canceled";
+      const isCanceled =
+        latestSubscription.status === "cancelled" ||
+        latestSubscription.status === "expired";
 
       return {
         hasSubscription: true as const,
@@ -107,7 +109,7 @@ export const subscriptionRouter = createTRPCRouter({
           organizationId: null,
         },
         error: isCanceled
-          ? "Subscription has been canceled"
+          ? "Subscription has been cancelled"
           : isExpired
             ? "Subscription has expired"
             : "Subscription is not active",
@@ -133,7 +135,7 @@ export const subscriptionRouter = createTRPCRouter({
     }
 
     const activeSubscription = userSubscriptions
-      .filter((sub) => sub.status === "active")
+      .filter((sub) => sub.status === "active" || sub.status === "on_hold")
       .sort(
         (a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -222,7 +224,10 @@ export const subscriptionRouter = createTRPCRouter({
 
     const now = new Date();
 
-    if (latestSubscription.status === "canceled") {
+    if (
+      latestSubscription.status === "cancelled" ||
+      latestSubscription.status === "expired"
+    ) {
       return "canceled" as const;
     }
 

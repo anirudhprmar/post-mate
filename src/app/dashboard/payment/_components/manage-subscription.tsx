@@ -9,7 +9,11 @@ export default function ManageSubscription() {
       variant="outline"
       onClick={async () => {
         try {
-          await authClient.customer.portal();
+          const { data: customerPortal } =
+            await authClient.dodopayments.customer.portal();
+          if (customerPortal?.url) {
+            window.location.href = customerPortal.url;
+          }
         } catch (error) {
           console.error("Failed to open customer portal:", error);
         }

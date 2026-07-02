@@ -5,16 +5,9 @@ export interface User {
   image?: string | null;
 }
 
-export interface OrderItem {
-  label: string;
-  amount: number;
-}
-
 export interface Order {
   id: string;
-  product?: {
-    name: string;
-  };
+  product: string;
   createdAt: string;
   totalAmount: number;
   currency: string;
@@ -23,7 +16,7 @@ export interface Order {
     status: string;
     endedAt?: string;
   };
-  items: OrderItem[];
+  invoiceURL: string;
 }
 
 export interface OrdersResponse {

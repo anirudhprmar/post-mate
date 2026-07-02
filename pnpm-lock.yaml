@@ -23,6 +23,9 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.1045.0
         version: 3.1045.0
+      '@dodopayments/better-auth':
+        specifier: ^1.6.3
+        version: 1.6.3(better-auth@1.4.19(drizzle-kit@0.30.6)(drizzle-orm@0.41.0(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(gel@2.2.0)(kysely@0.28.11)(postgres@3.4.8))(next@16.2.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(zod@3.25.76)
       '@polar-sh/better-auth':
         specifier: ^1.8.3
         version: 1.8.3(@polar-sh/sdk@0.46.6)(@stripe/react-stripe-js@4.0.2(@stripe/stripe-js@7.9.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@stripe/stripe-js@7.9.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(better-auth@1.4.19(drizzle-kit@0.30.6)(drizzle-orm@0.41.0(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(gel@2.2.0)(kysely@0.28.11)(postgres@3.4.8))(next@16.2.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)(zod@3.25.76)
@@ -107,6 +110,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      dodopayments:
+        specifier: ^2.40.1
+        version: 2.40.1
       drizzle-orm:
         specifier: ^0.41.0
         version: 0.41.0(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(gel@2.2.0)(kysely@0.28.11)(postgres@3.4.8)
@@ -619,6 +625,18 @@ packages:
 
   '@date-fns/tz@1.4.1':
     resolution: {integrity: sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA==}
+
+  '@dodopayments/better-auth@1.6.3':
+    resolution: {integrity: sha512-UIcfcpV5MFJ90heJ1rdo7Fxnows/6wFyv1hDBNwB1qUNGfrqdL/7WrHdQ1dVHBmL/kZ68OXIDokCxjSGzJqRwA==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      better-auth: ^1.4.0
+      zod: ^3.25.0 || ^4.0.0
+
+  '@dodopayments/core@0.3.12':
+    resolution: {integrity: sha512-cahX0AmZI9QN6PhXDE24vUa/UBD4qU21iCgyJRC0L7jxX3dQNMwQSfP2ow9xovnrBQxrsebnwwlDoKi5wl20dA==}
+    peerDependencies:
+      zod: ^3.25.0 || ^4.0.0
 
   '@dotenvx/dotenvx@1.54.1':
     resolution: {integrity: sha512-41gU3q7v05GM92QPuPUf4CmUw+mmF8p4wLUh6MCRlxpCkJ9ByLcY9jUf6MwrMNmiKyG/rIckNxj9SCfmNCmCqw==}
@@ -3986,6 +4004,10 @@ packages:
   doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
+
+  dodopayments@2.40.1:
+    resolution: {integrity: sha512-zRcdehwf8qaLyUHfNyj5c1EQ8wyl2+ipdhKpG2qlFCXkxQaQk5L5C8g4PnYXHS9EFKu68NqmbHG7uWSNKlR9mA==}
+    hasBin: true
 
   dompurify@3.4.11:
     resolution: {integrity: sha512-zhlUV12GsaRzMsf9q5M254YhA4+VuF0fG+QFqu6aYpoGlKtz+w8//jBcGVYBgQkR5GHjUomejY84AV+/uPbWdw==}
@@ -7532,6 +7554,18 @@ snapshots:
 
   '@date-fns/tz@1.4.1': {}
 
+  '@dodopayments/better-auth@1.6.3(better-auth@1.4.19(drizzle-kit@0.30.6)(drizzle-orm@0.41.0(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(gel@2.2.0)(kysely@0.28.11)(postgres@3.4.8))(next@16.2.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(zod@3.25.76)':
+    dependencies:
+      '@dodopayments/core': 0.3.12(zod@3.25.76)
+      better-auth: 1.4.19(drizzle-kit@0.30.6)(drizzle-orm@0.41.0(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(gel@2.2.0)(kysely@0.28.11)(postgres@3.4.8))(next@16.2.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      zod: 3.25.76
+
+  '@dodopayments/core@0.3.12(zod@3.25.76)':
+    dependencies:
+      dodopayments: 2.40.1
+      standardwebhooks: 1.0.0
+      zod: 3.25.76
+
   '@dotenvx/dotenvx@1.54.1':
     dependencies:
       commander: 11.1.0
@@ -10720,6 +10754,10 @@ snapshots:
   doctrine@2.1.0:
     dependencies:
       esutils: 2.0.3
+
+  dodopayments@2.40.1:
+    dependencies:
+      standardwebhooks: 1.0.0
 
   dompurify@3.4.11:
     optionalDependencies:

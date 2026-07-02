@@ -66,7 +66,9 @@ const config = {
     formats: ["image/avif", "image/webp"],
   },
 
-  allowedDevOrigins: [""],
+  allowedDevOrigins: [
+    "2d8a-2405-201-3007-a8ac-38d4-529c-3301-7450.ngrok-free.app",
+  ],
 };
 
 export default withSentryConfig(config, {
