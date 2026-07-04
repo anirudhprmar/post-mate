@@ -178,6 +178,7 @@ function AccountCaptionCard({
 
   const isPremium = xPremium[account.id] ?? false;
   const igType = instagramPostType[account.id] ?? "image";
+  const isStory = platform === "instagram" && igType === "story";
 
   const handleUpdate = useCallback(
     (accountId: string, html: string) => {
@@ -258,12 +259,14 @@ function AccountCaptionCard({
         </div>
 
         {/* Character limit badge */}
-        <Badge variant={limitBadgeVariant} className="shrink-0 text-[10px]">
-          {plainTextLength.toLocaleString()} / {limit.toLocaleString()}
-        </Badge>
+        {!isStory && (
+          <Badge variant={limitBadgeVariant} className="shrink-0 text-[10px]">
+            {plainTextLength.toLocaleString()} / {limit.toLocaleString()}
+          </Badge>
+        )}
 
-        {/* Edit / Reset buttons */}
-        {!isEditing && !hasCustomCaption && (
+        {/* Edit / Reset buttons (hidden for stories — no captions) */}
+        {!isStory && !isEditing && !hasCustomCaption && (
           <Button
             variant="ghost"
             size="sm"
@@ -274,7 +277,7 @@ function AccountCaptionCard({
             Customize
           </Button>
         )}
-        {(isEditing || hasCustomCaption) && (
+        {!isStory && (isEditing || hasCustomCaption) && (
           <Button
             variant="ghost"
             size="sm"
@@ -321,9 +324,6 @@ function AccountCaptionCard({
               }
             >
               <SelectTrigger size="sm" className="h-7 gap-1.5 px-2 text-xs">
-                {igType === "image" && <ImageIcon className="h-3 w-3" />}
-                {igType === "reel" && <Film className="h-3 w-3" />}
-                {igType === "story" && <CircleDot className="h-3 w-3" />}
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -342,8 +342,15 @@ function AccountCaptionCard({
         )}
       </div>
 
-      {/* Mini editor (only when editing or has custom caption) */}
-      {(isEditing || hasCustomCaption) && (
+      {/* Stories don't support captions */}
+      {isStory && (
+        <p className="text-muted-foreground mt-2 text-xs italic">
+          Stories don&apos;t support captions — media only.
+        </p>
+      )}
+
+      {/* Mini editor (only when editing or has custom caption, hidden for stories) */}
+      {!isStory && (isEditing || hasCustomCaption) && (
         <PlatformMiniEditor
           accountId={account.id}
           initialContent={platformCaptions[account.id] ?? mainContent}

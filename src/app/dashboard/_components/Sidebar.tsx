@@ -110,7 +110,7 @@ export default function DashboardSideBar() {
             {/* Notifications + Settings */}
             <div className="space-y-0.5 px-3">
               <ul className="list-none pl-0">
-                <li>
+                {/* <li>
                   <Link
                     href="/dashboard/notifications"
                     className={clsx(
@@ -123,7 +123,7 @@ export default function DashboardSideBar() {
                     <Bell className="h-5 w-5 shrink-0" />
                     <span>Notifications</span>
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link
                     href="/dashboard/settings"

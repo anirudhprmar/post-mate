@@ -144,9 +144,7 @@ export default function PricingTable({
         <p className="text-primary/70 text-xs font-semibold tracking-widest uppercase">
           Pricing
         </p>
-        <h2 className="text-3xl leading-relaxed font-normal tracking-normal sm:text-4xl md:text-5xl">
-          Simple pricing, maximum value.
-        </h2>
+        <h2 className="text-3xl leading-relaxed font-normal tracking-normal sm:text-4xl md:text-5xl"></h2>
         <p className="text-foreground/50 mt-2 max-w-lg text-base sm:text-lg md:text-xl">
           Choose the plan that fits your goals
         </p>
@@ -219,12 +217,12 @@ export default function PricingTable({
                 ) : (
                   <div className="w-full flex-col gap-4">
                     <Button
-                      className="w-full"
+                      className="w-full py-6 text-lg"
                       size={"lg"}
                       onClick={() => handleCheckout(CREATOR_MONTHLY_SLUG)}
                     >
                       {isAuthenticated === false
-                        ? "Sign In to Purchase"
+                        ? "Start 7 day free trial"
                         : "Get Creator Monthly Access"}
                     </Button>
                     <p className="text-muted-foreground pt-2 text-center text-xs">
@@ -289,13 +287,13 @@ export default function PricingTable({
                 ) : (
                   <div className="w-full flex-col gap-4">
                     <Button
-                      className="w-full"
+                      className="w-full py-6 text-lg"
                       size={"lg"}
                       onClick={() => handleCheckout(PRO_MONTHLY_SLUG)}
                     >
                       {isAuthenticated === false
-                        ? "Sign In to Purchase"
-                        : "Get PRO Monthly Access"}
+                        ? "Start 7 day free trial"
+                        : "Get Pro Monthly Access"}
                     </Button>
                     <p className="text-muted-foreground pt-2 text-center text-xs">
                       $0.00 due today, cancel anytime
@@ -369,12 +367,12 @@ export default function PricingTable({
                 ) : (
                   <div className="w-full flex-col gap-4">
                     <Button
-                      className="w-full"
+                      className="w-full py-6 text-lg"
                       size={"lg"}
                       onClick={() => handleCheckout(CREATOR_YEARLY_SLUG)}
                     >
                       {isAuthenticated === false
-                        ? "Sign In to Purchase"
+                        ? "Start 7 day free trial"
                         : "Get Creator Yearly Access"}
                     </Button>
                     <p className="text-muted-foreground pt-2 text-center text-xs">
@@ -435,20 +433,20 @@ export default function PricingTable({
                     </Button>
                     {purchaseDetails?.purchase && (
                       <p className="text-muted-foreground text-center text-sm">
-                        PRO Yearly Access Active
+                        Pro Yearly Access Active
                       </p>
                     )}
                   </div>
                 ) : (
                   <div className="w-full flex-col gap-4">
                     <Button
-                      className="w-full"
+                      className="w-full py-6 text-lg"
                       size={"lg"}
                       onClick={() => handleCheckout(PRO_YEARLY_SLUG)}
                     >
                       {isAuthenticated === false
-                        ? "Sign In to Purchase"
-                        : "Get PRO Yearly Access"}
+                        ? "Start 7 day free trial"
+                        : "Get Pro Yearly Access"}
                     </Button>
                     <p className="text-muted-foreground pt-2 text-center text-xs">
                       $0.00 due today, cancel anytime

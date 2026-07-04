@@ -7,6 +7,7 @@ import FAQ from "../components/landing/faq";
 import FooterCTA from "../components/landing/footer-cta";
 import Footer from "../components/landing/footer";
 import SupportedPlatforms from "./_components/supported-platforms";
+import WhyUs from "~/components/landing/why-us";
 
 export default function Page() {
   return (
@@ -16,6 +17,7 @@ export default function Page() {
         <main>
           <Hero />
           <Features />
+          <WhyUs />
           <SupportedPlatforms />
           <Pricing />
           <FAQ />

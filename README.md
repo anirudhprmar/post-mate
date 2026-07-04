@@ -1,10 +1,8 @@
 # TODO
 
-- [X]- handle removing an account / deauthorize
+- [X]- update landing
 
-- [ ]- update colors and motion for landing page : update headline too (capture free audience)
-
-- [ ]- update dashboard image in hero with demo video and also update features videos
+- [ ]- load on the server (convert client to server)
 
 - [ ]- use app.post-mate.xyz for internal flow 
 

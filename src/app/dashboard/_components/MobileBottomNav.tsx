@@ -62,12 +62,6 @@ const moreMenuItems = [
     description: "Manage your connections",
   },
   {
-    label: "Notifications",
-    href: "/notifications",
-    icon: Bell,
-    description: "View your notifications",
-  },
-  {
     label: "Settings",
     href: "/settings",
     icon: Settings,

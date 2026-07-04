@@ -8,47 +8,42 @@ import {
   CalendarClock,
   Layers,
   Lightbulb,
+  UsersRound,
 } from "lucide-react";
+import Image from "next/image";
 
 const featureList = [
   {
-    icon: Lightbulb,
-    title: "Curate ideas for your niche",
-    description:
-      "AI-powered content ideas tailored to your audience and niche — never stare at a blank screen again.",
-    action: "ai.mp4",
-    altTag: "",
-  },
-  {
     icon: Layers,
-    title: "Post to multiple platforms & Schedule posts",
+    title: "Post to multiple platforms",
     description:
       "Publish to Instagram, X, LinkedIn, and more with a single click. Reach everywhere effortlessly.",
-    action: "/scheduling.mp4",
-    altTag: "",
+    action: "/manage.png",
+    altTag: "connections page of postmate",
   },
-  // {
-  //     icon: CalendarClock,
-  //     title: 'Schedule posts for later',
-  //     description: 'Queue up content for peak engagement times. Your audience will always see you at the right moment.',
-  //     action: '',
-  //     altTag: ''
-  // },
+  {
+    icon: CalendarClock,
+    title: "Schedule posts for later",
+    description:
+      "Queue up content for peak engagement times. Your audience will always see you at the right moment.",
+    action: "/schedule.png",
+    altTag: "scheduler page of postmate",
+  },
   {
     icon: LayoutGrid,
-    title: "Unified content management",
+    title: "Preview posts across platforms",
     description:
-      "One dashboard to manage all your platforms. Track performance, edit drafts, and stay organised.",
-    action: "manage.mp4",
-    altTag: "",
+      "See how your posts look on different platforms before you schedule.",
+    action: "/preview.png",
+    altTag: "previewing post across platforms",
   },
   {
-    icon: Sparkles,
-    title: "Never run out of ideas",
+    icon: LayoutGrid,
+    title: "Works on Mobile",
     description:
-      "A continuous stream of fresh, relevant post ideas keeps your content calendar full every week.",
-    action: "/inspire.mp4",
-    altTag: "",
+      "Use it on the go. Switch between mobile and desktop with ease. However you like it.",
+    action: "/mobilee.png",
+    altTag: "mobile view of postmate",
   },
 ];
 
@@ -65,9 +60,6 @@ export default function Features() {
         <h2 className="max-w-lg text-3xl leading-relaxed font-normal tracking-normal sm:text-4xl md:text-5xl">
           Features designed for your success.
         </h2>
-        <p className="text-foreground/50 max-w-sm text-base sm:text-lg">
-          From content creation to scheduling, we've got you covered.
-        </p>
       </div>
 
       {/* Feature grid */}
@@ -134,15 +126,19 @@ export default function Features() {
         </div>
 
         {/* Right: video player */}
-        <div className="border-border bg-muted/30 order-1 flex h-fit w-full items-center justify-center overflow-hidden rounded-xl border shadow-md lg:sticky lg:top-32 lg:order-2 lg:w-1/2">
+        <div className="border-border bg-muted/30 order-1 mx-auto flex h-fit w-fit items-center justify-center overflow-hidden rounded-none border shadow-md lg:sticky lg:top-32 lg:order-2 lg:w-fit">
           {featureList[current]?.action || featureList[current]?.action ? (
-            <video
+            <Image
               src={featureList[current]?.action as string}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="h-auto w-full object-cover"
+              className="h-auto w-full"
+              alt={featureList[current]?.altTag}
+              width={
+                featureList[current]?.title.includes("mobile") ? 400 : 1000
+              }
+              height={
+                featureList[current]?.title.includes("mobile") ? 400 : 1000
+              }
+              priority
             />
           ) : (
             <div className="text-muted-foreground flex flex-col items-center gap-2">

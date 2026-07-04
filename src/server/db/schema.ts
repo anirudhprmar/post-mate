@@ -331,6 +331,12 @@ export const post_targets = pgTable(
         shares?: number;
       }>()
       .default(sql`'{}'::jsonb`),
+    options: jsonb("options")
+      .$type<{
+        instagramMediaType?: "REELS" | "CAROUSEL" | "STORIES" | "IMAGE";
+        caption?: string;
+      }>()
+      .default(sql`'{}'::jsonb`),
     createdAt: timestamp("created_at")
       .$defaultFn(() => new Date())
       .notNull(),

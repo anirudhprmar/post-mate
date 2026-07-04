@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { Button } from "~/components/ui/button";
 
@@ -11,13 +12,15 @@ export default function FooterCTA() {
               Ready to take over social media.
             </p>
           </div>
-          <Button
-            variant={"default"}
-            size={"lg"}
-            className="rounded-md px-8 py-3 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5 sm:px-10 sm:py-4 sm:text-base"
-          >
-            Try for $0
-          </Button>
+          <Link href={"/pricing"}>
+            <Button
+              variant={"default"}
+              size={"lg"}
+              className="rounded-md px-8 py-3 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5 sm:px-10 sm:py-6 sm:text-base"
+            >
+              Try for $0
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

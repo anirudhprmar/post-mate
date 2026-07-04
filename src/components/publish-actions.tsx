@@ -15,9 +15,17 @@ export default function PublishActions() {
   const setScheduledDate = usePostStore((state) => state.setScheduledDate);
   const isOverLimit = usePostStore((state) => state.isOverLimit);
   const content = usePostStore((state) => state.content);
+  const media = usePostStore((state) => state.media);
+  const instagramPostType = usePostStore((state) => state.instagramPostType);
 
   // Strip HTML tags and check if there's any real text
-  const isEmpty = content.replace(/<[^>]+>/g, "").trim().length === 0;
+  const isTextEmpty = content.replace(/<[^>]+>/g, "").trim().length === 0;
+
+  const hasInstaStory = selectedAccountIds.some(
+    (accountId) => instagramPostType[accountId] === "story",
+  );
+
+  const isEmpty = isTextEmpty && media.length === 0 && !hasInstaStory;
 
   const { handlePublish, publishingMode } = usePublishPost();
 

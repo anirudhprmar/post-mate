@@ -11,6 +11,8 @@ import {
   XIcon,
   YouTubeIcon,
 } from "~/lib/platform-icons";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -18,14 +20,11 @@ export default function Hero() {
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-10 px-6 py-20 lg:px-8">
         <div className="relative flex w-full flex-col items-center justify-center gap-4 space-y-4 overflow-hidden text-center sm:gap-6">
           <h1 className="z-50 mt-2 flex max-w-3xl flex-col items-center justify-center gap-1 text-3xl leading-normal font-normal tracking-wide sm:mt-6 sm:text-6xl md:text-6xl">
-            One platform to grow on every social media.
+            Your audience is waiting. Post once. Reach all.
           </h1>
           <p className="z-50 max-w-md px-4 text-sm font-medium sm:text-base md:text-lg">
-            Generate ideas, captions, and visuals that match the unique style
-            and algorithm of each platform.
-          </p>
-          <p className="z-50 max-w-md px-4 text-sm font-medium sm:text-base md:text-lg">
-            Then schedule and publish to all your accounts from one place.
+            Let them know you exist. Without the hassle of managing accounts
+            across platforms. Everything from one place.
           </p>
           <OrbitingCircles
             radius={300}
@@ -50,16 +49,42 @@ export default function Hero() {
             variant="default"
             className="border-primary/20 bg-primary shadow-primary/20 hover:bg-primary-hover hover:shadow-primary/30 h-12 w-full rounded-md border px-5 shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
           >
-            <div className="flex items-center gap-2">
-              <p className="text-primary-foreground text-sm font-semibold tracking-[0.01em]">
-                try for $0
-              </p>
-              <ArrowUpRight className="text-primary-foreground size-4 transition-transform duration-300 group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5" />
-            </div>
+            <Link href={"/pricing"}>
+              <div className="flex items-center gap-2">
+                <p className="text-primary-foreground text-sm font-semibold tracking-[0.01em]">
+                  Try for $0
+                </p>
+                <ArrowUpRight className="text-primary-foreground size-4 transition-transform duration-300 group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5" />
+              </div>
+            </Link>
           </Button>
         </div>
 
-        <DashboardView />
+        {/* yt demo video */}
+
+        {/* <div className="relative inline-block w-full align-middle leading-none">
+          <Image
+              src="https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBY0oxc3sNjH2LiBgdqWw9yDXvUkceml5t1ZuV"
+              alt="bg"
+              // fill
+              loading="eager"
+              priority
+              height={1000}
+              width={1500}
+              className="rounded-md object-cover"
+            />
+        <iframe
+          src="https://www.youtube.com/embed/lWsZT-2pQL4?si=-HhBM1vdZYol8XSF"
+          title="YouTube video player"
+          frameBorder={0}
+          width={1000}
+          className="absolute top-1/2 left-1/2 right-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md"
+          height={500}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+        </div> */}
       </div>
     </section>
   );

@@ -287,12 +287,29 @@ export const postRouter = createTRPCRouter({
       z.object({
         postId: z.string(),
         connectedAccountId: z.string(),
+        options: z
+          .object({
+            instagramMediaType: z
+              .enum(["REELS", "CAROUSEL", "STORIES", "IMAGE"])
+              .optional(),
+            caption: z.string().optional(),
+          })
+          .optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      let finalOptions = input.options ?? {};
+      if (finalOptions.caption) {
+        finalOptions = {
+          ...finalOptions,
+          caption: htmlToPlainText(finalOptions.caption),
+        };
+      }
+
       await ctx.db.insert(post_targets).values({
         postId: input.postId,
         connectedAccountId: input.connectedAccountId,
+        options: finalOptions,
       });
     }),
 
@@ -361,6 +378,14 @@ export const postRouter = createTRPCRouter({
             }
           }
 
+          const targetOptions =
+            (target.options as {
+              instagramMediaType?: "REELS" | "CAROUSEL" | "STORIES" | "IMAGE";
+              caption?: string;
+            } | null) ?? {};
+
+          const activeCaption = targetOptions.caption || post.content;
+
           try {
             let publishedUrl: string;
             switch (account.platform) {
@@ -371,7 +396,7 @@ export const postRouter = createTRPCRouter({
                 if (!pd?.oauthTokenSecret)
                   throw new Error("Missing OAuth token secret for X");
                 const res = await publishToX(
-                  post.content,
+                  activeCaption,
                   account.accessToken,
                   pd.oauthTokenSecret,
                   media.length > 0 ? media : undefined,
@@ -381,7 +406,7 @@ export const postRouter = createTRPCRouter({
               }
               case "linkedin": {
                 const res = await publishToLinkedIn(
-                  post.content,
+                  activeCaption,
                   account.accessToken,
                   account.accountId,
                   media.length > 0 ? media : undefined,
@@ -394,13 +419,24 @@ export const postRouter = createTRPCRouter({
                   throw new Error(
                     "Instagram requires at least one image or video",
                   );
+
                 let mediaType: "REELS" | "CAROUSEL" | "STORIES" | "IMAGE";
-                if (media.length > 1) mediaType = "CAROUSEL";
-                else if (media[0]?.type === "video") mediaType = "REELS";
-                else mediaType = "IMAGE";
+                if (targetOptions.instagramMediaType) {
+                  mediaType = targetOptions.instagramMediaType;
+                } else if (media.length > 1) {
+                  mediaType = "CAROUSEL";
+                } else if (media[0]?.type === "video") {
+                  mediaType = "REELS";
+                } else {
+                  mediaType = "IMAGE";
+                }
+
+                // Instagram stories are media-only and do not support captions
+                const caption = mediaType === "STORIES" ? "" : activeCaption;
+
                 const res = await publishToInsta(
                   mediaType,
-                  post.content,
+                  caption,
                   account.accessToken,
                   account.accountId,
                   media.map((m) => ({
@@ -416,7 +452,7 @@ export const postRouter = createTRPCRouter({
               }
               case "threads": {
                 const res = await publishToThreads(
-                  post.content,
+                  activeCaption,
                   account.accessToken,
                   account.accountId,
                   media.length > 0 ? media : undefined,
@@ -430,11 +466,11 @@ export const postRouter = createTRPCRouter({
                   throw new Error("YouTube requires a video file");
                 }
                 const ytTitle =
-                  post.content.split("\n")[0]?.trim().slice(0, 100) ||
+                  activeCaption.split("\n")[0]?.trim().slice(0, 100) ||
                   "Untitled Video";
                 const res = await publishToYouTube(
                   ytTitle,
-                  post.content,
+                  activeCaption,
                   account.accessToken,
                   videoItem.url,
                   videoItem.mimeType ?? "video/mp4",
@@ -455,7 +491,7 @@ export const postRouter = createTRPCRouter({
                     "Missing page access token or page ID for Facebook",
                   );
                 const res = await publishToFacebook(
-                  post.content,
+                  activeCaption,
                   pageAccessToken,
                   pageId,
                   media.length > 0 ? media : undefined,

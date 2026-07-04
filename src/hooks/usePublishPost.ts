@@ -15,6 +15,8 @@ export function usePublishPost() {
   const media = usePostStore((state) => state.media);
   const reset = usePostStore((state) => state.reset);
   const scheduledDate = usePostStore((state) => state.scheduledDate);
+  const instagramPostType = usePostStore((state) => state.instagramPostType);
+  const platformCaptions = usePostStore((state) => state.platformCaptions);
 
   const [publishingMode, setPublishingMode] = useState<
     "draft" | "schedule" | null
@@ -52,7 +54,8 @@ export function usePublishPost() {
         if (media.length > 0) {
           for (const account of selectedAccounts) {
             if (account.platform === "instagram") {
-              const notJPEG = media.filter(
+              const imageMedia = media.filter((item) => item.type === "image");
+              const notJPEG = imageMedia.filter(
                 (item) => item.file.type !== "image/jpeg",
               );
               if (notJPEG.length > 0) {
@@ -68,8 +71,9 @@ export function usePublishPost() {
         }
 
         for (const account of selectedAccounts) {
+          const customCaption = platformCaptions[account.id];
           await createDraft.mutateAsync({
-            content,
+            content: customCaption || content,
             platform: account.platform,
             media: uploadedMedia,
           });
@@ -97,9 +101,15 @@ export function usePublishPost() {
       if (media.length > 0) {
         for (const account of selectedAccounts) {
           if (account.platform === "instagram") {
-            setIsInsta(true);
-            toast.error("Instagram accepts only JPEG format images.");
-            break;
+            const imageMedia = media.filter((item) => item.type === "image");
+            const notJPEG = imageMedia.filter(
+              (item) => item.file.type !== "image/jpeg",
+            );
+            if (notJPEG.length > 0) {
+              setIsInsta(true);
+              toast.error("Instagram accepts only JPEG format images.");
+              break;
+            }
           }
         }
 
@@ -119,10 +129,40 @@ export function usePublishPost() {
         scheduledFor: mode === "schedule" ? scheduledDate : undefined,
       });
 
-      for (const account of selectedAccountIds) {
+      for (const accountId of selectedAccountIds) {
+        const accountInfo = selectedAccounts.find((a) => a.id === accountId);
+        let options:
+          | {
+              instagramMediaType?: "REELS" | "CAROUSEL" | "STORIES" | "IMAGE";
+              caption?: string;
+            }
+          | undefined = undefined;
+
+        if (accountInfo?.platform === "instagram") {
+          const igType = instagramPostType[accountId] ?? "image";
+          let mediaType: "REELS" | "CAROUSEL" | "STORIES" | "IMAGE";
+          if (igType === "story") {
+            mediaType = "STORIES";
+          } else if (igType === "reel") {
+            mediaType = "REELS";
+          } else {
+            mediaType = media.length > 1 ? "CAROUSEL" : "IMAGE";
+          }
+          options = { instagramMediaType: mediaType };
+        }
+
+        const customCaption = platformCaptions[accountId];
+        if (customCaption) {
+          options = {
+            ...options,
+            caption: customCaption,
+          };
+        }
+
         await schedule.mutateAsync({
           postId,
-          connectedAccountId: account,
+          connectedAccountId: accountId,
+          options,
         });
       }
     } catch (err) {

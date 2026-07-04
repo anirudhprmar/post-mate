@@ -1,4 +1,5 @@
 import type { MediaItem } from "~/store/post";
+import { env } from "~/env";
 
 interface UploadResult {
   url: string;
@@ -40,7 +41,7 @@ export async function uploadMediaFile(
   if (item.type === "video" && item.thumbnail) {
     const thumbName = `thumb-${Date.now()}-${item.thumbnail.name || "thumbnail.jpg"}`;
     const thumbType = item.thumbnail.type || "image/jpeg";
-    const { uploadUrl: thumbUploadUrl } = await createUploadUrl({
+    const { uploadUrl: thumbUploadUrl, key: thumbKey } = await createUploadUrl({
       fileName: thumbName,
       contentType: thumbType,
       fileType: "image",
@@ -59,11 +60,11 @@ export async function uploadMediaFile(
         `Failed to upload thumbnail for ${item.file.name}: ${thumbResponse.statusText}`,
       );
     }
-    thumbnailUrl = thumbUploadUrl.split("?")[0]!;
+    thumbnailUrl = `${env.NEXT_PUBLIC_APP_URL}/api/media?key=${thumbKey}`;
   }
 
   return {
-    url: uploadUrl.split("?")[0]!,
+    url: `${env.NEXT_PUBLIC_APP_URL}/api/media?key=${key}`,
     key,
     type: item.type,
     mimeType: item.file.type,

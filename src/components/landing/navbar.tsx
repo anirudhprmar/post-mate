@@ -21,7 +21,7 @@ const navItems = [
 
 export default function Navbar() {
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 w-full">
+    <header className="fixed top-0 right-0 left-0 z-100 w-full">
       <nav className="bg-muted relative flex h-20 w-full items-center justify-between border-b border-dashed px-5">
         <div>
           <Link href="/" className="flex items-center">
@@ -64,9 +64,11 @@ export default function Navbar() {
           >
             <Link href="/login">Log in</Link>
           </Button>
-          <Button variant={"default"} size="lg" className="rounded-md">
-            Start for Free
-          </Button>
+          <Link href={"/pricing"}>
+            <Button variant={"default"} size="lg" className="rounded-md">
+              Start for Free
+            </Button>
+          </Link>
         </div>
       </nav>
     </header>

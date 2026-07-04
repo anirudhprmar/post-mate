@@ -114,13 +114,8 @@ export async function GET(
   const scopeSeparator =
     platform === "threads" || platform === "youtube" ? " " : ",";
 
-  if (platform === "facebook") {
+  if (platform === "facebook" || platform === "instagram") {
     redirectUrl.searchParams.set("scope", config.scopes.join(scopeSeparator));
-  }
-
-  if (platform === "instagram") {
-    redirectUrl.searchParams.set("enable_fb_login", "0");
-    redirectUrl.searchParams.set("force_authentication", "1");
   }
   if (platform === "youtube") {
     // Required to get a refresh_token from Google; select_account lets users

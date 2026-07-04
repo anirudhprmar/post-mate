@@ -19,8 +19,10 @@ export default function PostPreview() {
   const { data: connectedAccounts = [] } =
     api.connectedAccount.getAll.useQuery();
   const content = usePostStore((state) => state.content);
+  const platformCaptions = usePostStore((state) => state.platformCaptions);
   const media = usePostStore((state) => state.media);
   const selectedAccountIds = usePostStore((state) => state.selectedAccountIds);
+  const instagramPostType = usePostStore((state) => state.instagramPostType);
 
   const [userSelectedPreviewId, setUserSelectedPreviewId] = useState<
     string | null
@@ -56,6 +58,18 @@ export default function PostPreview() {
 
   const PreviewPlatform =
     activePreviewAccount && platformKey ? PreviewPlatforms[platformKey] : null;
+
+  // Instagram stories are media-only — no caption
+  const isInstaStory =
+    platformKey === "instagram" &&
+    activePreviewId &&
+    (instagramPostType[activePreviewId] ?? "image") === "story";
+
+  const resolvedContent = isInstaStory
+    ? ""
+    : activePreviewId && activePreviewId in platformCaptions
+      ? platformCaptions[activePreviewId]!
+      : content;
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -108,7 +122,7 @@ export default function PostPreview() {
               <PreviewPlatform
                 username={activePreviewAccount.username}
                 avatarUrl={activePreviewAccount.avatarUrl}
-                content={content}
+                content={resolvedContent}
                 media={media}
               />
             ) : null}
