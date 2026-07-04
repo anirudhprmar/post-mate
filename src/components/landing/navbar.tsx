@@ -12,11 +12,8 @@ import {
 import Image from "next/image";
 
 const navItems = [
-  { label: "Demo" },
-  { label: "Features" },
-  // { label: "Download", hasChevron: false },
-  { label: "Blog" },
-  { label: "Pricing" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Blog", href: "/blog" },
 ];
 
 export default function Navbar() {
@@ -34,7 +31,7 @@ export default function Navbar() {
               height={50}
             />
             <p className="text-foreground text-xl font-bold tracking-tight select-none">
-              Postmate
+              post mate
             </p>
           </Link>
         </div>

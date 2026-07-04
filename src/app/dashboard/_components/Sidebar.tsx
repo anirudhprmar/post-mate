@@ -77,7 +77,7 @@ export default function DashboardSideBar() {
             height={40}
             className="rounded-sm"
           />
-          <p className="text-foreground text-xl font-bold">postmate</p>
+          <p className="text-foreground text-xl font-bold">post mate</p>
         </div>
         <nav
           aria-label="Main Navigation"

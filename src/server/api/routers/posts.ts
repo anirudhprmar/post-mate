@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, and, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -219,6 +219,64 @@ export const postRouter = createTRPCRouter({
       },
     });
   }),
+
+  getInfinite: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).default(12),
+        cursor: z.number().nullish(),
+        status: z
+          .enum(["all", "draft", "scheduled", "published", "failed"])
+          .default("all"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit;
+      const page = input.cursor ?? 1;
+      const offset = (page - 1) * limit;
+
+      const conditions = [eq(posts.userId, ctx.session.user.id)];
+      if (input.status !== "all") {
+        if (input.status === "failed") {
+          conditions.push(
+            or(
+              eq(posts.status, "failed"),
+              eq(posts.status, "partially_failed"),
+            )!,
+          );
+        } else {
+          conditions.push(eq(posts.status, input.status));
+        }
+      }
+
+      const items = await ctx.db.query.posts.findMany({
+        where: and(...conditions),
+        orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+        limit: limit,
+        offset: offset,
+        with: {
+          targets: {
+            with: {
+              connectedAccount: true,
+            },
+          },
+        },
+      });
+
+      const countResult = await ctx.db
+        .select({ count: sql<number>`count(*)` })
+        .from(posts)
+        .where(and(...conditions));
+      const totalCount = Number(countResult[0]?.count ?? 0);
+
+      const nextCursor = items.length === limit ? page + 1 : undefined;
+
+      return {
+        items,
+        nextCursor,
+        totalCount,
+      };
+    }),
 
   getById: protectedProcedure
     .input(z.object({ id: z.string() }))

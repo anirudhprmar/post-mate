@@ -1,7 +1,5 @@
 # TODO
 
-- [X]- load on the server (convert client to server)
-
 - [ ]- use app.post-mate.xyz for internal flow 
 
 - [ ]- give free trial to friends
