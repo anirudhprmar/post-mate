@@ -27,8 +27,6 @@
     "@aws-sdk/client-s3": "^3.1045.0",
     "@aws-sdk/s3-request-presigner": "^3.1045.0",
     "@dodopayments/better-auth": "^1.6.3",
-    "@polar-sh/better-auth": "^1.8.3",
-    "@polar-sh/sdk": "^0.46.6",
     "@radix-ui/react-dialog": "^1.1.15",
     "@sentry/nextjs": "^10.60.0",
     "@t3-oss/env-nextjs": "^0.12.0",
