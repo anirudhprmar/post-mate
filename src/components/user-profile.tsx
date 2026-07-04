@@ -14,7 +14,7 @@ import { Loader2, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { api } from "~/lib/api";
+import { api } from "~/trpc/react";
 import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
 
@@ -73,19 +73,16 @@ export default function UserProfile({
           className={`flex w-full items-center justify-start gap-3 overflow-hidden rounded whitespace-nowrap hover:cursor-pointer ${mini ? "px-2 py-2" : "px-3 py-2 pb-2"}`}
         >
           <Avatar className="shrink-0">
-            {isLoading ? (
-              <div className="flex h-full w-full items-center justify-center">
-                <Loader2 className="h-4 w-4 animate-spin" />
-              </div>
-            ) : (
-              <>
-                {userInfo?.image ? (
-                  <AvatarImage src={userInfo?.image} alt="User Avatar" />
-                ) : (
-                  <AvatarFallback>{"U"}</AvatarFallback>
-                )}
-              </>
+            {userInfo?.image && (
+              <AvatarImage src={userInfo.image} alt="User Avatar" />
             )}
+            <AvatarFallback>
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                (userInfo?.name?.[0]?.toUpperCase() ?? "U")
+              )}
+            </AvatarFallback>
           </Avatar>
           {mini ? null : (
             <div

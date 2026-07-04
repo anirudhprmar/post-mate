@@ -1,8 +1,6 @@
 # TODO
 
-- [X]- update landing
-
-- [ ]- load on the server (convert client to server)
+- [X]- load on the server (convert client to server)
 
 - [ ]- use app.post-mate.xyz for internal flow 
 

@@ -1,3 +1,4 @@
+import { api, HydrateClient } from "~/trpc/server";
 import DashboardSideBar from "./_components/Sidebar";
 import MobileBottomNav from "./_components/MobileBottomNav";
 
@@ -6,8 +7,12 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Prefetch both queries on the server to populate the React Query cache
+  void api.user.me.prefetch();
+  void api.connectedAccount.getAll.prefetch();
+
   return (
-    <>
+    <HydrateClient>
       <div className="flex h-screen w-full overflow-hidden">
         <aside className="h-full">
           <DashboardSideBar />
@@ -20,6 +25,6 @@ export default async function DashboardLayout({
         </main>
       </div>
       <MobileBottomNav />
-    </>
+    </HydrateClient>
   );
 }
