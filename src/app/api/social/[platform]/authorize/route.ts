@@ -112,9 +112,13 @@ export async function GET(
     `${env.NEXT_PUBLIC_APP_URL}/api/social/${platform}/callback`,
   );
   const scopeSeparator =
-    platform === "threads" || platform === "youtube" ? " " : ",";
+    platform === "linkedin" || platform === "youtube" ? " " : ",";
 
-  if (platform === "facebook" || platform === "instagram") {
+  if (
+    platform === "facebook" ||
+    platform === "instagram" ||
+    platform === "threads"
+  ) {
     redirectUrl.searchParams.set("scope", config.scopes.join(scopeSeparator));
   }
   if (platform === "youtube") {
