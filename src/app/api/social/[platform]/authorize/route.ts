@@ -117,7 +117,8 @@ export async function GET(
   if (
     platform === "facebook" ||
     platform === "instagram" ||
-    platform === "threads"
+    platform === "threads" ||
+    platform === "linkedin"
   ) {
     redirectUrl.searchParams.set("scope", config.scopes.join(scopeSeparator));
   }
