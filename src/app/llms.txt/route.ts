@@ -36,27 +36,10 @@ post mate currently supports publishing and scheduling to:
 
 Each platform uses OAuth for secure account connection. Users can connect multiple accounts per platform.
 
-## Pricing
-
-post mate offers a 7-day free trial on all paid plans (credit card required, no charge during trial).
-
-### Creator Plan
-- Monthly: $19/month
-- Yearly: $16/month (billed as $192/year)
-- Includes: 15 connected social accounts, post scheduling, AI post generation, platform-specific content generation, idea pipeline
-
-### Pro Plan
-- Monthly: $39/month
-- Yearly: $34/month (billed as $408/year)
-- Includes: Everything in Creator, unlimited connected social accounts, priority support, invite team members, monthly strategy calls
-
 ## Frequently Asked Questions
 
 **What is Postmate?**
 Postmate is a content creation and posting tool that helps you create tailored content for different platform's taste and post content on multiple social media platforms all at the same time.
-
-**Why switch from Hootsuite or Buffer?**
-These companies charge $20–$100/month for features most people never use. Postmate focuses only on what matters: posting on all platforms from multiple accounts to grow, with internal tools to help you create better content. You also get direct access to the founder (Anirudh) — one DM away from getting your problem solved.
 
 **How is Postmate better than ChatGPT?**
 Postmate is a complete platform for your content. You can manage content, schedule it, and post to multiple accounts simultaneously — things ChatGPT cannot do. It provides a complete package for content ideation, management, and scheduling.
@@ -73,7 +56,6 @@ Yes, but a desktop experience is recommended for best results.
 ## Links
 
 - Website: https://post-mate.xyz
-- Pricing: https://post-mate.xyz/pricing
 - X / Twitter: https://x.com/app_postmate
 - LinkedIn: https://www.linkedin.com/company/app-postmate
 - Support email: app.postmate@gmail.com

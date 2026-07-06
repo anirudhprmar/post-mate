@@ -12,7 +12,7 @@ export default function FooterCTA() {
               Ready to take over social media.
             </p>
           </div>
-          <Link href={"/pricing"}>
+          <Link href={"/login"}>
             <Button
               variant={"default"}
               size={"lg"}

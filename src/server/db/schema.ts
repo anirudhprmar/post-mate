@@ -112,34 +112,6 @@ export const verification = pgTable("verification", {
   ),
 });
 
-export const subscription = pgTable(
-  "subscription",
-  {
-    id: text("id").primaryKey(),
-    createdAt: timestamp("created_at").notNull(),
-    updatedAt: timestamp("updated_at"),
-    amount: integer("amount").notNull(),
-    currency: text("currency").notNull(),
-    recurringInterval: text("recurring_interval").notNull(),
-    status: text("status").notNull(),
-    currentPeriodStart: timestamp("current_period_start"),
-    currentPeriodEnd: timestamp("current_period_end").notNull(),
-    cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
-    canceledAt: timestamp("canceled_at"),
-    customerId: text("customer_id").notNull(),
-    productId: text("product_id").notNull(),
-    discountId: text("discount_id"),
-    customerCancellationReason: text("customer_cancellation_reason"),
-    customerCancellationComment: text("customer_cancellation_comment"),
-    metadata: text("metadata"),
-    customFieldData: text("custom_field_data"),
-    userId: text("user_id")
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-  },
-  (t) => [index("subscription_userId_idx").on(t.userId)],
-);
-
 export const organization = pgTable(
   "organization",
   {
@@ -387,14 +359,9 @@ export const userRelations = relations(user, ({ many }) => ({
   session: many(session),
   drafts: many(drafts),
   connectedAccounts: many(connectedAccount),
-  subscriptions: many(subscription),
   posts: many(posts),
   members: many(member),
   invitations: many(invitation),
-}));
-
-export const subscriptionRelations = relations(subscription, ({ one }) => ({
-  user: one(user, { fields: [subscription.userId], references: [user.id] }),
 }));
 
 export const accountRelations = relations(account, ({ one }) => ({

@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import FAQ from "~/components/landing/faq";
 import Footer from "~/components/landing/footer";
 import FooterCTA from "~/components/landing/footer-cta";
-import Pricing from "~/components/landing/pricing";
 import { homePageStructuredData } from "~/lib/constants";
 
 export default function MarketingLayout({ children }: { children: ReactNode }) {
@@ -19,7 +18,6 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
         <main>
           <div className="relative pt-[45px] lg:pt-0">
             {children}
-            <Pricing />
             <FAQ />
             <FooterCTA />
             <Footer />

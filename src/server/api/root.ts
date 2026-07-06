@@ -1,7 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { draftRouter } from "~/server/api/routers/draft";
 import { connectedAccountRouter } from "~/server/api/routers/connectedAccount";
-import { subscriptionRouter } from "~/server/api/routers/subscription";
 import { userRouter } from "./routers/user";
 import { mediaRouter } from "./routers/media";
 import { postRouter } from "./routers/posts";
@@ -16,7 +15,6 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   draft: draftRouter,
   connectedAccount: connectedAccountRouter,
-  subscription: subscriptionRouter,
   media: mediaRouter,
   post: postRouter,
   orgs: orgsRouter,

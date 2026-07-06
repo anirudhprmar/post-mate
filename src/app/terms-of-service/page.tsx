@@ -86,19 +86,6 @@ export default function TermsOfService() {
 
                 <section>
                   <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                    4. Subscription and Payment
-                  </h2>
-                  <div className="space-y-3">
-                    <p className="leading-relaxed">
-                      We don&apos;t charge anything for this app, its completely
-                      free to use for everyone. But in future we might promote
-                      some premium features which will be paid.
-                    </p>
-                  </div>
-                </section>
-
-                <section>
-                  <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">
                     5. User Responsibilities and Conduct
                   </h2>
                   <div className="space-y-3">

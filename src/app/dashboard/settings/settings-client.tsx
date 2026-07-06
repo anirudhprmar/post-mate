@@ -1,27 +1,15 @@
 "use client";
-import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useUserProfile } from "../../../hooks/useUserProfile";
-import { useBillingHistory } from "../../../hooks/useBillingHistory";
 import { SettingsSkeleton } from "../../../components/settings-skeleton";
 import { ProfileTab } from "../../../components/tabs/profile-tab";
-import { BillingTab } from "../../../components/tabs/billing-tab";
 
 function SettingsContent() {
-  const [currentTab, setCurrentTab] = useState("profile");
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const { user, loading } = useUserProfile();
-  const { orders, handleCustomerPortal } = useBillingHistory();
-
-  const handleTabChange = (value: string) => {
-    setCurrentTab(value);
-    const url = new URL(window.location.href);
-    url.searchParams.set("tab", value);
-    router.replace(url.pathname + url.search, { scroll: false });
-  };
 
   if (loading) return <SettingsSkeleton />;
 
@@ -35,21 +23,15 @@ function SettingsContent() {
       </div>
 
       <Tabs
-        onValueChange={handleTabChange}
         className="w-full max-w-4xl"
         defaultValue={searchParams.get("tab") || "profile"}
       >
         <TabsList>
           <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="billing">Billing</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile" className="space-y-6">
           <ProfileTab user={user} />
-        </TabsContent>
-
-        <TabsContent value="billing" className="space-y-6">
-          <BillingTab orders={orders} onCustomerPortal={handleCustomerPortal} />
         </TabsContent>
       </Tabs>
     </div>

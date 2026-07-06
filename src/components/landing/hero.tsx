@@ -49,7 +49,7 @@ export default function Hero() {
             variant="default"
             className="border-primary/20 bg-primary shadow-primary/20 hover:bg-primary-hover hover:shadow-primary/30 h-12 w-full rounded-md border px-5 shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
           >
-            <Link href={"/pricing"}>
+            <Link href={"/login"}>
               <div className="flex items-center gap-2">
                 <p className="text-primary-foreground text-sm font-semibold tracking-[0.01em]">
                   Try for $0

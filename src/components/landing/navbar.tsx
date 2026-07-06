@@ -11,10 +11,7 @@ import {
 } from "~/components/ui/navigation-menu";
 import Image from "next/image";
 
-const navItems = [
-  { label: "Pricing", href: "/pricing" },
-  { label: "Blog", href: "/blog" },
-];
+const navItems = [{ label: "Blog", href: "/blog" }];
 
 export default function Navbar() {
   return (
@@ -41,7 +38,7 @@ export default function Navbar() {
           {navItems.map((item) => (
             <Link
               key={item.label}
-              href="#"
+              href={item.href}
               className={cn(
                 "flex items-center gap-1.5 text-[15px] font-medium transition-all duration-300 ease-out",
                 "text-foreground group-hover/nav:text-foreground/30 hover:text-foreground",
@@ -61,7 +58,7 @@ export default function Navbar() {
           >
             <Link href="/login">Log in</Link>
           </Button>
-          <Link href={"/pricing"}>
+          <Link href={"/login"}>
             <Button variant={"default"} size="lg" className="rounded-md">
               Start for Free
             </Button>

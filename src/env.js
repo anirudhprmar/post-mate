@@ -24,9 +24,6 @@ export const env = createEnv({
     X_CONSUMER_SECRET: z.string(),
     INSTA_CLIENT_ID: z.string(),
     INSTA_CLIENT_SECRET: z.string(),
-    DODO_PAYMENTS_API_KEY: z.string(),
-    DODO_PAYMENTS_WEBHOOK_SECRET: z.string(),
-    DODO_PAYMENTS_SUCCESS_URL: z.string(),
     R2_ACCESS_KEY_ID: z.string(),
     R2_SECRET_ACCESS_KEY: z.string(),
     R2_ENDPOINT: z.string(),
@@ -41,8 +38,6 @@ export const env = createEnv({
     QSTASH_TOKEN: z.string(),
     QSTASH_CURRENT_SIGNING_KEY: z.string(),
     QSTASH_NEXT_SIGNING_KEY: z.string(),
-    RESEND_API_KEY: z.string().optional(),
-    RESEND_FROM_EMAIL: z.string().optional(),
   },
 
   /**
@@ -52,14 +47,6 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_APP_URL: z.string(),
-    NEXT_PUBLIC_CREATOR_MONTHLY_TIER: z.string(),
-    NEXT_PUBLIC_CREATOR_YEARLY_TIER: z.string(),
-    NEXT_PUBLIC_PRO_YEARLY_TIER: z.string(),
-    NEXT_PUBLIC_PRO_MONTHLY_TIER: z.string(),
-    NEXT_PUBLIC_CREATOR_MONTHLY_TIER_SLUG: z.string(),
-    NEXT_PUBLIC_CREATOR_YEARLY_TIER_SLUG: z.string(),
-    NEXT_PUBLIC_PRO_YEARLY_TIER_SLUG: z.string(),
-    NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG: z.string(),
     NEXT_PUBLIC_POSTHOG_KEY:
       process.env.NODE_ENV === "production"
         ? z.string()
@@ -82,9 +69,6 @@ export const env = createEnv({
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
     AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
-    DODO_PAYMENTS_API_KEY: process.env.DODO_PAYMENTS_API_KEY,
-    DODO_PAYMENTS_WEBHOOK_SECRET: process.env.DODO_PAYMENTS_WEBHOOK_SECRET,
-    DODO_PAYMENTS_SUCCESS_URL: process.env.DODO_PAYMENTS_SUCCESS_URL,
     LINKEDIN_CLIENT_ID: process.env.LINKEDIN_CLIENT_ID,
     LINKEDIN_CLIENT_SECRET: process.env.LINKEDIN_CLIENT_SECRET,
     X_CONSUMER_KEY: process.env.X_CONSUMER_KEY,
@@ -95,20 +79,6 @@ export const env = createEnv({
     R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,
     R2_ENDPOINT: process.env.R2_ENDPOINT,
     R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
-    NEXT_PUBLIC_CREATOR_MONTHLY_TIER:
-      process.env.NEXT_PUBLIC_CREATOR_MONTHLY_TIER,
-    NEXT_PUBLIC_CREATOR_YEARLY_TIER:
-      process.env.NEXT_PUBLIC_CREATOR_YEARLY_TIER,
-    NEXT_PUBLIC_PRO_YEARLY_TIER: process.env.NEXT_PUBLIC_PRO_YEARLY_TIER,
-    NEXT_PUBLIC_PRO_MONTHLY_TIER: process.env.NEXT_PUBLIC_PRO_MONTHLY_TIER,
-    NEXT_PUBLIC_CREATOR_MONTHLY_TIER_SLUG:
-      process.env.NEXT_PUBLIC_CREATOR_MONTHLY_TIER_SLUG,
-    NEXT_PUBLIC_CREATOR_YEARLY_TIER_SLUG:
-      process.env.NEXT_PUBLIC_CREATOR_YEARLY_TIER_SLUG,
-    NEXT_PUBLIC_PRO_YEARLY_TIER_SLUG:
-      process.env.NEXT_PUBLIC_PRO_YEARLY_TIER_SLUG,
-    NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG:
-      process.env.NEXT_PUBLIC_PRO_MONTHLY_TIER_SLUG,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
@@ -121,8 +91,6 @@ export const env = createEnv({
     QSTASH_TOKEN: process.env.QSTASH_TOKEN,
     QSTASH_CURRENT_SIGNING_KEY: process.env.QSTASH_CURRENT_SIGNING_KEY,
     QSTASH_NEXT_SIGNING_KEY: process.env.QSTASH_NEXT_SIGNING_KEY,
-    RESEND_API_KEY: process.env.RESEND_API_KEY,
-    RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -67,6 +67,7 @@ const config = {
   },
 
   allowedDevOrigins: [""],
+  output: "standalone",
 };
 
 export default withSentryConfig(config, {
