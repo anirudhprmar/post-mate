@@ -220,10 +220,9 @@ export async function publishToInsta(
         igAccountId,
         "STORIES",
       );
+      // Wait for container to process
+      await waitForContainerToProcess(containerId, accessToken);
     }
-
-    // Wait for container to process
-    await waitForContainerToProcess(containerId, accessToken);
 
     const publishRes = await fetch(
       `https://graph.instagram.com/v25.0/${igAccountId}/media_publish`,
@@ -287,9 +286,11 @@ export async function publishToInsta(
       }
     }
 
-    // Wait for all child containers to process
-    for (const containerId of uploadedCarouselMedia) {
-      await waitForContainerToProcess(containerId, accessToken);
+    // Wait for child video containers to process
+    for (let i = 0; i < uploadedCarouselMedia.length; i++) {
+      if (media[i]?.type === "video") {
+        await waitForContainerToProcess(uploadedCarouselMedia[i]!, accessToken);
+      }
     }
 
     // Upload parent carousel container
@@ -390,9 +391,6 @@ export async function publishToInsta(
       null,
       caption,
     );
-
-    // Wait for container to process
-    await waitForContainerToProcess(containerId, accessToken);
 
     const publishRes = await fetch(
       `https://graph.instagram.com/v25.0/${igAccountId}/media_publish`,
