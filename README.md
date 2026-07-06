@@ -1,6 +1,6 @@
-# Postmate
+# post-mate
 
-Welcome to the **Postmate** project. This document provides instructions on how to set up the project locally using Docker, as well as how to configure the environment when using ngrok for local development (which is essential for testing webhooks and external platform callbacks like Google Auth and Instagram).
+Welcome to the **post-mate**. This document provides instructions on how to set up the project locally using Docker, as well as how to configure the environment when using ngrok for local development (which is essential for testing webhooks and external platform callbacks like Google Auth and Instagram).
 
 ## Local Setup with Docker
 
@@ -54,6 +54,14 @@ If you are using Cloudflare R2 for storage, you must update the CORS configurati
 To receive webhooks or authenticate with Instagram locally, update the callback URL in your Facebook/Meta Developer Dashboard:
 - Go to your App Dashboard > Product Settings.
 - Update the valid OAuth Redirect URIs and Webhook callback URLs to point to your ngrok URL.
+
+## API Tokens & Credentials
+
+To enable social media integrations, you will need to obtain API credentials from each respective platform's developer portal:
+
+- **LinkedIn**: Go to the [LinkedIn Developer Portal](https://developer.linkedin.com/), create an application, and navigate to the "Auth" tab to find your **Client ID** and **Client Secret**. Make sure to request access to the necessary marketing or Share on LinkedIn products.
+- **Facebook & Instagram**: Go to [Meta for Developers](https://developers.facebook.com/). Create an app, add the **Instagram Graph API** and **Facebook Login** products. You can find your **App ID** and **App Secret** in the App Settings > Basic.
+- **Threads**: Also managed through [Meta for Developers](https://developers.facebook.com/). Under your Meta App, you can enable the Threads API by requesting the specific Threads use cases to get the required credentials for publishing.
 
 ## Future Features
 
