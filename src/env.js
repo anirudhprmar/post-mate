@@ -28,7 +28,6 @@ export const env = createEnv({
     R2_SECRET_ACCESS_KEY: z.string(),
     R2_ENDPOINT: z.string(),
     R2_BUCKET_NAME: z.string(),
-    SENTRY_AUTH_TOKEN: z.string(),
     YT_CLIENT_ID: z.string(),
     YT_CLIENT_SECRET: z.string(),
     THREADS_CLIENT_ID: z.string(),
@@ -47,14 +46,6 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_APP_URL: z.string(),
-    NEXT_PUBLIC_POSTHOG_KEY:
-      process.env.NODE_ENV === "production"
-        ? z.string()
-        : z.string().optional(),
-    NEXT_PUBLIC_POSTHOG_HOST:
-      process.env.NODE_ENV === "production"
-        ? z.string()
-        : z.string().optional(),
   },
 
   /**
@@ -79,9 +70,6 @@ export const env = createEnv({
     R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,
     R2_ENDPOINT: process.env.R2_ENDPOINT,
     R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
-    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
-    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     YT_CLIENT_ID: process.env.YT_CLIENT_ID,
     YT_CLIENT_SECRET: process.env.YT_CLIENT_SECRET,
     THREADS_CLIENT_ID: process.env.THREADS_CLIENT_ID,

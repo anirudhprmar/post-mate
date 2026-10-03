@@ -2,7 +2,6 @@
 
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
-import { PostHogProvider } from "./posthog-provider";
 
 // Suppress the React 19 / Next 16 false-positive warning caused by next-themes' inline script
 if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
@@ -20,15 +19,13 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <PostHogProvider>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="light"
-        enableSystem
-        disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
-    </PostHogProvider>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem
+      disableTransitionOnChange
+    >
+      {children}
+    </ThemeProvider>
   );
 }
