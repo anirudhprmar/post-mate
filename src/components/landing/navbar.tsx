@@ -1,68 +1,76 @@
 import Link from "next/link";
-import { Button } from "~/components/ui/button";
-import { cn } from "~/lib/utils";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "~/components/ui/navigation-menu";
 import Image from "next/image";
+import { Button } from "~/components/ui/button";
 
-const navItems = [{ label: "Blog", href: "/blog" }];
+const navigationLinks = [
+  { label: "Features", href: "/#features" },
+  { label: "Support", href: "mailto:app.postmate@gmail.com" },
+  { label: "Security", href: "/privacy-policy" },
+  { label: "Resources", href: "/#faq" },
+];
 
 export default function Navbar() {
   return (
-    <header className="fixed top-0 right-0 left-0 z-100 w-full">
-      <nav className="bg-muted relative flex h-20 w-full items-center justify-between border-b border-dashed px-5">
-        <div>
-          <Link href="/" className="flex items-center">
-            <Image
-              src={
-                "https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBl3FSS0sBQjgrwMc5HoZpy3dEeLPF9kvxOnV6"
-              }
-              alt="logo"
-              width={50}
-              height={50}
-            />
-            <p className="text-foreground text-xl font-bold tracking-tight select-none">
-              post mate
-            </p>
-          </Link>
-        </div>
+    <header className="fixed inset-x-0 top-0 z-50 w-full bg-white">
+      <nav
+        aria-label="Main navigation"
+        className="mx-auto grid h-18 w-full max-w-6xl grid-cols-[1fr_auto] items-center px-6 sm:px-10 md:grid-cols-[1fr_auto_1fr]"
+      >
+        <Link
+          href="/"
+          aria-label="Post Mate home"
+          className="flex items-center"
+        >
+          <Image
+            src="https://c4qrl532oo.ufs.sh/f/s0GPcE56MbtBl3FSS0sBQjgrwMc5HoZpy3dEeLPF9kvxOnV6"
+            alt=""
+            width={36}
+            height={36}
+            className="size-9"
+          />
+          <span className="text-foreground text-xl font-bold tracking-tight select-none">
+            post mate
+          </span>
+        </Link>
 
-        {/* Center Navigation - Mute others hover effect */}
-        <div className="group/nav absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-5 md:flex">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-1.5 text-[15px] font-medium transition-all duration-300 ease-out",
-                "text-foreground group-hover/nav:text-foreground/30 hover:text-foreground",
+        <div className="hidden h-10 w-[390px] items-center justify-around rounded-md bg-zinc-100 px-4 md:flex">
+          {navigationLinks.map(({ label, href }, index) => (
+            <div key={label} className="flex h-full items-center gap-5">
+              {index > 0 && (
+                <span aria-hidden="true" className="h-3 w-px bg-zinc-300" />
               )}
-            >
-              {item.label}
-            </Link>
+              <Link
+                href={href}
+                className="text-[11px] font-medium whitespace-nowrap text-zinc-900 transition-colors hover:text-zinc-500"
+              >
+                {label}
+              </Link>
+            </div>
           ))}
         </div>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-3">
-          <Button
-            variant="secondary"
-            size={"lg"}
-            className="rounded-md bg-zinc-200/50"
-          >
-            <Link href="/login">Log in</Link>
-          </Button>
-          <Link href={"/login"}>
-            <Button variant={"default"} size="lg" className="rounded-md">
-              Start for Free
-            </Button>
-          </Link>
+        <Button
+          asChild
+          size="lg"
+          className="h-10 justify-self-end rounded-full bg-black px-7 text-xs font-medium text-white hover:bg-zinc-800"
+        >
+          <Link href="/login">Log in</Link>
+        </Button>
+
+        <div className="col-span-2 flex h-8 items-center justify-center gap-3 pb-1 sm:gap-5 md:hidden">
+          {navigationLinks.map(({ label, href }, index) => (
+            <div key={label} className="flex items-center gap-3 sm:gap-5">
+              {index > 0 && (
+                <span aria-hidden="true" className="h-3 w-px bg-zinc-300" />
+              )}
+              <Link
+                href={href}
+                className="text-[10px] font-medium whitespace-nowrap text-zinc-900 transition-colors hover:text-zinc-500"
+              >
+                {label}
+              </Link>
+            </div>
+          ))}
         </div>
       </nav>
     </header>

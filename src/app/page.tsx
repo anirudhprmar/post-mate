@@ -10,13 +10,12 @@ import WhyUs from "~/components/landing/why-us";
 
 export default function Page() {
   return (
-    <div className="bg-muted relative min-h-screen overflow-x-hidden">
+    <div className="relative min-h-screen overflow-x-hidden bg-white">
       <Container>
         <Navbar />
         <main>
           <Hero />
           <Features />
-          <WhyUs />
           <SupportedPlatforms />
           <FAQ />
           <FooterCTA />
